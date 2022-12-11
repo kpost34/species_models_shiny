@@ -5,7 +5,7 @@
   #3) Rarefaction
 
 #load packages
-pacman::p_load(shiny,here,tidyverse)
+pacman::p_load(shiny,here,tidyverse,plotly)
 
 #source in functions
 
@@ -23,8 +23,9 @@ pacman::p_load(shiny,here,tidyverse)
 
 
 #s, c, p, phi, d
+#phi: .0001, .005, .001, .05, .01
 #s, ep, a
-
+#t
 
 
 
@@ -37,17 +38,40 @@ ui<-navbarPage("Species Models App",
     #### App component------------------------------------------------------------------------------
     tabPanel(title="Island Biogeography Simulator",id="app_ib1",
       sidebarLayout(
-        sidebarPanel(width=2,
-          h4(strong("Island 1")),
-            h5("Immigration Parameters"),
-            numericInput(inputId="num_p",value=50,min=20,max=200,
-                         label="Please enter the number of species on the mainland (20-200)"
-            ),
-            numericInput(inputId="num_d",value=50,min=0,max=10000,
-                         label="Please enter the distance between the island and mainland (0-10000)"
-            )
+        sidebarPanel(width=3,position="left",
+          h3(strong("Island 1")),
+            h4(strong("Immigration")),
+              h5("Please enter the following parameters"),
+                sliderInput(inputId="sld_p_ib",value=50,min=20,max=200,step=10,
+                             label="Number of species on mainland (p)"
+                ),
+                numericInput(inputId="num_d_ib",value=50,min=0,max=10000,
+                             label="Distance between island and mainland (d; 0-10,000)"
+                ),
+                numericInput(inputId="num_phi_ib",value=.001,min=.0001,max=.01,
+                             label="Fit parameter that governs distance decay of colonization rate 
+                             (phi; .0001-.01)"),
+                sliderInput(inputId="sld_c_ib",value=0.5,min=0.1,max=1,step=0.05,
+                             label="Mean colonization rate over all species in pool (c)"),
+              br(),
+              h5("Extinction Parameters"),
+                numericInput(inputId="num_a_ib",value=1000,min=100,max=50,000,
+                             label="Area of island 1 (a; 100-50000)"),
+                numericInput(inputId="num_ep_ib",value=.01,min=.0001,max=.1,
+                             label="Fit parameter governing effect of area on extinction"
+                ),
+              br(),
+              sliderInput(inputId="sld_t_ib",value=50,min=20,max=200,step=10,
+                          label="Units of time (t)"),
+              br(),
+              radioButtons(inputId="rad_2isle_ib",selected="no",inline=TRUE,
+                           choices=c("no","yes"),
+                           label="Add second island?"
+              )
         ),
-        mainPanel(width=10,
+        mainPanel(width=9,
+          plotlyOutput("plotly_rate_ib"),
+          plotlyOutput("plotly_spp_ib")
         )
       )         
     ),
@@ -120,13 +144,13 @@ shinyApp(ui=ui,server=server)
 
 
 # DONE
-# fleshed out backbone code for ToIB curves
-# created skeleton for app
-# began creating inputs
+
 
 
 # LAST COMMIT
-
+# fleshed out backbone code for ToIB curves
+# created skeleton for app
+# began creating inputs
 
 
 

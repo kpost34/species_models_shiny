@@ -93,17 +93,18 @@ s_tTab %>%
 # phi: fit parameter governing distance decay of colonization rate
 # ep (epsilon): fit parameter governing effect of area on extinction
 
-phi<-0.0001
-ep<-0.001
+phi<-.0001
+ep<-.001
 p<-100
-a<-2300
+a<-2500
 
-d<-c(100,2000,10000)
+#d<-c(100,2000,5000)
 
 s<-seq(0,100,length.out=100) %>% rep(.,3)
 d<-rep(c(100,2000,10000),each=100)
+a<-rep(5000,300)
 
-island2<-tibble(s,d)
+island2<-tibble(s,d,a)
 
 island2 %>%
   split(.$d) %>%
@@ -114,24 +115,27 @@ island2 %>%
 
 island2 %>%
   mutate(C=c*(p-s)*exp(-phi*d),
-         d=as.factor(d)) %>%
+         E=s*exp(-ep*a),
+         d=as.factor(d)) %>% 
   ggplot(aes(x=s,y=C,group=d,color=d)) +
-  geom_line()
+  geom_line() +
+  geom_line(aes(y=E,group=a),color="black") +
+  theme_bw()
 
 
-d1<-100
+
 
 
 ## Plot s over time
 #General form: S(t+1) = S(t) + C(t) - E(t)
 #S(t+1) = S(t) + c(p-s)*exp(-phi*d) - s*exp^(-ep*a)
-s<-c(0,rep(NA,49))
+s<-c(0,rep(NA,99))
 
-for(i in 1:50){
-  s[i+1]<-s[i] + c*(p-s[i]) - h*s[i]
+for(i in 1:100){
+  s[i+1]<-s[i] + c*(p-s[i])*exp(-phi*d)-s*exp(ep*a)
 }
 
-s_tTab<-tibble(t=0:50,
+s_tTab<-tibble(t=0:100,
                s)
 
 s_tTab %>%
@@ -158,7 +162,7 @@ s_tTab %>%
 
 
 
-rates.simberloff <- irregular_multiple_datasets(list = simberloff, 
+frates.simberloff <- irregular_multiple_datasets(list = simberloff, 
                                                 vectorlist = list(3:17, 3:18, 3:17, 3:19, 3:17, 3:16), 
                                                 c = 0.001, e = 0.001, jacobian = T)
 rates.islands <- irregular_multiple_datasets(list = simberloff, 
