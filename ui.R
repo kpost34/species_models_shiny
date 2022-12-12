@@ -39,35 +39,55 @@ ui<-navbarPage("Species Models App",
     tabPanel(title="Island Biogeography Simulator",id="app_ib1",
       sidebarLayout(
         sidebarPanel(width=3,position="left",
-          h3(strong("Island 1")),
-            h4(strong("Immigration")),
-              h5("Please enter the following parameters"),
-                sliderInput(inputId="sld_p_ib",value=50,min=20,max=200,step=10,
-                             label="Number of species on mainland (p)"
-                ),
-                numericInput(inputId="num_d_ib",value=50,min=0,max=10000,
-                             label="Distance between island and mainland (d; 0-10,000)"
-                ),
-                numericInput(inputId="num_phi_ib",value=.001,min=.0001,max=.01,
-                             label="Fit parameter that governs distance decay of colonization rate 
-                             (phi; .0001-.01)"),
-                sliderInput(inputId="sld_c_ib",value=0.5,min=0.1,max=1,step=0.05,
-                             label="Mean colonization rate over all species in pool (c)"),
+          tabsetPanel(id="app_tabset_ib",type="pills",
+            tabPanel(title="Island 1",
+              h5(strong("Immigration")),
+              sliderInput(inputId="sld_p1_ib",value=100,min=20,max=200,step=10,
+                           label="Number of species on mainland (p)"
+              ),
+              numericInput(inputId="num_d1_ib",value=500,min=0,max=1000,
+                           label="Distance between island and mainland (d; 0-10,000)"
+              ),
+              numericInput(inputId="num_phi1_ib",value=.001,min=.0001,max=.01,
+                           label="Fit parameter that governs distance decay of colonization rate 
+                           (phi; .0001-.01)"),
+              sliderInput(inputId="sld_c1_ib",value=0.5,min=0.1,max=1,step=0.05,
+                           label="Mean colonization rate over all species in pool (c)"),
               br(),
-              h5("Extinction Parameters"),
-                numericInput(inputId="num_a_ib",value=1000,min=100,max=50,000,
+              h5(strong("Extinction")),
+                numericInput(inputId="num_a1_ib",value=500,min=50,max=1000,
                              label="Area of island 1 (a; 100-50000)"),
-                numericInput(inputId="num_ep_ib",value=.01,min=.0001,max=.1,
-                             label="Fit parameter governing effect of area on extinction"
+                numericInput(inputId="num_ep1_ib",value=.001,min=.0001,max=.1,
+                             label="Fit parameter governing effect of area on extinction 
+                             (epsilon; .0001-.01)"
                 ),
               br(),
               sliderInput(inputId="sld_t_ib",value=50,min=20,max=200,step=10,
-                          label="Units of time (t)"),
+                          label="Length of time (t)"),
+              br()
+            ),
+            tabPanel(title="Island 2",
+              h5(strong("Immigration")),
+              sliderInput(inputId="sld_p2_ib",value=100,min=20,max=200,step=10,
+                          label="p"
+              ),
+              numericInput(inputId="num_d2_ib",value=500,min=0,max=1000,
+                           label="d"
+              ),
+              numericInput(inputId="num_phi2_ib",value=.001,min=.0001,max=.01,
+                           label="phi"),
+              sliderInput(inputId="sld_c2_ib",value=0.5,min=0.1,max=1,step=0.05,
+                           label="c"),
               br(),
-              radioButtons(inputId="rad_2isle_ib",selected="no",inline=TRUE,
-                           choices=c("no","yes"),
-                           label="Add second island?"
-              )
+              h5(strong("Extinction")),
+              numericInput(inputId="num_a2_ib",value=500,min=50,max=1000,
+                           label="a"),
+              numericInput(inputId="num_ep2_ib",value=.01,min=.0001,max=.1,
+                           label="epsilon"
+              ),
+              br()
+            )
+          )
         ),
         mainPanel(width=9,
           plotlyOutput("plotly_rate_ib"),
@@ -119,19 +139,8 @@ ui<-navbarPage("Species Models App",
 
 
 
-#--------------------------------------------------------------------------------------------------#
-##### Define Server Function========================================================================
-#--------------------------------------------------------------------------------------------------#
-server<-function(input,output,session){
-  
-}
 
 
-
-
-
-# Run the application
-shinyApp(ui=ui,server=server)
 
 
 
@@ -140,18 +149,20 @@ shinyApp(ui=ui,server=server)
 #### NOTES==========================================================================================
 
 # NEXT
+# need to tweak inputs so that 1) ranges are reasonable and 2) start at s*=p/2
 
 
 
 # DONE
+# created server and app scripts
+# added island 2 tab inputs
+# developed reactive df with s, C, and E and a renderPlotly
 
 
 
 # LAST COMMIT
-# fleshed out backbone code for ToIB curves
-# created skeleton for app
-# began creating inputs
-
+# switched to 2-file app
+# added inputs for island 1
 
 
 
