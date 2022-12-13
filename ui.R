@@ -45,21 +45,21 @@ ui<-navbarPage("Species Models App",
               sliderInput(inputId="sld_p1_ib",value=100,min=20,max=200,step=10,
                            label="Number of species on mainland (p)"
               ),
-              numericInput(inputId="num_d1_ib",value=500,min=0,max=1000,
-                           label="Distance between island and mainland (d; 0-10,000)"
+              numericInput(inputId="num_d1_ib",value=100,min=0,max=10000,
+                           label="Distance from mainland (d; 0-10,000)"
               ),
-              numericInput(inputId="num_phi1_ib",value=.001,min=.0001,max=.01,
-                           label="Fit parameter that governs distance decay of colonization rate 
-                           (phi; .0001-.01)"),
-              sliderInput(inputId="sld_c1_ib",value=0.5,min=0.1,max=1,step=0.05,
+              numericInput(inputId="num_phi1_ib",value=.0001,min=0,max=.01,
+                           label="Distance decay of colonization rate 
+                           (\u03d5; 0-.01)"),
+              sliderInput(inputId="sld_c1_ib",value=0.1,min=0.1,max=1,step=0.05,
                            label="Mean colonization rate over all species in pool (c)"),
               br(),
               h5(strong("Extinction")),
-                numericInput(inputId="num_a1_ib",value=500,min=50,max=1000,
-                             label="Area of island 1 (a; 100-50000)"),
-                numericInput(inputId="num_ep1_ib",value=.001,min=.0001,max=.1,
-                             label="Fit parameter governing effect of area on extinction 
-                             (epsilon; .0001-.01)"
+                numericInput(inputId="num_a1_ib",value=2300,min=50,max=10000,
+                             label="Area of island 1 (a; 50-10000)"),
+                numericInput(inputId="num_ep1_ib",value=.001,min=0,max=.1,
+                             label="Effect of area on extinction 
+                             (\u03b5; 0-.1)"
                 ),
               br(),
               sliderInput(inputId="sld_t_ib",value=50,min=20,max=200,step=10,
@@ -71,19 +71,19 @@ ui<-navbarPage("Species Models App",
               sliderInput(inputId="sld_p2_ib",value=100,min=20,max=200,step=10,
                           label="p"
               ),
-              numericInput(inputId="num_d2_ib",value=500,min=0,max=1000,
-                           label="d"
+              numericInput(inputId="num_d2_ib",value=100,min=0,max=10000,
+                           label="d (0-10,000)"
               ),
-              numericInput(inputId="num_phi2_ib",value=.001,min=.0001,max=.01,
-                           label="phi"),
-              sliderInput(inputId="sld_c2_ib",value=0.5,min=0.1,max=1,step=0.05,
-                           label="c"),
+              numericInput(inputId="num_phi2_ib",value=.0001,min=0,max=.01,
+                           label="\u03d5 (0-.01)"),
+              sliderInput(inputId="sld_c2_ib",value=0.1,min=0.1,max=1,step=0.05,
+                           label="c (0.1-1)"),
               br(),
               h5(strong("Extinction")),
-              numericInput(inputId="num_a2_ib",value=500,min=50,max=1000,
-                           label="a"),
-              numericInput(inputId="num_ep2_ib",value=.01,min=.0001,max=.1,
-                           label="epsilon"
+              numericInput(inputId="num_a2_ib",value=2300,min=50,max=10000,
+                           label="a (50-10000)"),
+              numericInput(inputId="num_ep2_ib",value=.001,min=0,max=.1,
+                           label="\u03b5 (0-.1)"
               ),
               br()
             )
@@ -154,15 +154,14 @@ ui<-navbarPage("Species Models App",
 
 
 # DONE
-# created server and app scripts
-# added island 2 tab inputs
-# developed reactive df with s, C, and E and a renderPlotly
+# cleaned up UI inputs for IB and began adding second y axis
 
 
 
 # LAST COMMIT
-# switched to 2-file app
-# added inputs for island 1
+# created server and app scripts
+# added island 2 tab inputs
+# developed reactive df with s, C, and E and a renderPlotly
 
 
 
