@@ -149,19 +149,17 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-# need to tweak inputs so that 1) ranges are reasonable and 2) start at s*=p/2
+
 
 
 
 # DONE
-# cleaned up UI inputs for IB and began adding second y axis
+
 
 
 
 # LAST COMMIT
-# created server and app scripts
-# added island 2 tab inputs
-# developed reactive df with s, C, and E and a renderPlotly
+# cleaned up UI inputs for IB and began adding second y axis
 
 
 

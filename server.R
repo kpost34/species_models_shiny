@@ -20,10 +20,12 @@ server<-function(input,output,session){
   ### Rate plot
   ## Create reactive object
   rateDF_ib<-reactive({
-    tibble(s=seq(0,input$sld_p1_ib,length.out=200),
+    tibble(s=seq(0,input$sld_p1_ib,length.out=150),
            C=input$sld_c1_ib*(input$sld_p1_ib-s)*exp(-input$num_phi1_ib*input$num_d1_ib),
-           E=s*exp(-input$num_ep1_ib*input$num_a1_ib)) %>%
-      mutate(across(C:E,~signif(.x,3)))
+           E=s*exp(-input$num_ep1_ib*input$num_a1_ib),
+           diff=abs(C-E)) %>%
+      mutate(across(everything(),~round(.x,2)),
+             equal=diff==min(diff))
   })
   
   
@@ -33,6 +35,8 @@ server<-function(input,output,session){
       ggplot(aes(x=s,y=C)) +
       geom_line(color="darkblue") +
       geom_line(aes(y=E),color="darkred") +
+      geom_segment(data=~filter(.x,equal),
+                 aes(x=s,xend=s,y=0,yend=E),lineend="butt",color="purple") +
       labs(x="Species richness of island (s)",y="Colonization rate (species/time)") +
       theme_bw() -> p_rate_ib
     
