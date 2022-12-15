@@ -40,6 +40,7 @@ ui<-navbarPage("Species Models App",
       sidebarLayout(
         sidebarPanel(width=3,position="left",
           tabsetPanel(id="app_tabset_ib",type="pills",
+            #Island 1 ui
             tabPanel(title="Island 1",
               h5(strong("Immigration")),
               sliderInput(inputId="sld_p1_ib",value=100,min=20,max=200,step=10,
@@ -64,13 +65,13 @@ ui<-navbarPage("Species Models App",
               br(),
               sliderInput(inputId="sld_t_ib",value=50,min=20,max=200,step=10,
                           label="Length of time (t)"),
-              br()
+              br(),
+             radioButtons(inputId="rad_is2_ib",label="Display second island?",
+                          choices=c("no","yes"),selected="no")
             ),
+            #Island 2 ui
             tabPanel(title="Island 2",
               h5(strong("Immigration")),
-              sliderInput(inputId="sld_p2_ib",value=100,min=20,max=200,step=10,
-                          label="p"
-              ),
               numericInput(inputId="num_d2_ib",value=100,min=0,max=10000,
                            label="d (0-10,000)"
               ),
@@ -84,8 +85,7 @@ ui<-navbarPage("Species Models App",
                            label="a (50-10000)"),
               numericInput(inputId="num_ep2_ib",value=.001,min=0,max=.1,
                            label="\u03b5 (0-.1)"
-              ),
-              br()
+              )
             )
           )
         ),
@@ -149,17 +149,23 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-
+# rounded end to line that extends to x-axis
+# make line dashed
+# label S* = [value]
+# make S* toggle-able
+# add line 2 graph
+# reset buttons
 
 
 
 # DONE
-
+# fixed intersection point & added appropriate labels
+# set up controls and display for second island
 
 
 
 # LAST COMMIT
-# cleaned up UI inputs for IB and began adding second y axis
+# Added intersection point of rate graphs with vertical line that extends to x-axis
 
 
 
