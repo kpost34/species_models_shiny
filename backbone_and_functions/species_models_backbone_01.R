@@ -69,7 +69,7 @@ for(i in 1:50){
   s[i+1]<-s[i] + c*(p-s[i]) - h*s[i]
 }
 
-# Immigration
+# S vs t
 i<-c(0,rep)
 
 s_tTab<-tibble(t=0:50,
@@ -79,6 +79,7 @@ s_tTab %>%
   ggplot() +
   geom_point(aes(x=t,y=s)) +
   theme_bw()
+
 
 ### Second modeling approach taking distance (C) and area (E) into account
 ## New formulas
@@ -126,14 +127,21 @@ island2 %>%
 
 
 
-## Plot s over time
+## Plot s over time (with d=100)
+d<-100
+
+# Equilibrium
+ s_eq<-(c*p*exp(ep*a))/(c*exp(ep*a) + exp(phi*d))
+ 
+ 
 #General form: S(t+1) = S(t) + C(t) - E(t)
 #S(t+1) = S(t) + c(p-s)*exp(-phi*d) - s*exp^(-ep*a)
 s<-c(0,rep(NA,99))
 
 for(i in 1:100){
-  s[i+1]<-s[i] + c*(p-s[i])*exp(-phi*d)-s*exp(ep*a)
+  s[i+1]<-s[i] + c*(p-s[i])*exp(-phi*d)-s[i]*exp(-ep*a)
 }
+
 
 s_tTab<-tibble(t=0:100,
                s)

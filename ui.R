@@ -49,19 +49,25 @@ ui<-navbarPage("Species Models App",
               numericInput(inputId="num_d1_ib",value=100,min=0,max=10000,
                            label="Distance from mainland (d; 0-10,000)"
               ),
-              numericInput(inputId="num_phi1_ib",value=.0001,min=0,max=.01,
+              # numericInput(inputId="num_phi1_ib",value=.0001,min=0,max=.001,
+              #              label="Distance decay of colonization rate 
+              #              (\u03d5; 0-.001)"),
+              sliderInput(inputId="sld_phi1_ib",value=.0002,min=0,max=.001,step=.0002,
                            label="Distance decay of colonization rate 
-                           (\u03d5; 0-.01)"),
+                           (\u03d5)"),
               sliderInput(inputId="sld_c1_ib",value=0.1,min=0.1,max=1,step=0.05,
                            label="Mean colonization rate over all species (c)"),
               hr(),
               h5(strong("Extinction")),
                 numericInput(inputId="num_a1_ib",value=2300,min=50,max=10000,
                              label="Area of island 1 (a; 50-10000)"),
-                numericInput(inputId="num_ep1_ib",value=.001,min=0,max=.1,
+                sliderInput(inputId="sld_ep1_ib",value=.0002,min=0,max=.001,step=.0002,
                              label="Effect of area on extinction 
-                             (\u03b5; 0-.1)"
-                ),
+                             (\u03b5)"),
+                # numericInput(inputId="num_ep1_ib",value=.0001,min=0,max=.001,
+                #              label="Effect of area on extinction 
+                #              (\u03b5; 0-.1)"
+                # ),
               hr(),
               sliderInput(inputId="sld_t_ib",value=50,min=20,max=200,step=10,
                           label="Length of time (t)"),
@@ -75,16 +81,20 @@ ui<-navbarPage("Species Models App",
               numericInput(inputId="num_d2_ib",value=100,min=0,max=10000,
                            label="d (0-10,000)"
               ),
-              numericInput(inputId="num_phi2_ib",value=.0001,min=0,max=.01,
-                           label="\u03d5 (0-.01)"),
+              sliderInput(inputId="sld_phi2_ib",value=.0002,min=0,max=.001,step=.0002,
+                           label="\u03d5"),
+              # numericInput(inputId="num_phi2_ib",value=.0001,min=0,max=.001,
+              #              label="\u03d5 (0-.001)"),
               sliderInput(inputId="sld_c2_ib",value=0.1,min=0.1,max=1,step=0.05,
                            label="c (0.1-1)"),
               hr(),
               h5(strong("Extinction")),
               numericInput(inputId="num_a2_ib",value=2300,min=50,max=10000,
                            label="a (50-10000)"),
-              numericInput(inputId="num_ep2_ib",value=.001,min=0,max=.1,
-                           label="\u03b5 (0-.1)"
+              sliderInput(inputId="sld_ep2_ib",value=.0002,min=0,max=.001,step=.0002,
+                           label="\u03b5"
+              # numericInput(inputId="num_ep2_ib",value=.001,min=0,max=.1,
+              #              label="\u03b5 (0-.1)"
               )
             )
           )
@@ -144,19 +154,33 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-# reset buttons
-# create functions
-# second plot
+# current figures:
+  #1) legend for each
+  #2) second line for island 2 of second plot
+# ui:
+  # 1) add another sidebar or wellPanel (below current one) with p, t, and display second island
+    #question?
+  # 2) radio button above sidebarpanel (or in #1) where you choose a scenario: large vs small,
+    #close vs distant, both, or custom (which would then display the tabs--they could be hidden)
+  # 3) reset button for custom mode, which would return the values back to original (shinyjs
+    # tool for this)
+# new output
+  # 1) visual of the mainland and islands and a and d would align with the a and d inputs (or in
+    # a scenario)--looks like plotly could help here
+
+# create functions??
+
 
 
 
 # DONE
-
+# corrected typo in s vs time equation
+# tidied up ranges of inputs and changed two numeric ones to sliders
 
 
 
 # LAST COMMIT
-# add second plot (spp over time) for island
+# add second plot (spp over time) for island 1
 
 
 
