@@ -68,7 +68,7 @@ server<-function(input,output,session){
       geom_segment(data=rate_eq1DF(),
                    aes(x=s_eq1,xend=s_eq1,y=0,yend=rate_eq1,label=rate_eq1),
                    color="purple",linetype=2) +
-      labs(x="Species richness of island (s)",y="Colonization rate (species/time)") +
+      labs(x="Species richness of island(s)",y="Colonization rate (species/time)") +
       theme_bw() -> p_rate1_ib
     
     if(input$rad_is2_ib=="yes") {
@@ -89,10 +89,37 @@ server<-function(input,output,session){
     p_rate_ib %>%
       ggplotly(tooltip="label")
   })
-  # plotly_spp_ib<-plotlyOutput({
-  #   
-  # })
-  #   ),
+  
+  
+  ### Species over time plot
+  ## Reactive objects
+  # Island 1
+  spp1DF<-reactive({
+    s<-c(0,rep(NA,input$sld_t_ib-1))
+    
+    for(i in 1:input$sld_t_ib){
+      s[i+1]<-s[i] + input$sld_c1_ib*(input$sld_p1_ib-s[i])*
+        exp(-input$num_phi1_ib*input$num_d1_ib)-s*exp(input$num_ep1_ib*input$num_a1_ib)
+    }
+    tibble(t=0:input$sld_t_ib,
+           s=signif(s,3))
+  })
+  
+  
+  ## Render plot
+  # Island 1
+  output$plotly_spp_ib<-renderPlotly({
+    spp1DF() %>%
+      ggplot() +
+      geom_point(aes(x=t,y=s)) +
+      labs(x="Time",
+           y="Species richness of island(s)") +
+      theme_bw() -> p_spp1_ib
+
+  p_spp1_ib %>%
+    ggplotly()
+
+  })
   
 
   

@@ -53,8 +53,8 @@ ui<-navbarPage("Species Models App",
                            label="Distance decay of colonization rate 
                            (\u03d5; 0-.01)"),
               sliderInput(inputId="sld_c1_ib",value=0.1,min=0.1,max=1,step=0.05,
-                           label="Mean colonization rate over all species in pool (c)"),
-              br(),
+                           label="Mean colonization rate over all species (c)"),
+              hr(),
               h5(strong("Extinction")),
                 numericInput(inputId="num_a1_ib",value=2300,min=50,max=10000,
                              label="Area of island 1 (a; 50-10000)"),
@@ -62,11 +62,11 @@ ui<-navbarPage("Species Models App",
                              label="Effect of area on extinction 
                              (\u03b5; 0-.1)"
                 ),
-              br(),
+              hr(),
               sliderInput(inputId="sld_t_ib",value=50,min=20,max=200,step=10,
                           label="Length of time (t)"),
-              br(),
-             radioButtons(inputId="rad_is2_ib",label="Display second island?",
+              hr(),
+              radioButtons(inputId="rad_is2_ib",label="Display second island?",
                           choices=c("no","yes"),selected="no")
             ),
             #Island 2 ui
@@ -79,7 +79,7 @@ ui<-navbarPage("Species Models App",
                            label="\u03d5 (0-.01)"),
               sliderInput(inputId="sld_c2_ib",value=0.1,min=0.1,max=1,step=0.05,
                            label="c (0.1-1)"),
-              br(),
+              hr(),
               h5(strong("Extinction")),
               numericInput(inputId="num_a2_ib",value=2300,min=50,max=10000,
                            label="a (50-10000)"),
@@ -141,31 +141,22 @@ ui<-navbarPage("Species Models App",
 
 
 
-
-
-
-
-
 #### NOTES==========================================================================================
 
 # NEXT
-# rounded end to line that extends to x-axis
-# make line dashed
-# label S* = [value]
-# make S* toggle-able
-# add line 2 graph
 # reset buttons
+# create functions
+# second plot
 
 
 
 # DONE
-# fixed intersection point & added appropriate labels
-# set up controls and display for second island
+
 
 
 
 # LAST COMMIT
-# Added intersection point of rate graphs with vertical line that extends to x-axis
+# add second plot (spp over time) for island
 
 
 
