@@ -125,15 +125,117 @@ island2 %>%
 
 
 
+### Plots with one d value
+d<-100
+a<-5000
+
+## Rate plot-Island 1
+# Create DF
+tibble(island=rep("1",300),
+       s=seq(0,p,length.out=300),
+      Colonization=c*(p-s)*exp(-phi*d),
+      Extinction=s*exp(-ep*a)) %>%
+  pivot_longer(Colonization:last_col(),names_to="rate",values_to="value") %>%
+  mutate(across(c(s,value),~signif(.x,3))) -> island3DF
+
+# Equilibrium DF
+s_eqDF_3<-tibble(island="1",
+               s_eq=(c*p*exp(ep*a))/(c*exp(ep*a) + exp(phi*d)),
+               rate_eq=s_eq*exp(-ep*a)) %>%
+  mutate(across(!island,~signif(.x,3)))
+
+
+## Rate plot-Island 2
+d<-50
+a<-1000
+
+# Create DF
+tibble(island=rep("2",300),
+       s=seq(0,p,length.out=300),
+      Colonization=c*(p-s)*exp(-phi*d),
+      Extinction=s*exp(-ep*a)) %>%
+  pivot_longer(Colonization:last_col(),names_to="rate",values_to="value") %>%
+  mutate(across(c(s,value),~signif(.x,3))) -> island4DF
+
+
+# Equilibrium DF
+s_eqDF_4<-tibble(island="2",
+               s_eq=(c*p*exp(ep*a))/(c*exp(ep*a) + exp(phi*d)),
+               rate_eq=s_eq*exp(-ep*a)) %>%
+  mutate(across(!island,~signif(.x,3)))
+
+  
+
+
+
+# Develop plot
+ndf<-2
+
+island3DF %>%
+  ggplot(aes(x=s,y=value)) +
+  geom_line(aes(group=rate,linetype=rate,color=island,
+                text=paste0("Island ",island,
+                            "\n",rate,": ",value," spp/t",
+                            "\n","Species: ",s))) +
+  scale_color_manual(values=c("1"="red4"),guide="none") +
+  scale_linetype_manual(values=c("Colonization"="solid",
+                                 "Extinction"="dashed")) +
+  geom_point(data=s_eqDF_3,
+             aes(x=s_eq,y=rate_eq,
+                 text=paste0("Island ",island,
+                            "\n","rate*: ",rate_eq, " spp/time",
+                            "\n", "s*: ",s_eq))) +
+  geom_point(data=s_eqDF_3,
+           aes(x=s_eq,y=0,
+               text=paste0("Island ",island,
+                          "\n", "s*: ",s_eq)),
+           size=1) +
+  geom_segment(data=s_eqDF_3,
+               aes(x=s_eq,xend=s_eq,y=0,yend=rate_eq),
+               linetype="dotted",color="purple") +
+  labs(x="Species richness of island",
+       y="Colonization/extinction rate (spp/time)") +
+  theme_bw() -> island3_plot
+
+
+if(ndf==2) {
+  island3_plot +
+    geom_line(data=island4DF,
+              aes(x=s,y=value,group=rate,linetype=rate,color=island,
+                  text=paste0("Island ",island,
+                  "\n",rate,": ",value," spp/t",
+                  "\n","Species: ",s))) +
+    scale_color_manual(values=c("1"="red4","2"="blue4")) +
+    geom_point(data=s_eqDF_4,
+               aes(x=s_eq,y=rate_eq,
+                   text=paste0("Island ",island,
+                               "\n","rate*: ",rate_eq, " spp/time",
+                               "\n", "s*: ",s_eq)),
+               color="black") +
+    geom_point(data=s_eqDF_4,
+               aes(x=s_eq,y=0,
+                   text=paste0("Island ",island,
+                               "\n", "s*: ",s_eq)),
+                   color="black") +
+    geom_segment(data=s_eqDF_4,
+                 aes(x=s_eq,xend=s_eq,y=0,yend=rate_eq),
+                     linetype="dotted",color="darkgreen") -> island34_plot
+    } else if(ndf==1) {
+      island3_plot -> island34_plot
+    }
+
+  island34_plot
+
+
+island34_plot %>%
+  ggplotly(tooltip="text") %>%
+    layout(margin=list(b=120),
+      #put legend below plot
+      legend=list(orientation="h",xanchor="center",yanchor="bottom",
+                  x=0,y=-0.3))
 
 
 ## Plot s over time (with d=100)
-d<-100
-
-# Equilibrium
- s_eq<-(c*p*exp(ep*a))/(c*exp(ep*a) + exp(phi*d))
- 
- 
 #General form: S(t+1) = S(t) + C(t) - E(t)
 #S(t+1) = S(t) + c(p-s)*exp(-phi*d) - s*exp^(-ep*a)
 s<-c(0,rep(NA,99))

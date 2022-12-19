@@ -8,7 +8,7 @@
 pacman::p_load(shiny,here,tidyverse,plotly)
 
 #source in functions
-
+source(here("backbone_and_functions","species_models_func_01.R"))
 
 
 
@@ -49,9 +49,6 @@ ui<-navbarPage("Species Models App",
               numericInput(inputId="num_d1_ib",value=100,min=0,max=10000,
                            label="Distance from mainland (d; 0-10,000)"
               ),
-              # numericInput(inputId="num_phi1_ib",value=.0001,min=0,max=.001,
-              #              label="Distance decay of colonization rate 
-              #              (\u03d5; 0-.001)"),
               sliderInput(inputId="sld_phi1_ib",value=.0002,min=0,max=.001,step=.0002,
                            label="Distance decay of colonization rate 
                            (\u03d5)"),
@@ -64,12 +61,8 @@ ui<-navbarPage("Species Models App",
                 sliderInput(inputId="sld_ep1_ib",value=.0002,min=0,max=.001,step=.0002,
                              label="Effect of area on extinction 
                              (\u03b5)"),
-                # numericInput(inputId="num_ep1_ib",value=.0001,min=0,max=.001,
-                #              label="Effect of area on extinction 
-                #              (\u03b5; 0-.1)"
-                # ),
               hr(),
-              sliderInput(inputId="sld_t_ib",value=50,min=20,max=200,step=10,
+              sliderInput(inputId="sld_t_ib",value=50,min=20,max=100,step=10,
                           label="Length of time (t)"),
               hr(),
               radioButtons(inputId="rad_is2_ib",label="Display second island?",
@@ -83,25 +76,21 @@ ui<-navbarPage("Species Models App",
               ),
               sliderInput(inputId="sld_phi2_ib",value=.0002,min=0,max=.001,step=.0002,
                            label="\u03d5"),
-              # numericInput(inputId="num_phi2_ib",value=.0001,min=0,max=.001,
-              #              label="\u03d5 (0-.001)"),
               sliderInput(inputId="sld_c2_ib",value=0.1,min=0.1,max=1,step=0.05,
-                           label="c (0.1-1)"),
+                           label="c"),
               hr(),
               h5(strong("Extinction")),
               numericInput(inputId="num_a2_ib",value=2300,min=50,max=10000,
                            label="a (50-10000)"),
               sliderInput(inputId="sld_ep2_ib",value=.0002,min=0,max=.001,step=.0002,
                            label="\u03b5"
-              # numericInput(inputId="num_ep2_ib",value=.001,min=0,max=.1,
-              #              label="\u03b5 (0-.1)"
               )
             )
           )
         ),
         mainPanel(width=9,
-          plotlyOutput("plotly_rate_ib"),
-          plotlyOutput("plotly_spp_ib")
+          plotlyOutput("plotly_rate_ib")
+          # plotlyOutput("plotly_spp_ib")
         )
       )         
     ),
@@ -174,13 +163,14 @@ ui<-navbarPage("Species Models App",
 
 
 # DONE
+#re-engineered development of reactive DFs (to tidy format) which included building custom 
+  #functions
+
+
+
+
 # corrected typo in s vs time equation
 # tidied up ranges of inputs and changed two numeric ones to sliders
-
-
-
-# LAST COMMIT
-# add second plot (spp over time) for island 1
 
 
 
