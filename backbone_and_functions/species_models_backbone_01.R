@@ -238,6 +238,7 @@ island34_plot %>%
 ## Plot s over time (with d=100)
 #General form: S(t+1) = S(t) + C(t) - E(t)
 #S(t+1) = S(t) + c(p-s)*exp(-phi*d) - s*exp^(-ep*a)
+# Build DF
 s<-c(0,rep(NA,99))
 
 for(i in 1:100){
@@ -245,10 +246,29 @@ for(i in 1:100){
 }
 
 
-s_tTab<-tibble(t=0:100,
+s_tTab<-tibble(island=rep("island 1",101),
+               t=0:100,
                s)
 
+
+d<-100
+a<-5000
+
+s<-c(0,rep(NA,99))
+
+for(i in 1:100){
+  s[i+1]<-s[i] + c*(p-s[i])*exp(-phi*d)-s[i]*exp(-ep*a)
+}
+
+s_tTab2<-tibble(island=rep("island 2",101),
+                t=0:100,
+                s)
+
+sec_isle<-"yes"
+
+# Plot output
 s_tTab %>%
+  {if(sec_isle=="yes") bind_rows(.,s_tTab2) else .} %>%
   ggplot() +
   geom_point(aes(x=t,y=s)) +
   theme_bw()

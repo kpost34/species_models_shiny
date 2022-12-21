@@ -43,7 +43,7 @@ ui<-navbarPage("Species Models App",
             #Island 1 ui
             tabPanel(title="Island 1",
               h5(strong("Immigration")),
-              sliderInput(inputId="sld_p1_ib",value=100,min=20,max=200,step=10,
+              sliderInput(inputId="sld_p_ib",value=100,min=20,max=200,step=10,
                            label="Number of species on mainland (p)"
               ),
               numericInput(inputId="num_d1_ib",value=100,min=0,max=10000,
@@ -89,8 +89,8 @@ ui<-navbarPage("Species Models App",
           )
         ),
         mainPanel(width=9,
-          plotlyOutput("plotly_rate_ib")
-          # plotlyOutput("plotly_spp_ib")
+          plotlyOutput("plotly_rate_ib"),
+          plotlyOutput("plotly_spp_ib")
         )
       )         
     ),
@@ -157,20 +157,18 @@ ui<-navbarPage("Species Models App",
   # 1) visual of the mainland and islands and a and d would align with the a and d inputs (or in
     # a scenario)--looks like plotly could help here
 
-# create functions??
-
 
 
 
 # DONE
+# resolved issue with rate-building function
+
+
+
+# LAST COMMIT
 #re-engineered development of reactive DFs (to tidy format) which included building custom 
   #functions
-
-
-
-
-# corrected typo in s vs time equation
-# tidied up ranges of inputs and changed two numeric ones to sliders
+# created plot-building function for rate plot which needs tweaking
 
 
 
