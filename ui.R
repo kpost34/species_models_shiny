@@ -143,9 +143,6 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-# current figures:
-  #1) legend for each
-  #2) second line for island 2 of second plot
 # ui:
   # 1) add another sidebar or wellPanel (below current one) with p, t, and display second island
     #question?
@@ -159,16 +156,14 @@ ui<-navbarPage("Species Models App",
 
 
 
-
 # DONE
-# resolved issue with rate-building function
+
+
 
 
 
 # LAST COMMIT
-#re-engineered development of reactive DFs (to tidy format) which included building custom 
-  #functions
-# created plot-building function for rate plot which needs tweaking
+#fixed label of spp v time plot and put legend beneath it
 
 
 

@@ -91,7 +91,7 @@ rate12_p %>%
 
 
 #### Create Function to Build Spp v Time DF=========================================================
-build_svt_df<-function(isle, t, c, p, phi, ep, a) {
+build_svt_df<-function(isle, t, c, p, phi, d, ep, a) {
   s<-c(0,rep(NA,t-1))
     
   for(i in 1:t){
@@ -99,7 +99,7 @@ build_svt_df<-function(isle, t, c, p, phi, ep, a) {
     exp(-phi*d)-s[i]*exp(-ep*a)
   }
      
-  tibble(island=rep(paste("island",isle),t+1),
+  tibble(island=rep(paste("Island",isle),t+1),
          t=0:t,
          s=signif(s,3))
 }
@@ -111,15 +111,23 @@ build_svt_plot<-function(data1,sec_isle,data2){
   data1 %>%
     {if(sec_isle=="yes") bind_rows(.,data2) else .} %>%
     ggplot() +
-    geom_point(aes(x=t,y=s,shape=island,color=island)) +
-    scale_color_manual(values=c("island 1"="red4","island 2"="blue4")) +
-    scale_shape_manual(values=c("island 1"=16,"island 2"=18)) +
+    geom_point(aes(x=t,y=s,shape=island,color=island,
+                   text=paste0(island,
+                               "\nSpecies: ",s,
+                               "\nTime: ",t))) +
+    scale_color_manual(name=NULL,values=c("Island 1"="red4","Island 2"="blue4")) +
+    scale_shape_manual(name=NULL,values=c("Island 1"=16,"Island 2"=18)) +
     labs(x="Time",
          y="Species richness of island") +
-    theme_bw() -> p
+    theme_bw() +
+    theme(legend.position="bottom")-> p
     
   p %>%
-    ggplotly()
+    ggplotly(tooltip="text") %>%
+    layout(margin=list(b=110),
+      #put legend below plot
+      legend=list(orientation="h",xanchor="center",yanchor="bottom",
+                  x=0.5,y=-0.35))
 }
 
 

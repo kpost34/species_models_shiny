@@ -73,7 +73,7 @@ server<-function(input,output,session){
   # Reactive object
   spp1tDF_ib<-reactive({
     build_svt_df(isle=1, t=input$sld_t_ib, c=input$sld_c1_ib, p=input$sld_p_ib, 
-                 phi=input$sld_phi1_ib, ep=input$sld_ep1_ib, a=input$num_a1_ib)
+                 phi=input$sld_phi1_ib, d=input$num_d1_ib, ep=input$sld_ep1_ib, a=input$num_a1_ib)
   })
   
   
@@ -98,7 +98,7 @@ server<-function(input,output,session){
   # Reactive object
   spp2tDF_ib<-reactive({
     build_svt_df(isle=2,t=input$sld_t_ib, c=input$sld_c2_ib, p=input$sld_p_ib,
-                 phi=input$sld_phi2_ib, ep=input$sld_ep2_ib, a=input$num_a2_ib)
+                 phi=input$sld_phi2_ib, d=input$num_d2_ib, ep=input$sld_ep2_ib, a=input$num_a2_ib)
   })
   
   
