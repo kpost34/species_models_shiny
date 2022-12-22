@@ -64,7 +64,7 @@ if(sec_isle=="yes") {
     geom_point(data=data2b,
                aes(x=s_eq,y=rate_eq,
                    text=paste0("Island ",island,
-                               "\n","rate*: ",rate_eq, " spp/time",
+                               "\n","rate*: ",rate_eq, " spp/t",
                                "\n", "s*: ",s_eq, " species")),
                color="black") +
     geom_point(data=data2b,
