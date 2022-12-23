@@ -42,6 +42,14 @@ scenarios_ib<-c("large vs small islands"="lvs",
 #t
 
 
+# Scenario 1: large vs small islands
+
+# Scenario 2: near vs distant islands
+
+# Scenario 3: large, near vs small, distant islands
+
+# Scenario 4: large, distant vs small, near islands
+
 
 #--------------------------------------------------------------------------------------------------#
 ###### Define UI====================================================================================
@@ -52,7 +60,7 @@ ui<-navbarPage("Species Models App",
     #scenario radio button
     radioButtons(inputId="rad_scenario_ib",choices=c(scenarios_ib),selected=character(0),
                  inline=TRUE,label="Choose a scenario"),
-    #### App component------------------------------------------------------------------------------
+    #### App component for custom specifications----------------------------------------------------
     tabPanel(title="Island Biogeography Simulator",id="app_ib1",
       sidebarLayout(
         sidebarPanel(width=3,position="left",
@@ -63,38 +71,38 @@ ui<-navbarPage("Species Models App",
           hr(),
           tabsetPanel(id="app_tabset_ib",type="pills",
             #Island 1 ui
-            tabPanel(title="Island 1",
+            tabPanel("Is1",title="Island 1",
               h5(strong("Immigration")),
-              numericInput(inputId="num_d1_ib",value=100,min=0,max=10000,
+              numericInput(inputId="num_d1_ib",value=1000,min=0,max=10000,
                            label="Distance from mainland (d; 0-10,000)"),
               sliderInput(inputId="sld_phi1_ib",value=.0002,min=0,max=.001,step=.0002,
                            label="Distance decay of colonization rate 
                            (\u03d5)"),
-              sliderInput(inputId="sld_c1_ib",value=0.1,min=0.1,max=1,step=0.05,
+              sliderInput(inputId="sld_c1_ib",value=0.6,min=0.1,max=1,step=0.05,
                            label="Mean colonization rate over all species (c)"),
               hr(),
               h5(strong("Extinction")),
-                numericInput(inputId="num_a1_ib",value=2300,min=50,max=10000,
+                numericInput(inputId="num_a1_ib",value=1200,min=50,max=10000,
                              label="Area of island 1 (a; 50-10000)"),
-                sliderInput(inputId="sld_ep1_ib",value=.0002,min=0,max=.001,step=.0002,
+                sliderInput(inputId="sld_ep1_ib",value=.0006,min=0,max=.001,step=.0002,
                              label="Effect of area on extinction 
                              (\u03b5)"),
               hr(),
             ),
             #Island 2 ui
-            tabPanel(title="Island 2",
+            tabPanel("Is2",title="Island 2",
               h5(strong("Immigration")),
-              numericInput(inputId="num_d2_ib",value=100,min=0,max=10000,
+              numericInput(inputId="num_d2_ib",value=1000,min=0,max=10000,
                            label="d (0-10,000)"),
               sliderInput(inputId="sld_phi2_ib",value=.0002,min=0,max=.001,step=.0002,
                            label="\u03d5"),
-              sliderInput(inputId="sld_c2_ib",value=0.1,min=0.1,max=1,step=0.05,
+              sliderInput(inputId="sld_c2_ib",value=0.6,min=0.1,max=1,step=0.05,
                            label="c"),
               hr(),
               h5(strong("Extinction")),
-              numericInput(inputId="num_a2_ib",value=2300,min=50,max=10000,
+              numericInput(inputId="num_a2_ib",value=1200,min=50,max=10000,
                            label="a (50-10000)"),
-              sliderInput(inputId="sld_ep2_ib",value=.0002,min=0,max=.001,step=.0002,
+              sliderInput(inputId="sld_ep2_ib",value=.0006,min=0,max=.001,step=.0002,
                            label="\u03b5")
             )
           ),
@@ -107,8 +115,28 @@ ui<-navbarPage("Species Models App",
                          choices=c("no","yes"),selected="no")
         ),
         mainPanel(width=9,
-          plotlyOutput("plotly_rate_ib"),
-          plotlyOutput("plotly_spp_ib")
+          tabsetPanel(id="out_tabset_ib",type="hidden",
+            tabPanel(names(scenarios_ib)[1],
+              plotlyOutput("plotly_sc1_rate_ib"),
+              plotlyOutput("plotly_sc1_spp_ib")
+            ),
+            tabPanel(names(scenarios_ib)[2],
+              plotlyOutput("plotly_sc2_rate_ib"),
+              plotlyOutput("plotly_sc2_spp_ib")
+            ),
+            tabPanel(names(scenarios_ib)[3],
+              plotlyOutput("plotly_sc3_rate_ib"),
+              plotlyOutput("plotly_sc3_spp_ib")
+            ),
+            tabPanel(names(scenarios_ib)[4],
+              plotlyOutput("plotly_sc4_rate_ib"),
+              plotlyOutput("plotly_sc4_spp_ib")
+            ),
+            tabPanel(names(scenarios_ib)[5],
+              plotlyOutput("plotly_rate_ib"),
+              plotlyOutput("plotly_spp_ib")
+            )
+          )
         )
       )
     ),
@@ -173,14 +201,15 @@ ui<-navbarPage("Species Models App",
 
 
 # DONE
-# rearranged UI so that p, t, and question to display island 2 are outside of tabs
-# added scenario UI at top
+
 
 
 
 
 # LAST COMMIT
-#fixed label of spp v time plot and put legend beneath it
+# set parameters for custom spec so that s* ~ 50 spp
+# began building out scenario 1: large vs small islands
+# began developing tabsetPanel for mainPanel
 
 
 

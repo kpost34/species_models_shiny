@@ -27,7 +27,7 @@ build_rate_plot<-function(data1a,data1b,sec_isle="no",data2a=NA,data2b=NA){
   data1a %>%
     ggplot(aes(x=s,y=value)) +
     geom_line(aes(group=rate,linetype=rate,color=island,
-                  text=paste0("Island ",island,
+                  text=paste0(island,
                               "\n",rate,": ",value," spp/t",
                               "\n","Species: ",s)),
               color="red4") +
@@ -36,13 +36,13 @@ build_rate_plot<-function(data1a,data1b,sec_isle="no",data2a=NA,data2b=NA){
                                    "Extinction"="dashed")) +
     geom_point(data=data1b,
                aes(x=s_eq,y=rate_eq,
-                   text=paste0("Island ",island,
+                   text=paste0(island,
                               "\n","rate*: ",rate_eq," spp/t",
                               "\n", "s*: ",s_eq, " species")),
                color="brown") +
     geom_point(data=data1b,
                aes(x=s_eq,y=0,
-               text=paste0("Island ",island,
+               text=paste0(island,
                           "\n", "s*: ",s_eq, " species")),
                size=1,color="brown") +
     geom_segment(data=data1b,
@@ -57,19 +57,19 @@ if(sec_isle=="yes") {
   rate1_p +
     geom_line(data=data2a,
               aes(x=s,y=value,group=rate,linetype=rate,color=island,
-                  text=paste0("Island ",island,
+                  text=paste0(island,
                   "\n",rate,": ",value," spp/t",
                   "\n","Species: ",s))) +
     scale_color_manual(name=NULL,values=c("1"="red4","2"="blue4")) +
     geom_point(data=data2b,
                aes(x=s_eq,y=rate_eq,
-                   text=paste0("Island ",island,
+                   text=paste0(island,
                                "\n","rate*: ",rate_eq, " spp/t",
                                "\n", "s*: ",s_eq, " species")),
                color="black") +
     geom_point(data=data2b,
                aes(x=s_eq,y=0,
-                   text=paste0("Island ",island,
+                   text=paste0(island,
                                "\n", "s*: ",s_eq, " species")),
                    size=1,color="black") +
     geom_segment(data=data2b,
