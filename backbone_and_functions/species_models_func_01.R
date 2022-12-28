@@ -31,7 +31,7 @@ build_rate_plot<-function(data1a,data1b,sec_isle="no",data2a=NA,data2b=NA){
                               "\n",rate,": ",value," spp/t",
                               "\n","Species: ",s)),
               color="red4") +
-    scale_color_manual(name=NULL,values=c("1"="red4"),guide="none") +
+    scale_color_manual(name=NULL,values=c("Island 1"="red4"),guide="none") +
     scale_linetype_manual(name=NULL,values=c("Colonization"="solid",
                                    "Extinction"="dashed")) +
     geom_point(data=data1b,
@@ -60,7 +60,7 @@ if(sec_isle=="yes") {
                   text=paste0(island,
                   "\n",rate,": ",value," spp/t",
                   "\n","Species: ",s))) +
-    scale_color_manual(name=NULL,values=c("1"="red4","2"="blue4")) +
+    scale_color_manual(name=NULL,values=c("Island 1"="red4","Island 2"="blue4")) +
     geom_point(data=data2b,
                aes(x=s_eq,y=rate_eq,
                    text=paste0(island,

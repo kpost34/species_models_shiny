@@ -19,9 +19,9 @@ server<-function(input,output,session){
   #   }
   # })
   
-  observeEvent(input$rad_scenario_ib, {
-    updateTabsetPanel("out_tabset_ib",selected=input$rad_scenario_ib)
-  })
+  # observeEvent(input$rad_scenario_ib, {
+  #   updateTabsetPanel(input="out_tabset_ib",selected=input$rad_scenario_ib)
+  # })
 # Scenario 1: large vs small islands
 
 # Scenario 2: near vs distant islands
@@ -34,19 +34,19 @@ server<-function(input,output,session){
   #### Scenario 1: large vs small
   ### Rate plot
   ## Create rate DFs
-  sc1_s_rateDF_ib<-build_rate_df(island="small",s_len=300,c=0.6,p=100,phi=.0002,d=1000,ep=.0004,a=1000)
-  sc1_l_rateDF_ib<-build_rate_df(island="large",s_len=300,c=0.6,p=100,phi=.0002,d=1000,ep=.0004,a=5000)
-  
-  
-  ## Create eq rate/s* DFs
-  sc1_s_rate_eqDF_ib<-build_eq_df(island="small",c=0.6, p=100, phi=.0002,d=10000, ep=.0004, a=1000)
-  sc1_l_rate_eqDF_ib<-build_eq_df(island="large",c=0.6, p=100, phi=.0002,d=10000, ep=.0004, a=5000)
-
-  ## Render plot
-  output$plotly_sc1_rate_ib<-renderPlotly({
-    build_rate_plot(data1a=sc1_s_rateDF_ib,data1b=sc1_s_rate_eqDF_ib,sec_isle="yes",
-                    data2a=sc1_l_rateDF_ib,data2b=sc1_l_rate_eqDF_ib)
-  })
+  # sc1_s_rateDF_ib<-build_rate_df(island="small",s_len=300,c=0.6,p=100,phi=.0002,d=1000,ep=.0004,a=1000)
+  # sc1_l_rateDF_ib<-build_rate_df(island="large",s_len=300,c=0.6,p=100,phi=.0002,d=1000,ep=.0004,a=5000)
+  # 
+  # 
+  # ## Create eq rate/s* DFs
+  # sc1_s_rate_eqDF_ib<-build_eq_df(island="small",c=0.6, p=100, phi=.0002,d=10000, ep=.0004, a=1000)
+  # sc1_l_rate_eqDF_ib<-build_eq_df(island="large",c=0.6, p=100, phi=.0002,d=10000, ep=.0004, a=5000)
+  # 
+  # ## Render plot
+  # output$plotly_sc1_rate_ib<-renderPlotly({
+  #   build_rate_plot(data1a=sc1_s_rateDF_ib,data1b=sc1_s_rate_eqDF_ib,sec_isle="yes",
+  #                   data2a=sc1_l_rateDF_ib,data2b=sc1_l_rate_eqDF_ib)
+  # })
   
   ### Species v time plot
   
