@@ -1,8 +1,9 @@
 #Created by Keith Post on 12/18/22
-#Code for functions used in Species Models App
+#Code for functions used in Species Models App for Island Biogeography mini-app
 
 
 #### Create Function to Build DF of s, C, and E=====================================================
+### Custom version
 build_rate_df<-function(island,s_len,c,p,phi,d,ep,a){
   tibble(island=rep(paste(island),s_len),
          s=seq(0,p,length.out=s_len),
@@ -12,9 +13,21 @@ build_rate_df<-function(island,s_len,c,p,phi,d,ep,a){
     mutate(across(c(s,value),~signif(.x,3))) 
 }
 
+### Static version
+build_rate_static_df<-function(island,d, a,rate){
+  tibble(island=rep(paste(island),300),
+         s=seq(0,100,length.out=300)) %>%
+    {if(rate=="Colonization") mutate(.,Colonization=0.6*(100-s)*exp(-.0002*d)) else .} %>%
+    {if(rate=="Extinction") mutate(.,Extinction=s*exp(-.0004*a)) else .} %>%
+    {if(rate=="Both") mutate(.,Colonization=c*(100-s)*exp(-.0004*d),
+                               Extinction=s*exp(-.0004*a)) else .} %>%
+    pivot_longer(!c(island,s),names_to="rate",values_to="value") %>%
+    mutate(across(c(s,value),~signif(.x,3))) 
+}
+
 
 #### Create Function to Build DF of s* and rate*====================================================
-build_eq_df<-function(island,c,p,ep,a,phi,d){
+build_eq_df<-function(island,c=0.6,p=100,ep=.0004,a,phi=.0002,d){
   tibble(island=paste(island),
                s_eq=(c*p*exp(ep*a))/(c*exp(ep*a) + exp(phi*d)),
                rate_eq=s_eq*exp(-ep*a)) %>%
@@ -22,7 +35,9 @@ build_eq_df<-function(island,c,p,ep,a,phi,d){
 }
 
 
+
 #### Create Function to Build Rate Plot=============================================================
+### Custom version
 build_rate_plot<-function(data1a,data1b,sec_isle="no",data2a=NA,data2b=NA){
   data1a %>%
     ggplot(aes(x=s,y=value)) +
@@ -86,6 +101,15 @@ rate12_p %>%
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
                   x=0.5,y=-0.35))
 
+}
+
+
+### Static version
+build_rate_static_plot<-function(rate_data,eq_data){
+  rate_data %>%
+    
+  
+  
 }
 
 

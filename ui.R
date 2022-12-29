@@ -22,8 +22,30 @@ scenarios_ib<-c("large vs small islands"="lvs",
                 "custom specifications"="custom")
 
 
-### 
-
+## Tabset of outputs
+out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
+              tabPanel("tab_blank_ib"),
+              tabPanel(scenarios_ib[1],
+                plotlyOutput("plotly_sc1_rate_ib"),
+                plotlyOutput("plotly_sc1_spp_ib")
+              ),
+              tabPanel(scenarios_ib[2],
+                plotlyOutput("plotly_sc2_rate_ib"),
+                plotlyOutput("plotly_sc2_spp_ib")
+              ),
+              tabPanel(scenarios_ib[3],
+                plotlyOutput("plotly_sc3_rate_ib"),
+                plotlyOutput("plotly_sc3_spp_ib")
+              ),
+              tabPanel(scenarios_ib[4],
+                plotlyOutput("plotly_sc4_rate_ib"),
+                plotlyOutput("plotly_sc4_spp_ib")
+              ),
+              tabPanel(scenarios_ib[5],
+                plotlyOutput("plotly_rate_ib"),
+                plotlyOutput("plotly_spp_ib")
+              )
+            )
 
 
 ### 
@@ -57,11 +79,11 @@ scenarios_ib<-c("large vs small islands"="lvs",
 ui<-navbarPage("Species Models App",
   ##### Create first navbarMenu (Island Biogeography=ib)============================================
   navbarMenu(title="Theory of Island Biogeography",
-    #scenario radio button
-    # radioButtons(inputId="rad_scenario_ib",choices=scenarios_ib,selected=character(0),
-    #              inline=TRUE,label="Choose a scenario"),
     #### App component for custom specifications----------------------------------------------------
     tabPanel(title="Island Biogeography Simulator",id="app_ib1",
+      #scenario radio button
+      radioButtons(inputId="rad_scenario_ib",choices=scenarios_ib,selected=characgter(0),
+                   inline=TRUE,label="Choose a scenario"),
       sidebarLayout(
         sidebarPanel(width=3,position="left",
           #species pool slider (above tabs)
@@ -115,30 +137,8 @@ ui<-navbarPage("Species Models App",
                          choices=c("no","yes"),selected="no")
         ),
         mainPanel(width=9,
-          # tabsetPanel(id="out_tabset_ib",type="hidden",
-          #   tabPanel("blank_ib"),
-          #   tabPanel(scenarios_ib[1],
-          #     plotlyOutput("plotly_sc1_rate_ib"),
-          #     plotlyOutput("plotly_sc1_spp_ib")
-          #   ),
-          #   tabPanel(scenarios_ib[2],
-          #     plotlyOutput("plotly_sc2_rate_ib"),
-          #     plotlyOutput("plotly_sc2_spp_ib")
-          #   ),
-          #   tabPanel(scenarios_ib[3],
-          #     plotlyOutput("plotly_sc3_rate_ib"),
-          #     plotlyOutput("plotly_sc3_spp_ib")
-          #   ),
-          #   tabPanel(scenarios_ib[4],
-          #     plotlyOutput("plotly_sc4_rate_ib"),
-          #     plotlyOutput("plotly_sc4_spp_ib")
-          #   ),
-          #   tabPanel(scenarios_ib[5],
-              plotlyOutput("plotly_rate_ib"),
-              plotlyOutput("plotly_spp_ib")
-            )
-      #     )
-      #   )
+                  out_tabs_ib
+        )
       )
     ),
   
@@ -208,10 +208,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# set parameters for custom spec so that s* ~ 50 spp
-# began building out scenario 1: large vs small islands
-# began developing tabsetPanel for mainPanel
-
+#resolved updateTabsetPanel issue
+#began developing new code and function for 'static' scenarios
 
 
 

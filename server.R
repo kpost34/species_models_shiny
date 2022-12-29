@@ -19,9 +19,9 @@ server<-function(input,output,session){
   #   }
   # })
   
-  # observeEvent(input$rad_scenario_ib, {
-  #   updateTabsetPanel(input="out_tabset_ib",selected=input$rad_scenario_ib)
-  # })
+  observeEvent(input$rad_scenario_ib, {
+    updateTabsetPanel(inputId="out_tabset_ib",selected=input$rad_scenario_ib)
+  })
 # Scenario 1: large vs small islands
 
 # Scenario 2: near vs distant islands
@@ -33,20 +33,28 @@ server<-function(input,output,session){
   ##### Back-end-------------------------------------------------------------------------------------
   #### Scenario 1: large vs small
   ### Rate plot
-  ## Create rate DFs
-  # sc1_s_rateDF_ib<-build_rate_df(island="small",s_len=300,c=0.6,p=100,phi=.0002,d=1000,ep=.0004,a=1000)
-  # sc1_l_rateDF_ib<-build_rate_df(island="large",s_len=300,c=0.6,p=100,phi=.0002,d=1000,ep=.0004,a=5000)
-  # 
-  # 
-  # ## Create eq rate/s* DFs
-  # sc1_s_rate_eqDF_ib<-build_eq_df(island="small",c=0.6, p=100, phi=.0002,d=10000, ep=.0004, a=1000)
-  # sc1_l_rate_eqDF_ib<-build_eq_df(island="large",c=0.6, p=100, phi=.0002,d=10000, ep=.0004, a=5000)
-  # 
-  # ## Render plot
-  # output$plotly_sc1_rate_ib<-renderPlotly({
-  #   build_rate_plot(data1a=sc1_s_rateDF_ib,data1b=sc1_s_rate_eqDF_ib,sec_isle="yes",
-  #                   data2a=sc1_l_rateDF_ib,data2b=sc1_l_rate_eqDF_ib)
-  # })
+  ## Create rate DF
+  bind_rows(
+    build_rate_static_df(island="small",d=1000,a=1000,rate="Extinction"),
+    build_rate_static_df(island="large",d=1000,a=5000,rate="Extinction"),
+    #note: area does not affect colonization rate
+    build_rate_static_df(island="both",d=1000,a=1000,rate="Colonization")
+  ) -> sc1_rateDF
+  
+  
+  ## Create eq rate/s* DFs
+  sc1_l_rate_eqDF_ib2<-bind_rows(
+    build_eq_df(island="small",a=1000,d=1000),
+    build_eq_df(island="large",a=5000,d=1000)
+  )
+
+
+
+  ## Render plot
+  output$plotly_sc1_rate_ib<-renderPlotly({
+    build_rate_plot(data1a=sc1_s_rateDF_ib,data1b=sc1_s_rate_eqDF_ib,sec_isle="yes",
+                    data2a=sc1_l_rateDF_ib,data2b=sc1_l_rate_eqDF_ib)
+  })
   
   ### Species v time plot
   
@@ -114,18 +122,18 @@ server<-function(input,output,session){
   
 
   ## Render plot
-  output$plotly_spp_ib<-renderPlotly({
-    spp1tDF_ib() %>%
-      ggplot() +
-      geom_point(aes(x=t,y=s)) +
-      labs(x="Time",
-           y="Species richness of island") +
-      theme_bw() -> p_spp1_ib
-
-  p_spp1_ib %>%
-    ggplotly()
-
-  })
+  # output$plotly_spp_ib<-renderPlotly({
+  #   spp1tDF_ib() %>%
+  #     ggplot() +
+  #     geom_point(aes(x=t,y=s)) +
+  #     labs(x="Time",
+  #          y="Species richness of island") +
+  #     theme_bw() -> p_spp1_ib
+  # 
+  # p_spp1_ib %>%
+  #   ggplotly()
+  # 
+  # })
   
 
   
