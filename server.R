@@ -34,16 +34,16 @@ server<-function(input,output,session){
   #### Scenario 1: large vs small
   ### Rate plot
   ## Create rate DF
-  bind_rows(
+  sc1_rateDF_ib <- bind_rows(
     build_rate_static_df(island="small",d=1000,a=1000,rate="Extinction"),
     build_rate_static_df(island="large",d=1000,a=5000,rate="Extinction"),
     #note: area does not affect colonization rate
     build_rate_static_df(island="both",d=1000,a=1000,rate="Colonization")
-  ) -> sc1_rateDF
+  ) 
   
   
-  ## Create eq rate/s* DFs
-  sc1_l_rate_eqDF_ib2<-bind_rows(
+  ## Create eq rate/s* DF
+  sc1_rate_eqDF_ib<-bind_rows(
     build_eq_df(island="small",a=1000,d=1000),
     build_eq_df(island="large",a=5000,d=1000)
   )
@@ -52,16 +52,33 @@ server<-function(input,output,session){
 
   ## Render plot
   output$plotly_sc1_rate_ib<-renderPlotly({
-    build_rate_plot(data1a=sc1_s_rateDF_ib,data1b=sc1_s_rate_eqDF_ib,sec_isle="yes",
-                    data2a=sc1_l_rateDF_ib,data2b=sc1_l_rate_eqDF_ib)
+    build_rate_static_plot(sc1_rateDF_ib,eq_data=sc1_rate_eqDF_ib)
   })
   
   ### Species v time plot
   
   
+  
+  
   #### Scenario 2: near vs distant
+  ## Create rate DF
+   sc2_rateDF_ib <- bind_rows(
+    build_rate_static_df(island="near",d=1000,a=1000,rate="Colonization"),
+    build_rate_static_df(island="distant",d=5000,a=1000,rate="Colonization"),
+    #note: distance does not affect extinction rate
+    build_rate_static_df(island="both",d=1000,a=1000,rate="Extinction")
+  )
   
+  ## Create eq rate/s* DF
+  sc2_rate_eqDF_ib<-bind_rows(
+    build_eq_df(island="near",a=1000,d=1000),
+    build_eq_df(island="distant",a=1000,d=5000)
+  )
   
+  ## Render plot
+  output$plotly_sc2_rate_ib<-renderPlotly({
+    build_rate_static_plot(sc2_rateDF_ib,eq_data=sc2_rate_eqDF_ib)
+  })
   
   #### Scenario 3: large, near vs small, distant
   

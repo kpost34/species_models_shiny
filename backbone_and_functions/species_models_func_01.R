@@ -107,9 +107,47 @@ rate12_p %>%
 ### Static version
 build_rate_static_plot<-function(rate_data,eq_data){
   rate_data %>%
-    
+    pull(island) %>%
+    unique() %>%
+    sort() %>%
+    rev() -> nm
   
+  col<-c("red4","blue4","gray30")
+  names(col)<-nm
   
+  rate_data %>%
+    ggplot(aes(x=s,y=value)) +
+    geom_line(aes(group=interaction(island,rate),linetype=rate,color=island,
+                  text=paste0(island,
+                              "\n",rate,": ",value," spp/t",
+                              "\n","Species: ",s))) +
+    scale_color_manual(name=NULL,values=col) +
+    scale_linetype_manual(name=NULL,values=c("Colonization"="solid",
+                                             "Extinction"="dashed")) +
+    geom_point(data=eq_data,
+               aes(x=s_eq,y=rate_eq,
+                   text=paste0(island,
+                              "\n","rate*: ",rate_eq," spp/t",
+                              "\n", "s*: ",s_eq, " species")),
+               color="black") +
+    geom_point(data=eq_data,
+               aes(x=s_eq,y=0,
+                   text=paste0(island,
+                               "\n", "s*: ",s_eq, " species")),
+                   size=1,color="black") +
+    geom_segment(data=eq_data,
+                 aes(x=s_eq,xend=s_eq,y=0,yend=rate_eq),
+                    color="gray80", linetype="dotted") +
+    labs(x="Species richness of island",
+         y="Colonization/extinction rate (spp/time)") +
+    theme_bw() -> rate_static_p
+  
+  rate_static_p %>%
+    ggplotly(tooltip="text") %>%
+    layout(margin=list(b=110),
+      #put legend below plot
+      legend=list(orientation="h",xanchor="center",yanchor="bottom",
+                  x=0.5,y=-0.35))
 }
 
 

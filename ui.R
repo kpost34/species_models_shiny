@@ -82,7 +82,7 @@ ui<-navbarPage("Species Models App",
     #### App component for custom specifications----------------------------------------------------
     tabPanel(title="Island Biogeography Simulator",id="app_ib1",
       #scenario radio button
-      radioButtons(inputId="rad_scenario_ib",choices=scenarios_ib,selected=characgter(0),
+      radioButtons(inputId="rad_scenario_ib",choices=scenarios_ib,selected=character(0),
                    inline=TRUE,label="Choose a scenario"),
       sidebarLayout(
         sidebarPanel(width=3,position="left",
@@ -208,8 +208,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-#resolved updateTabsetPanel issue
-#began developing new code and function for 'static' scenarios
+# finished build_rate_static_plot()
+# successfully got rate plots of scenarios 1 & 2 to output
 
 
 
