@@ -5,7 +5,7 @@
   #3) Rarefaction
 
 #load packages
-pacman::p_load(shiny,here,tidyverse,plotly)
+pacman::p_load(shiny,here,tidyverse,plotly,shinyjs)
 
 #source in functions
 source(here("backbone_and_functions","species_models_func_01.R"))
@@ -20,7 +20,6 @@ scenarios_ib<-c("large vs small islands"="lvs",
                 "large, near vs small, distant islands"="lnvsd",
                 "large, distant vs small, near islands"="ldvsn",
                 "custom specifications"="custom")
-
 
 ## Tabset of outputs
 out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
@@ -77,6 +76,7 @@ out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
 ###### Define UI====================================================================================
 #--------------------------------------------------------------------------------------------------#
 ui<-navbarPage("Species Models App",
+  useShinyjs(),
   ##### Create first navbarMenu (Island Biogeography=ib)============================================
   navbarMenu(title="Theory of Island Biogeography",
     #### App component for custom specifications----------------------------------------------------
@@ -85,62 +85,81 @@ ui<-navbarPage("Species Models App",
       radioButtons(inputId="rad_scenario_ib",choices=scenarios_ib,selected=character(0),
                    inline=TRUE,label="Choose a scenario"),
       sidebarLayout(
-        sidebarPanel(width=3,position="left",
-          #species pool slider (above tabs)
-          sliderInput(inputId="sld_p_ib",value=100,min=20,max=200,step=10,
-                      label="Number of species on mainland (p)"
-          ),
-          hr(),
-          tabsetPanel(id="app_tabset_ib",type="pills",
-            #Island 1 ui
-            tabPanel(title="Island 1",
-              h5(strong("Immigration")),
-              numericInput(inputId="num_d1_ib",value=1000,min=0,max=10000,
-                           label="Distance from mainland (d; 0-10,000)"),
-              sliderInput(inputId="sld_phi1_ib",value=.0002,min=0,max=.001,step=.0002,
-                           label="Distance decay of colonization rate 
-                           (\u03d5)"),
-              sliderInput(inputId="sld_c1_ib",value=0.6,min=0.1,max=1,step=0.05,
-                           label="Mean colonization rate over all species (c)"),
-              hr(),
-              h5(strong("Extinction")),
-                numericInput(inputId="num_a1_ib",value=1200,min=50,max=10000,
-                             label="Area of island 1 (a; 50-10000)"),
-                sliderInput(inputId="sld_ep1_ib",value=.0006,min=0,max=.001,step=.0002,
-                             label="Effect of area on extinction 
-                             (\u03b5)"),
-              hr(),
+      
+        div(id="Sidebar",sidebarPanel(width=3,position="left",
+          tabsetPanel(id="input_tabset_ib",type="hidden",
+            tabPanel(title="tab_blank_ib"),
+            tabPanel(title=scenarios_ib[1],
+              "insert text for scenario 1"
             ),
-            #Island 2 ui
-            tabPanel(title="Island 2",
-              h5(strong("Immigration")),
-              numericInput(inputId="num_d2_ib",value=1000,min=0,max=10000,
-                           label="d (0-10,000)"),
-              sliderInput(inputId="sld_phi2_ib",value=.0002,min=0,max=.001,step=.0002,
-                           label="\u03d5"),
-              sliderInput(inputId="sld_c2_ib",value=0.6,min=0.1,max=1,step=0.05,
-                           label="c"),
-              hr(),
-              h5(strong("Extinction")),
-              numericInput(inputId="num_a2_ib",value=1200,min=50,max=10000,
-                           label="a (50-10000)"),
-              sliderInput(inputId="sld_ep2_ib",value=.0006,min=0,max=.001,step=.0002,
-                           label="\u03b5")
+            tabPanel(title=scenarios_ib[2],
+              "insert text for scenario 2"
+            ),
+            tabPanel(title=scenarios_ib[3],
+              "insert text for scenario 3"
+            ),
+            tabPanel(title=scenarios_ib[4],
+              "insert text for scenario 4"
+            ),
+            tabPanel(title=scenarios_ib[5],
+              #species pool slider (above tabs)
+              sliderInput(inputId="sld_p_ib",value=100,min=20,max=200,step=10,
+                          label="Number of species on mainland (p)"
+              ),
+            hr(),
+            tabsetPanel(id="custom_tabset_ib",type="pills",
+              #Island 1 ui
+              tabPanel(title="Island 1",
+                h5(strong("Immigration")),
+                numericInput(inputId="num_d1_ib",value=1000,min=0,max=10000,
+                             label="Distance from mainland (d; 0-10,000)"),
+                sliderInput(inputId="sld_phi1_ib",value=.0002,min=0,max=.001,step=.0002,
+                             label="Distance decay of colonization rate 
+                             (\u03d5)"),
+                sliderInput(inputId="sld_c1_ib",value=0.6,min=0.1,max=1,step=0.05,
+                             label="Mean colonization rate over all species (c)"),
+                hr(),
+                h5(strong("Extinction")),
+                  numericInput(inputId="num_a1_ib",value=1200,min=50,max=10000,
+                               label="Area of island 1 (a; 50-10000)"),
+                  sliderInput(inputId="sld_ep1_ib",value=.0006,min=0,max=.001,step=.0002,
+                               label="Effect of area on extinction 
+                               (\u03b5)"),
+                hr(),
+              ),
+              #Island 2 ui
+              tabPanel(title="Island 2",
+                h5(strong("Immigration")),
+                numericInput(inputId="num_d2_ib",value=1000,min=0,max=10000,
+                             label="d (0-10,000)"),
+                sliderInput(inputId="sld_phi2_ib",value=.0002,min=0,max=.001,step=.0002,
+                             label="\u03d5"),
+                sliderInput(inputId="sld_c2_ib",value=0.6,min=0.1,max=1,step=0.05,
+                             label="c"),
+                hr(),
+                h5(strong("Extinction")),
+                numericInput(inputId="num_a2_ib",value=1200,min=50,max=10000,
+                             label="a (50-10000)"),
+                sliderInput(inputId="sld_ep2_ib",value=.0006,min=0,max=.001,step=.0002,
+                             label="\u03b5")
+              )
+            ),
+            hr(),
+            #time slider (below tabs)
+            sliderInput(inputId="sld_t_ib",value=50,min=20,max=100,step=10,
+                          label="Length of time (t)"),
+            #display second island (below tabs)
+            radioButtons(inputId="rad_is2_ib",label="Display second island on plots?",
+                           choices=c("no","yes"),selected="no")
             )
-          ),
-          hr(),
-          #time slider (below tabs)
-          sliderInput(inputId="sld_t_ib",value=50,min=20,max=100,step=10,
-                        label="Length of time (t)"),
-          #display second island (below tabs)
-          radioButtons(inputId="rad_is2_ib",label="Display second island on plots?",
-                         choices=c("no","yes"),selected="no")
-        ),
-        mainPanel(width=9,
-                  out_tabs_ib
+          )
         )
+      ),
+      mainPanel(width=9,
+                out_tabs_ib
       )
-    ),
+    )
+  ),
   
     
     #### Theory and Reach---------------------------------------------------------------------------
@@ -205,10 +224,9 @@ ui<-navbarPage("Species Models App",
 # DONE
 
 
-
 # LAST COMMIT
-# developed code for scenarios 3 & 4 to create rate plot
-# developed function and code to output spp vs time plots for all 4 scenarios
+# develop a larger tabsetPanel that dynamically displays sidebar via radio button selection
+# added shinyjs() code so that sidebar is hidden when loading app and displays when scenario selected
 
 
 

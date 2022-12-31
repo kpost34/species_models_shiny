@@ -10,25 +10,24 @@
 server<-function(input,output,session){
   
 
-  ##### Island Biogeography=ib)=====================================================================
+  ##### Island Biogeography=ib======================================================================
   #### UI--------------------------------------------------------------------------------------------
-  ### Scenarios 1-4
-  # observeEvent(input$rad_scenario_ib,{
-  #   if(input$rad_scenario_ib %in% scenarios_ib){
-  #     hideTab(inputId="app_tabset_ib")
-  #   }
-  # })
+  ### Load IB mini-app with sidebar hidden
+  hide("Sidebar")
+  
+  ### Show sidebar if any scenario is selected
+  observeEvent(input$rad_scenario_ib,{
+    show("Sidebar")
+  })
+  
+  ### Dynamically display sidebar and main panel
+  observeEvent(input$rad_scenario_ib,{
+    updateTabsetPanel(inputId="input_tabset_ib",selected=input$rad_scenario_ib)
+  })
   
   observeEvent(input$rad_scenario_ib, {
     updateTabsetPanel(inputId="out_tabset_ib",selected=input$rad_scenario_ib)
   })
-# Scenario 1: large vs small islands
-
-# Scenario 2: near vs distant islands
-
-# Scenario 3: large, near vs small, distant islands
-
-# Scenario 4: large, distant vs small, near islands
   
   ##### Back-end------------------------------------------------------------------------------------
   #### Scenario 1: large vs small
