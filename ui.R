@@ -191,10 +191,11 @@ ui<-navbarPage("Species Models App",
 
 # NEXT
 # ui:
-  # 2) radio button above sidebarpanel (or in #1) where you choose a scenario: large vs small,
-    #close vs distant, both, or custom (which would then display the tabs--they could be hidden)
-  # 3) reset button for custom mode, which would return the values back to original (shinyjs
+  # 1) hide UI for scenarios (provide other information instead--a brief description)
+  # 2) reset button for custom mode, which would return the values back to original (shinyjs
     # tool for this)
+# server/functions:
+  # 1) s vs time plot for scenarios 1-4
 # new output
   # 1) visual of the mainland and islands and a and d would align with the a and d inputs (or in
     # a scenario)--looks like plotly could help here
@@ -205,11 +206,9 @@ ui<-navbarPage("Species Models App",
 
 
 
-
-
 # LAST COMMIT
-# finished build_rate_static_plot()
-# successfully got rate plots of scenarios 1 & 2 to output
+# developed code for scenarios 3 & 4 to create rate plot
+# developed function and code to output spp vs time plots for all 4 scenarios
 
 
 

@@ -19,7 +19,7 @@ build_rate_static_df<-function(island,d, a,rate){
          s=seq(0,100,length.out=300)) %>%
     {if(rate=="Colonization") mutate(.,Colonization=0.6*(100-s)*exp(-.0002*d)) else .} %>%
     {if(rate=="Extinction") mutate(.,Extinction=s*exp(-.0004*a)) else .} %>%
-    {if(rate=="Both") mutate(.,Colonization=c*(100-s)*exp(-.0004*d),
+    {if(rate=="Both") mutate(.,Colonization=0.6*(100-s)*exp(-.0002*d),
                                Extinction=s*exp(-.0004*a)) else .} %>%
     pivot_longer(!c(island,s),names_to="rate",values_to="value") %>%
     mutate(across(c(s,value),~signif(.x,3))) 
@@ -153,6 +153,7 @@ build_rate_static_plot<-function(rate_data,eq_data){
 
 
 #### Create Function to Build Spp v Time DF=========================================================
+### Custom mode
 build_svt_df<-function(isle, t, c, p, phi, d, ep, a) {
   s<-c(0,rep(NA,t-1))
     
@@ -167,8 +168,22 @@ build_svt_df<-function(isle, t, c, p, phi, d, ep, a) {
 }
 
 
+### Static mode
+build_svt_static_df<-function(isle, d, a) {
+  s<-c(0,rep(NA,49))
+    
+  for(i in 1:50){
+    s[i+1]<-s[i] + 0.6*(100-s[i])*
+    exp(-.0002*d)-s[i]*exp(-.0004*a)
+  }
+     
+  tibble(island=rep(isle,51),
+         t=0:50,
+         s=signif(s,3))
+}
 
 #### Create Function to Build Spp v Time Plot=======================================================
+### Custom mode
 build_svt_plot<-function(data1,sec_isle,data2){
   data1 %>%
     {if(sec_isle=="yes") bind_rows(.,data2) else .} %>%
@@ -183,6 +198,42 @@ build_svt_plot<-function(data1,sec_isle,data2){
          y="Species richness of island") +
     theme_bw() +
     theme(legend.position="bottom")-> p
+    
+  p %>%
+    ggplotly(tooltip="text") %>%
+    layout(margin=list(b=110),
+      #put legend below plot
+      legend=list(orientation="h",xanchor="center",yanchor="bottom",
+                  x=0.5,y=-0.35))
+}
+
+
+### Static mode
+build_svt_static_plot<-function(data){
+  data %>%
+    pull(island) %>%
+    unique() %>%
+    sort() %>%
+    rev() -> nm
+  
+  col<-c("red4","blue4")
+  names(col)<-nm
+  
+  shp<-c(16,18)
+  names(shp)<-nm
+  
+  data %>%
+    ggplot() +
+    geom_point(aes(x=t,y=s,shape=island,color=island,
+                   text=paste0(island,
+                               "\nSpecies: ",s,
+                               "\nTime: ",t))) +
+    scale_color_manual(name=NULL,values=col) +
+    scale_shape_manual(name=NULL,values=shp) +
+    labs(x="Time",
+         y="Species richness of island") +
+    theme_bw() +
+    theme(legend.position="bottom") -> p
     
   p %>%
     ggplotly(tooltip="text") %>%
