@@ -9,45 +9,79 @@ pacman::p_load(shiny,here,tidyverse,plotly,shinyjs)
 
 #source in functions
 source(here("backbone_and_functions","species_models_func_01.R"))
+source(here("backbone_and_functions","species_models_obj_01.R"))
 
 
 
 #### Create Objects=================================================================================
 ### Island Biogeography
 ## Scenario options
-scenarios_ib<-c("large vs small islands"="lvs",
+scenarios1_ib<-c("scenario (e.g., large vs small islands)"="scenario",
+                 "custom specifications" = "custom")
+
+
+
+scenarios2_ib<-c("large vs small islands"="lvs",
                 "near vs distant islands"="nvd",
                 "large, near vs small, distant islands"="lnvsd",
-                "large, distant vs small, near islands"="ldvsn",
-                "custom specifications"="custom")
+                "large, distant vs small, near islands"="ldvsn")
 
 ## Tabset of outputs
+# out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
+#               tabPanel("tab_blank_ib"),
+#               tabPanel(scenarios_ib[1],
+#                 plotlyOutput("plotly_sc1_rate_ib"),
+#                 plotlyOutput("plotly_sc1_spp_ib")
+#               ),
+#               tabPanel(scenarios_ib[2],
+#                 plotlyOutput("plotly_sc2_rate_ib"),
+#                 plotlyOutput("plotly_sc2_spp_ib")
+#               ),
+#               tabPanel(scenarios_ib[3],
+#                 plotlyOutput("plotly_sc3_rate_ib"),
+#                 plotlyOutput("plotly_sc3_spp_ib")
+#               ),
+#               tabPanel(scenarios_ib[4],
+#                 plotlyOutput("plotly_sc4_rate_ib"),
+#                 plotlyOutput("plotly_sc4_spp_ib")
+#               ),
+#               tabPanel(scenarios_ib[5],
+#                 plotlyOutput("plotly_rate_ib"),
+#                 plotlyOutput("plotly_spp_ib")
+#               )
+#             )
+
 out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
               tabPanel("tab_blank_ib"),
-              tabPanel(scenarios_ib[1],
-                plotlyOutput("plotly_sc1_rate_ib"),
-                plotlyOutput("plotly_sc1_spp_ib")
+              tabPanel(scenarios1_ib[1],
+                plotlyOutput("plotly_sc1_4_rate_ib")
+                #plotlyOutput("plotly_sc1_spp_ib")
               ),
-              tabPanel(scenarios_ib[2],
-                plotlyOutput("plotly_sc2_rate_ib"),
-                plotlyOutput("plotly_sc2_spp_ib")
-              ),
-              tabPanel(scenarios_ib[3],
-                plotlyOutput("plotly_sc3_rate_ib"),
-                plotlyOutput("plotly_sc3_spp_ib")
-              ),
-              tabPanel(scenarios_ib[4],
-                plotlyOutput("plotly_sc4_rate_ib"),
-                plotlyOutput("plotly_sc4_spp_ib")
-              ),
-              tabPanel(scenarios_ib[5],
+              # tabPanel(scenarios_ib[1],
+              #   plotlyOutput("plotly_sc1_rate_ib"),
+              #   plotlyOutput("plotly_sc1_spp_ib")
+              # ),
+              # tabPanel(scenarios_ib[2],
+              #   plotlyOutput("plotly_sc2_rate_ib"),
+              #   plotlyOutput("plotly_sc2_spp_ib")
+              # ),
+              # tabPanel(scenarios_ib[3],
+              #   plotlyOutput("plotly_sc3_rate_ib"),
+              #   plotlyOutput("plotly_sc3_spp_ib")
+              # ),
+              # tabPanel(scenarios_ib[4],
+              #   plotlyOutput("plotly_sc4_rate_ib"),
+              #   plotlyOutput("plotly_sc4_spp_ib")
+              # ),
+              tabPanel(scenarios1_ib[2],
                 plotlyOutput("plotly_rate_ib"),
                 plotlyOutput("plotly_spp_ib")
               )
             )
 
-
 ### 
+
+
 
 ### Second modeling approach taking distance (C) and area (E) into account
 ## New formulas
@@ -81,27 +115,31 @@ ui<-navbarPage("Species Models App",
   navbarMenu(title="Theory of Island Biogeography",
     #### App component for custom specifications----------------------------------------------------
     tabPanel(title="Island Biogeography Simulator",id="app_ib1",
-      #scenario radio button
-      radioButtons(inputId="rad_scenario_ib",choices=scenarios_ib,selected=character(0),
-                   inline=TRUE,label="Choose a scenario"),
+      #scenario vs custom & scenarios radio buttons
+      radioButtons(inputId="rad_scenario1_ib",choices=scenarios1_ib,selected=character(0),
+                   inline=TRUE,label="Choose an option"),
+      uiOutput("ui_rad_scenarios2_ib"),
       sidebarLayout(
       
         div(id="Sidebar",sidebarPanel(width=3,position="left",
           tabsetPanel(id="input_tabset_ib",type="hidden",
             tabPanel(title="tab_blank_ib"),
-            tabPanel(title=scenarios_ib[1],
-              "insert text for scenario 1"
+            tabPanel(title=scenarios1_ib[1],
+              textOutput("text_sc1_4_text_ib")
             ),
-            tabPanel(title=scenarios_ib[2],
-              "insert text for scenario 2"
-            ),
-            tabPanel(title=scenarios_ib[3],
-              "insert text for scenario 3"
-            ),
-            tabPanel(title=scenarios_ib[4],
-              "insert text for scenario 4"
-            ),
-            tabPanel(title=scenarios_ib[5],
+            # tabPanel(title=scenarios_ib[1],
+            #   "insert text for scenario 1"
+            # ),
+            # tabPanel(title=scenarios_ib[2],
+            #   "insert text for scenario 2"
+            # ),
+            # tabPanel(title=scenarios_ib[3],
+            #   "insert text for scenario 3"
+            # ),
+            # tabPanel(title=scenarios_ib[4],
+            #   "insert text for scenario 4"
+            # ),
+            tabPanel(title=scenarios1_ib[2],
               #species pool slider (above tabs)
               sliderInput(inputId="sld_p_ib",value=100,min=20,max=200,step=10,
                           label="Number of species on mainland (p)"
@@ -210,7 +248,7 @@ ui<-navbarPage("Species Models App",
 
 # NEXT
 # ui:
-  # 1) hide UI for scenarios (provide other information instead--a brief description)
+
   # 2) reset button for custom mode, which would return the values back to original (shinyjs
     # tool for this)
 # server/functions:
@@ -224,9 +262,11 @@ ui<-navbarPage("Species Models App",
 # DONE
 
 
+
 # LAST COMMIT
-# develop a larger tabsetPanel that dynamically displays sidebar via radio button selection
-# added shinyjs() code so that sidebar is hidden when loading app and displays when scenario selected
+# cleaned up UI by creating objects in separate script, converting scenario-based objects to reactives,
+  # and adding a second set of radio buttons dynamically
+
 
 
 
