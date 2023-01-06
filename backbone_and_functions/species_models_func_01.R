@@ -144,10 +144,10 @@ build_rate_static_plot<-function(rate_data,eq_data){
   
   rate_static_p %>%
     ggplotly(tooltip="text") %>%
-    layout(margin=list(b=110),
+    layout(margin=list(b=150),
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
-                  x=0.5,y=-0.35))
+                  x=0.5,y=-0.5))
 }
 
 
