@@ -167,9 +167,7 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# fixed switch issue for scenarios
-# got app code to display rate and spp v time plots for all 4 scenarios and custom specs
-# added functioning reset button
+#developed backbone code and functions to draw schematic of islands and mainland
 
 
 

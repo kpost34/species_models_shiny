@@ -244,6 +244,109 @@ build_svt_static_plot<-function(data){
 }
 
 
+#### Create Function to Build Schematic of Islands and Mainland=====================================
+### Develop DF
+build_schematic_df<-function(nm,a1,d1,sec_isle=FALSE,a2,d2){
+  reps<-104
+  
+  tibble(
+    mainx=c(0,20,
+            rep(c(19.75,20),50),
+            0,0),
+    mainy=c(0,
+            seq(0,100,length.out=reps-3),
+            100,0),
+    island1=rep(nm[1],reps),
+    a1=rep(a1,reps),
+    d1=rep(d1,reps),
+  ) %>%
+    {if(sec_isle) bind_cols(.,
+      tibble(
+        island2=rep(nm[2],reps),
+        a2=rep(a2,reps),
+        d2=rep(d2,reps),
+      )
+    ) else .} %>%
+  mutate(across(starts_with("a"),~log2(.x)),
+         across(starts_with("d"),~sqrt(.x)))
+}
+
+
+### Plot (draw) polygons
+make_island_schematic<-function(data,sec_isle=FALSE){
+xref<-20
+
+yref1<-70
+yref2<-30
+
+
+# Plot
+data %>%
+  ggplot() +
+  #wavy vertical line to designate mainland boundary with text
+  geom_polygon(aes(x=mainx,y=mainy),
+               fill="burlywood",alpha=0.8) +
+  annotate("text",x=10,y=50,label="Mainland") +
+  #island 1 shape and text
+  geom_circle(data=. %>% filter(mainx==xref,mainy==yref1),
+              aes(x0=mainx+d1+a1,y0=ref1,r=a1),
+              fill="green1",alpha=0.3) +
+  geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
+            aes(x=mainx+d1+a1,y=yref1,
+                label=paste0(island1,
+                             "\n","a = ",round(2^a1,0))),
+            size=3.5) +
+  #line segment indicating distance between island 1 and mainland
+  geom_segment(data=. %>% filter(mainx==xref,mainy==yref1),
+               aes(x=mainx,xend=.95*(mainx+d1),y=yref1,yend=yref1),
+               arrow=arrow(length=unit(0.2,"cm"))) +
+  geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
+            aes(x=mainx+.5*d1,y=ref1+3,
+                label=round(d1^2,0)),
+            hjust=0.5) -> is1_plot
+
+if(!sec_isle){
+  is1_plot +
+    xlim(c(0,150)) +
+    ylim(c(0,100)) +
+    theme_void() +
+    labs(caption=paste("Note: island areas log2-transformed",
+                       "\ndistances sqrt-transformed")) +
+    theme(plot.caption=element_text(face="italic",hjust=0,size=9)) ->is_plot
+}
+
+
+else if(sec_isle){
+  is1_plot +
+  #island 2 shape and text
+  geom_circle(data = . %>% filter(mainx==xref,mainy==yref2),
+              aes(x0=mainx+d2+a2,y0=yref2,r=a2),
+              fill="green1",alpha=0.3) +
+  geom_text(data= . %>% filter(mainx==xref,mainy==yref2),
+            aes(x=mainx+d2+a2,y=yref2,
+                label=paste0(island2,
+                             "\n","a = ",round(2^a2,0))),
+            size=3.5) +
+  #island 2 distance to mainland
+  geom_segment(data=. %>% filter(mainx==xref,mainy==yref2),
+               aes(x=mainx,xend=.95*(mainx+d2),y=yref2,yend=yref2),
+               arrow=arrow(length=unit(0.2,"cm"))) +
+  geom_text(data=. %>% filter(mainx==xref,mainy==yref2),
+            aes(x=mainx+.5*a2,y=yref2+3,
+                label=round(d2^2,0)),
+          hjust=0.5) +
+  xlim(c(0,150)) +
+  ylim(c(0,100)) +
+  theme_void() +
+  labs(caption=paste("Note: island areas log2-transformed",
+                     "\ndistances sqrt-transformed")) +
+  theme(plot.caption=element_text(face="italic",hjust=0,size=9)) -> is_plot
+}
+
+return(is_plot)
+}
+
+
 
 
 
