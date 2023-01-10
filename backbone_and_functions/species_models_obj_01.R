@@ -23,6 +23,7 @@ out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
               tabPanel("tab_blank_ib"),
               #if scenario selected, plots for specific one (1-4) outputted
               tabPanel(scenarios1_ib[1],
+                plotOutput("plot_sc1_4_schematic_ib"),
                 plotlyOutput("plotly_sc1_4_rate_ib"),
                 plotlyOutput("plotly_sc1_4_sppt_ib")
               ),
@@ -38,6 +39,8 @@ sc1_text_ib<-"Scenario 1 text"
 sc2_text_ib<-"Scenario 2 text"
 sc3_text_ib<-"Scenario 3 text"
 sc4_text_ib<-"Scenario 4 text"
+
+
 
 #### Rate DF Obj====================================================================================
 ### Sc1

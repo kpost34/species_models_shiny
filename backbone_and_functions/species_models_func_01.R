@@ -289,7 +289,7 @@ data %>%
   annotate("text",x=10,y=50,label="Mainland") +
   #island 1 shape and text
   geom_circle(data=. %>% filter(mainx==xref,mainy==yref1),
-              aes(x0=mainx+d1+a1,y0=ref1,r=a1),
+              aes(x0=mainx+d1+a1,y0=yref1,r=a1),
               fill="green1",alpha=0.3) +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
             aes(x=mainx+d1+a1,y=yref1,
@@ -301,7 +301,7 @@ data %>%
                aes(x=mainx,xend=.95*(mainx+d1),y=yref1,yend=yref1),
                arrow=arrow(length=unit(0.2,"cm"))) +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
-            aes(x=mainx+.5*d1,y=ref1+3,
+            aes(x=mainx+.5*d1,y=yref1+3,
                 label=round(d1^2,0)),
             hjust=0.5) -> is1_plot
 
@@ -310,7 +310,7 @@ if(!sec_isle){
     xlim(c(0,150)) +
     ylim(c(0,100)) +
     theme_void() +
-    labs(caption=paste("Note: island areas log2-transformed",
+    labs(caption=paste("island areas log2-transformed",
                        "\ndistances sqrt-transformed")) +
     theme(plot.caption=element_text(face="italic",hjust=0,size=9)) ->is_plot
 }
@@ -338,7 +338,7 @@ else if(sec_isle){
   xlim(c(0,150)) +
   ylim(c(0,100)) +
   theme_void() +
-  labs(caption=paste("Note: island areas log2-transformed",
+  labs(caption=paste("island areas log2-transformed",
                      "\ndistances sqrt-transformed")) +
   theme(plot.caption=element_text(face="italic",hjust=0,size=9)) -> is_plot
 }

@@ -57,7 +57,7 @@ server<-function(input,output,session){
   
   ##### Back-end------------------------------------------------------------------------------------
   #### Scenarios
-  ### Set up switches for text sidebar, rate DF, eq rate DF, & spp v time DF to create reactive objects
+  ### Set up switches for text sidebar, schematic DF, rate DF, eq rate DF, & spp v time DF to create reactive objects
   ## Text sidebar
   sc1_4_text_ib<-reactive({
     req(input$rad_scenario1_ib==scenarios1_ib[1])
@@ -69,6 +69,20 @@ server<-function(input,output,session){
       "ldvsn"=sc4_text_ib)
   })
   
+  
+  ## Schematic DF
+  sc1_4_schematicDF_ib<-reactive({
+    req(input$rad_scenario1_ib==scenarios1_ib[1])
+    req(input$rad_scenario2_ib)
+    switch(input$rad_scenario2_ib,
+      "lvs"=build_schematic_df(nm=c("large","small"),a1=5000,d1=1000,sec_isle=TRUE,a2=1000,d2=1000),
+      "nvd"=build_schematic_df(nm=c("near","distant"),a1=1000,d1=1000,sec_isle=TRUE,a2=1000,d2=5000),
+      "lnvsd"=build_schematic_df(nm=c("large, near","small, distant"),
+                                 a1=5000,d1=1000,sec_isle=TRUE,a2=1000,d2=5000),
+      "ldvsn"=build_schematic_df(nm=c("large, distant","small, near"),
+                                 a1=5000,d=5000,sec_isle=TRUE,a2=1000,d2=1000)
+    )
+  })
   
   ## Rate DF
   sc1_4_rateDF_ib<-reactive({
@@ -111,6 +125,14 @@ server<-function(input,output,session){
   output$text_sc1_4_text_ib<-renderText({
     sc1_4_text_ib()
   })
+  
+  
+  ## Schematic Plot
+  output$plot_sc1_4_schematic_ib<-renderPlot({
+    req(input$rad_scenario2_ib)
+    make_island_schematic(sc1_4_schematicDF_ib(),sec_isle=TRUE)
+  })
+  
   
   ## Rate Plotly Plot
   output$plotly_sc1_4_rate_ib<-renderPlotly({

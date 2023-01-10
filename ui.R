@@ -5,7 +5,7 @@
   #3) Rarefaction
 
 #load packages
-pacman::p_load(shiny,here,tidyverse,plotly,shinyjs)
+pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce)
 
 #source in functions and objects
 source(here("backbone_and_functions","species_models_func_01.R"))
@@ -51,8 +51,8 @@ ui<-navbarPage("Species Models App",
               #Island 1 ui
               tabPanel(title="Island 1",
                 h5(strong("Immigration")),
-                numericInput(inputId="num_d1_ib",value=1000,min=0,max=10000,
-                             label="Distance from mainland (d; 0-10,000)"),
+                numericInput(inputId="num_d1_ib",value=1000,min=100,max=10000,
+                             label="Distance from mainland (d; 100-10,000)"),
                 sliderInput(inputId="sld_phi1_ib",value=.0002,min=0,max=.001,step=.0002,
                              label="Distance decay of colonization rate 
                              (\u03d5)"),
@@ -60,8 +60,8 @@ ui<-navbarPage("Species Models App",
                              label="Mean colonization rate over all species (c)"),
                 hr(),
                 h5(strong("Extinction")),
-                  numericInput(inputId="num_a1_ib",value=1200,min=50,max=10000,
-                               label="Area of island 1 (a; 50-10000)"),
+                  numericInput(inputId="num_a1_ib",value=1200,min=100,max=10000,
+                               label="Area of island 1 (a; 100-10,000)"),
                   sliderInput(inputId="sld_ep1_ib",value=.0006,min=0,max=.001,step=.0002,
                                label="Effect of area on extinction 
                                (\u03b5)"),
@@ -71,16 +71,16 @@ ui<-navbarPage("Species Models App",
               #Island 2 ui
               tabPanel(title="Island 2",
                 h5(strong("Immigration")),
-                numericInput(inputId="num_d2_ib",value=1000,min=0,max=10000,
-                             label="d (0-10,000)"),
+                numericInput(inputId="num_d2_ib",value=1000,min=100,max=10000,
+                             label="d (100-10,000)"),
                 sliderInput(inputId="sld_phi2_ib",value=.0002,min=0,max=.001,step=.0002,
                              label="\u03d5"),
                 sliderInput(inputId="sld_c2_ib",value=0.6,min=0.1,max=1,step=0.05,
                              label="c"),
                 hr(),
                 h5(strong("Extinction")),
-                numericInput(inputId="num_a2_ib",value=1200,min=50,max=10000,
-                             label="a (50-10000)"),
+                numericInput(inputId="num_a2_ib",value=1200,min=100,max=10000,
+                             label="a (100-10,000)"),
                 sliderInput(inputId="sld_ep2_ib",value=.0006,min=0,max=.001,step=.0002,
                              label="\u03b5")
               )
@@ -167,7 +167,9 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-#developed backbone code and functions to draw schematic of islands and mainland
+# updated UI so that a and d have min of 100
+# corrected issue with make_island_schematic()
+# added app code so that schematic displays for the four scenarios
 
 
 

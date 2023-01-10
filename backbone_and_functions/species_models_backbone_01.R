@@ -2,8 +2,7 @@
 #Backbone code for Species Models App
 
 pacman::p_load(here,tidyverse,plotly,ggforce)
-
-
+source(here("backbone_and_functions","species_models_func_01.R"))
 
 ##### Island Biogeography===========================================================================
 #### Formulae
@@ -321,10 +320,10 @@ mainDF %>%
   annotate("text",x=10,y=50,label="Mainland") +
   #island 1 shape and text
   geom_circle(data=. %>% filter(mainx==xref,mainy==yref1),
-              aes(x0=mainx+d1+a1,y0=ref1,r=a1),
+              aes(x0=mainx+d1+a1,y0=yref1,r=a1),
               fill="green1",alpha=0.3) +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
-            aes(x=mainx+d1+a1,y=yref1,
+            aes(x=mainx+d1+a1,y=yref1+3,
                 label=paste0(island1,
                              "\n","a = ",round(2^a1,0))),
             size=3.5) +
@@ -333,7 +332,7 @@ mainDF %>%
                aes(x=mainx,xend=.95*(mainx+d1),y=yref1,yend=yref1),
                arrow=arrow(length=unit(0.2,"cm"))) +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
-            aes(x=mainx+.5*d1,y=ref1+3,
+            aes(x=mainx+.5*d1,y=yref1+3,
                 label=round(d1^2,0)),
             hjust=0.5) +
   #island 2 shape and text
@@ -361,6 +360,7 @@ mainDF %>%
   theme(plot.caption=element_text(face="italic",hjust=0,size=9))
 
 
+## Plot simple schematic via functions
 mainDF<-build_schematic_df(nm=c("island 1","island 2"),a1=1000,d1=1000,sec_isle=TRUE,
                            a2=2000,d2=500)
 
