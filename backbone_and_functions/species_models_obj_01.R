@@ -24,11 +24,14 @@ out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
               #if scenario selected, plots for specific one (1-4) outputted
               tabPanel(scenarios1_ib[1],
                 plotOutput("plot_sc1_4_schematic_ib"),
+                br(),
                 plotlyOutput("plotly_sc1_4_rate_ib"),
                 plotlyOutput("plotly_sc1_4_sppt_ib")
               ),
               #custom model yields plots from custom inputs
               tabPanel(scenarios1_ib[2],
+                plotOutput("plot_cust_schematic_ib"),
+                br(),
                 plotlyOutput("plotly_cust_rate_ib"),
                 plotlyOutput("plotly_cust_sppt_ib")
               )

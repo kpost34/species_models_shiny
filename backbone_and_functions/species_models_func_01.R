@@ -63,8 +63,9 @@ build_rate_plot<-function(data1a,data1b,sec_isle="no",data2a=NA,data2b=NA){
     geom_segment(data=data1b,
                  aes(x=s_eq,xend=s_eq,y=0,yend=rate_eq),
                  linetype="dotted",color="purple") +
-    labs(x="Species richness of island",
-         y="Colonization/extinction rate (spp/time)") +
+    labs(title="Effect of island species richness on colonization & extinction rates",
+         x="Species richness of island",
+         y="Rate (spp/time)") +
     theme_bw() +
     theme(legend.position="bottom") -> rate1_p
   
@@ -97,6 +98,7 @@ if(sec_isle=="yes") {
 rate12_p %>%
   ggplotly(tooltip="text") %>%
     layout(margin=list(b=110),
+           font="Helvetica",
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
                   x=0.5,y=-0.35))
@@ -138,13 +140,15 @@ build_rate_static_plot<-function(rate_data,eq_data){
     geom_segment(data=eq_data,
                  aes(x=s_eq,xend=s_eq,y=0,yend=rate_eq),
                     color="gray80", linetype="dotted") +
-    labs(x="Species richness of island",
-         y="Colonization/extinction rate (spp/time)") +
+    labs(title="Effect of island species richness on colonization & extinction rates",
+         x="Species richness of island",
+         y="Rate (spp/time)") +
     theme_bw() -> rate_static_p
   
   rate_static_p %>%
     ggplotly(tooltip="text") %>%
     layout(margin=list(b=150),
+           font="Helvetica",
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
                   x=0.5,y=-0.5))
@@ -194,7 +198,8 @@ build_svt_plot<-function(data1,sec_isle,data2){
                                "\nTime: ",t))) +
     scale_color_manual(name=NULL,values=c("Island 1"="red4","Island 2"="blue4")) +
     scale_shape_manual(name=NULL,values=c("Island 1"=16,"Island 2"=18)) +
-    labs(x="Time",
+    labs(title="Island species richness over time",
+         x="Time",
          y="Species richness of island") +
     theme_bw() +
     theme(legend.position="bottom")-> p
@@ -202,6 +207,7 @@ build_svt_plot<-function(data1,sec_isle,data2){
   p %>%
     ggplotly(tooltip="text") %>%
     layout(margin=list(b=110),
+           font="Helvetica",
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
                   x=0.5,y=-0.35))
@@ -230,7 +236,8 @@ build_svt_static_plot<-function(data){
                                "\nTime: ",t))) +
     scale_color_manual(name=NULL,values=col) +
     scale_shape_manual(name=NULL,values=shp) +
-    labs(x="Time",
+    labs(title="Island species richness over time",
+         x="Time",
          y="Species richness of island") +
     theme_bw() +
     theme(legend.position="bottom") -> p
@@ -238,6 +245,7 @@ build_svt_static_plot<-function(data){
   p %>%
     ggplotly(tooltip="text") %>%
     layout(margin=list(b=110),
+           font="Helvetica",
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
                   x=0.5,y=-0.35))
@@ -246,7 +254,7 @@ build_svt_static_plot<-function(data){
 
 #### Create Function to Build Schematic of Islands and Mainland=====================================
 ### Develop DF
-build_schematic_df<-function(nm,a1,d1,sec_isle=FALSE,a2,d2){
+build_schematic_df<-function(nm,a1,d1,sec_isle="no",a2,d2){
   reps<-104
   
   tibble(
@@ -260,7 +268,7 @@ build_schematic_df<-function(nm,a1,d1,sec_isle=FALSE,a2,d2){
     a1=rep(a1,reps),
     d1=rep(d1,reps),
   ) %>%
-    {if(sec_isle) bind_cols(.,
+    {if(sec_isle=="yes") bind_cols(.,
       tibble(
         island2=rep(nm[2],reps),
         a2=rep(a2,reps),
@@ -273,7 +281,8 @@ build_schematic_df<-function(nm,a1,d1,sec_isle=FALSE,a2,d2){
 
 
 ### Plot (draw) polygons
-make_island_schematic<-function(data,sec_isle=FALSE){
+make_island_schematic<-function(data,sec_isle="no"){
+# Set ref values
 xref<-20
 
 yref1<-70
@@ -286,7 +295,7 @@ data %>%
   #wavy vertical line to designate mainland boundary with text
   geom_polygon(aes(x=mainx,y=mainy),
                fill="burlywood",alpha=0.8) +
-  annotate("text",x=10,y=50,label="Mainland") +
+  annotate("text",x=10,y=50,label="Mainland",size=6,fontface=2) +
   #island 1 shape and text
   geom_circle(data=. %>% filter(mainx==xref,mainy==yref1),
               aes(x0=mainx+d1+a1,y0=yref1,r=a1),
@@ -295,28 +304,38 @@ data %>%
             aes(x=mainx+d1+a1,y=yref1,
                 label=paste0(island1,
                              "\n","a = ",round(2^a1,0))),
-            size=3.5) +
+            size=4.5) +
   #line segment indicating distance between island 1 and mainland
   geom_segment(data=. %>% filter(mainx==xref,mainy==yref1),
                aes(x=mainx,xend=.95*(mainx+d1),y=yref1,yend=yref1),
                arrow=arrow(length=unit(0.2,"cm"))) +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
-            aes(x=mainx+.5*d1,y=yref1+3,
-                label=round(d1^2,0)),
-            hjust=0.5) -> is1_plot
+            aes(x=mainx+.2*d1,y=yref1+3,
+                label=paste0("d = ",round(d1^2,0))),
+            hjust=0.5,size=4.5) +
+  xlim(c(0,150)) +
+  ylim(c(0,100)) +
+  theme_void() +
+  labs(title="         Mainland-Island(s) Schematic",
+       caption=paste("Notes:",
+                     "\n*island areas are log2-transformed",
+                     "\n*distances are square root-transformed")) + 
+  theme(plot.title=element_text(size=18),
+        plot.caption=element_text(face="italic",hjust=0,size=13),
+        text=element_text(family="Helvetica")) -> is1_plot
 
-if(!sec_isle){
-  is1_plot +
-    xlim(c(0,150)) +
-    ylim(c(0,100)) +
-    theme_void() +
-    labs(caption=paste("island areas log2-transformed",
-                       "\ndistances sqrt-transformed")) +
-    theme(plot.caption=element_text(face="italic",hjust=0,size=9)) ->is_plot
+if(sec_isle=="no"){
+  is1_plot -> is_plot
+    # xlim(c(0,150)) +
+    # ylim(c(0,100)) +
+    # theme_void() +
+    # labs(caption=paste("island areas log2-transformed",
+    #                    "\ndistances sqrt-transformed")) +
+    # theme(plot.caption=element_text(face="italic",hjust=0,size=9)) ->is_plot
 }
 
 
-else if(sec_isle){
+else if(sec_isle=="yes"){
   is1_plot +
   #island 2 shape and text
   geom_circle(data = . %>% filter(mainx==xref,mainy==yref2),
@@ -326,21 +345,21 @@ else if(sec_isle){
             aes(x=mainx+d2+a2,y=yref2,
                 label=paste0(island2,
                              "\n","a = ",round(2^a2,0))),
-            size=3.5) +
+            size=4.5) +
   #island 2 distance to mainland
   geom_segment(data=. %>% filter(mainx==xref,mainy==yref2),
                aes(x=mainx,xend=.95*(mainx+d2),y=yref2,yend=yref2),
                arrow=arrow(length=unit(0.2,"cm"))) +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref2),
-            aes(x=mainx+.5*a2,y=yref2+3,
-                label=round(d2^2,0)),
-          hjust=0.5) +
-  xlim(c(0,150)) +
-  ylim(c(0,100)) +
-  theme_void() +
-  labs(caption=paste("island areas log2-transformed",
-                     "\ndistances sqrt-transformed")) +
-  theme(plot.caption=element_text(face="italic",hjust=0,size=9)) -> is_plot
+            aes(x=mainx+.2*d2,y=yref2+3,
+                label=paste0("d = ",round(d2^2,0))),
+          hjust=0.5,size=4.5) -> is_plot
+  # xlim(c(0,150)) +
+  # ylim(c(0,100)) +
+  # theme_void() +
+  # labs(caption=paste("island areas log2-transformed",
+  #                    "\ndistances sqrt-transformed")) +
+  # theme(plot.caption=element_text(face="italic",hjust=0,size=9)) -> is_plot
 }
 
 return(is_plot)

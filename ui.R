@@ -156,9 +156,10 @@ ui<-navbarPage("Species Models App",
 
 # NEXT
 # new output
-  # 1) visual of the mainland and islands and a and d would align with the a and d inputs (or in
-    # a scenario)--looks like plotly could help here
-  #2) add pictures of MacArthur and Wilson
+  # 1) use thick, colored border to match colors in graphs
+  # 2) add a radio button in custom specifications to turn on/off each output
+  # 3) add pictures of MacArthur and Wilson (maybe in user guide)
+  # 4) annotate code more
 
 
 
@@ -167,9 +168,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# updated UI so that a and d have min of 100
-# corrected issue with make_island_schematic()
-# added app code so that schematic displays for the four scenarios
+# added titles to plots, adjusted text size in schematic plot, and modified font in all plots to be the same
+# got custom schematic to display
 
 
 

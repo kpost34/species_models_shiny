@@ -75,12 +75,12 @@ server<-function(input,output,session){
     req(input$rad_scenario1_ib==scenarios1_ib[1])
     req(input$rad_scenario2_ib)
     switch(input$rad_scenario2_ib,
-      "lvs"=build_schematic_df(nm=c("large","small"),a1=5000,d1=1000,sec_isle=TRUE,a2=1000,d2=1000),
-      "nvd"=build_schematic_df(nm=c("near","distant"),a1=1000,d1=1000,sec_isle=TRUE,a2=1000,d2=5000),
+      "lvs"=build_schematic_df(nm=c("large","small"),a1=5000,d1=1000,sec_isle="yes",a2=1000,d2=1000),
+      "nvd"=build_schematic_df(nm=c("near","distant"),a1=1000,d1=1000,sec_isle="yes",a2=1000,d2=5000),
       "lnvsd"=build_schematic_df(nm=c("large, near","small, distant"),
-                                 a1=5000,d1=1000,sec_isle=TRUE,a2=1000,d2=5000),
+                                 a1=5000,d1=1000,sec_isle="yes",a2=1000,d2=5000),
       "ldvsn"=build_schematic_df(nm=c("large, distant","small, near"),
-                                 a1=5000,d=5000,sec_isle=TRUE,a2=1000,d2=1000)
+                                 a1=5000,d=5000,sec_isle="yes",a2=1000,d2=1000)
     )
   })
   
@@ -130,7 +130,7 @@ server<-function(input,output,session){
   ## Schematic Plot
   output$plot_sc1_4_schematic_ib<-renderPlot({
     req(input$rad_scenario2_ib)
-    make_island_schematic(sc1_4_schematicDF_ib(),sec_isle=TRUE)
+    make_island_schematic(sc1_4_schematicDF_ib(),sec_isle="yes")
   })
   
   
@@ -150,6 +150,20 @@ server<-function(input,output,session){
 
 
   #### Custom specifications
+  ### Schematic plot
+  ## Create reactive object of schematic island DF
+  schematicDF_ib<-reactive({
+    build_schematic_df(nm=c("island 1","island 2"),a1=input$num_a1_ib,d1=input$num_d1_ib,
+                       sec_isle=input$rad_is2_ib,a2=input$num_a2_ib,d2=input$num_d2_ib)
+  })
+  
+  
+  ## Render plotly plot
+  output$plot_cust_schematic_ib<-renderPlot({
+    make_island_schematic(schematicDF_ib(),sec_isle=input$rad_is2_ib)
+  })
+  
+  
   ### Rate plot
   ## Island 1
   # Create reactive object of rate DF
