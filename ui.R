@@ -40,6 +40,10 @@ ui<-navbarPage("Species Models App",
             ),
             #custom panel has various inputs
             tabPanel(title=scenarios1_ib[2],
+              #checkbox group to display each plot
+              checkboxGroupInput(inputId="chkgrp_plotoutputs_ib",
+                                 choices=plotoutputs_ib,selected=plotoutputs_ib,
+                                 label="Select which output(s) to display"),
               #species pool slider (above tabs)
               sliderInput(inputId="sld_p_ib",value=100,min=20,max=200,step=10,
                           label="Number of species on mainland (p)"
@@ -156,10 +160,8 @@ ui<-navbarPage("Species Models App",
 
 # NEXT
 # new output
-  # 1) use thick, colored border to match colors in graphs
   # 2) add a radio button in custom specifications to turn on/off each output
   # 3) add pictures of MacArthur and Wilson (maybe in user guide)
-  # 4) annotate code more
 
 
 
@@ -168,8 +170,9 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# added titles to plots, adjusted text size in schematic plot, and modified font in all plots to be the same
-# got custom schematic to display
+# colored arrows and circle borders to match plots
+# corrected inconsistencies in labels in plots and schematic
+# added code annotations
 
 
 

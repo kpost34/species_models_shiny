@@ -3,23 +3,32 @@
 
 
 
-#### Scenario options===============================================================================
+#### Scenario and Plot Options======================================================================
+### Choices for first radio button
+#choose between a scenario or custom settings
 scenarios1_ib<-c("scenario (e.g., large vs small islands)"="scenario",
                  "custom specifications" = "custom")
 
 
-
+### Choices for second radio button
+#if scenario selected, then which scenario (which aligns with tabset panel)
 scenarios2_ib<-c("large vs small islands"="lvs",
                 "near vs distant islands"="nvd",
                 "large, near vs small, distant islands"="lnvsd",
                 "large, distant vs small, near islands"="ldvsn")
 
 
+### Plot output choices
+plotoutputs_ib<-c("schematic"="schematic",
+                  "rate plot"="rate",
+                  "spp v time plot"="svt")
+
+
 
 
 #### Output Tabset Object===========================================================================
 out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
-              #apps opens with blank panel
+              #app opens with blank panel
               tabPanel("tab_blank_ib"),
               #if scenario selected, plots for specific one (1-4) outputted
               tabPanel(scenarios1_ib[1],
@@ -37,7 +46,9 @@ out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
               )
             )
 
+
 #### Text Sidebar Obj===============================================================================
+#need to add text later to describe scenarios
 sc1_text_ib<-"Scenario 1 text"
 sc2_text_ib<-"Scenario 2 text"
 sc3_text_ib<-"Scenario 3 text"
@@ -46,6 +57,8 @@ sc4_text_ib<-"Scenario 4 text"
 
 
 #### Rate DF Obj====================================================================================
+#build each scenario rateDF separately to make switch() in reactive({}) easier to read
+
 ### Sc1
 sc1_rateDF_ib <- bind_rows(
   build_rate_static_df(island="small island",d=1000,a=1000,rate="Extinction"),
@@ -76,7 +89,9 @@ sc4_rateDF_ib <- bind_rows(
 
 
 
-#### Equilibrium Rate DF Obj=========================================================================
+#### Equilibrium Rate DF Obj========================================================================
+#build each scenario rate_eqDF separately to make switch() in reactive({}) easier to read
+
 ### Sc1
 sc1_rate_eqDF_ib<-bind_rows(
   build_eq_df(island="small island",a=1000,d=1000),
@@ -103,7 +118,8 @@ sc4_rate_eqDF_ib<-bind_rows(
 )
   
 
-#### Species vs Time DF Obj==========================================================================
+#### Species vs Time DF Obj=========================================================================
+#build each scenario spptDF separately to make switch() in reactive({}) easier to read
 ### Sc1
 sc1_spptDF_ib<-bind_rows(
   build_svt_static_df(isle="small island", d=1000,a=1000),

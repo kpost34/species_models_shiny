@@ -17,6 +17,8 @@ build_rate_df<-function(island,s_len,c,p,phi,d,ep,a){
 build_rate_static_df<-function(island,d, a,rate){
   tibble(island=rep(paste(island),300),
          s=seq(0,100,length.out=300)) %>%
+    #pipe depends on rate selected-[NOTE: two islands could share the same C or E if parameters for
+      #them are the same]
     {if(rate=="Colonization") mutate(.,Colonization=0.6*(100-s)*exp(-.0002*d)) else .} %>%
     {if(rate=="Extinction") mutate(.,Extinction=s*exp(-.0004*a)) else .} %>%
     {if(rate=="Both") mutate(.,Colonization=0.6*(100-s)*exp(-.0002*d),
@@ -39,16 +41,20 @@ build_eq_df<-function(island,c=0.6,p=100,ep=.0004,a,phi=.0002,d){
 #### Create Function to Build Rate Plot=============================================================
 ### Custom version
 build_rate_plot<-function(data1a,data1b,sec_isle="no",data2a=NA,data2b=NA){
+  #island 1: rate plot
   data1a %>%
     ggplot(aes(x=s,y=value)) +
     geom_line(aes(group=rate,linetype=rate,color=island,
+                  #text is for renderPlotly()/ggplotly() tooltip
                   text=paste0(island,
                               "\n",rate,": ",value," spp/t",
                               "\n","Species: ",s)),
               color="red4") +
+    #set name=NULL to de-clutter legend 
     scale_color_manual(name=NULL,values=c("Island 1"="red4"),guide="none") +
     scale_linetype_manual(name=NULL,values=c("Colonization"="solid",
                                    "Extinction"="dashed")) +
+    #island 1: eq points and segment
     geom_point(data=data1b,
                aes(x=s_eq,y=rate_eq,
                    text=paste0(island,
@@ -70,6 +76,7 @@ build_rate_plot<-function(data1a,data1b,sec_isle="no",data2a=NA,data2b=NA){
     theme(legend.position="bottom") -> rate1_p
   
 if(sec_isle=="yes") {
+  #island 2: rate plot
   rate1_p +
     geom_line(data=data2a,
               aes(x=s,y=value,group=rate,linetype=rate,color=island,
@@ -83,6 +90,7 @@ if(sec_isle=="yes") {
                                "\n","rate*: ",rate_eq, " spp/t",
                                "\n", "s*: ",s_eq, " species")),
                color="black") +
+    #island 2: eq points and segment
     geom_point(data=data2b,
                aes(x=s_eq,y=0,
                    text=paste0(island,
@@ -96,6 +104,7 @@ if(sec_isle=="yes") {
     }
 
 rate12_p %>%
+  #tooltip set to "text" to pull in custom text associated with geoms above
   ggplotly(tooltip="text") %>%
     layout(margin=list(b=110),
            font="Helvetica",
@@ -108,6 +117,7 @@ rate12_p %>%
 
 ### Static version
 build_rate_static_plot<-function(rate_data,eq_data){
+  #reverse order of islands so that "gray30" matches with "Both" (not present in all scenarios)
   rate_data %>%
     pull(island) %>%
     unique() %>%
@@ -117,15 +127,18 @@ build_rate_static_plot<-function(rate_data,eq_data){
   col<-c("red4","blue4","gray30")
   names(col)<-nm
   
+  #rate plot for scenarios
   rate_data %>%
     ggplot(aes(x=s,y=value)) +
     geom_line(aes(group=interaction(island,rate),linetype=rate,color=island,
+                  #text is for tooltip display
                   text=paste0(island,
                               "\n",rate,": ",value," spp/t",
                               "\n","Species: ",s))) +
     scale_color_manual(name=NULL,values=col) +
     scale_linetype_manual(name=NULL,values=c("Colonization"="solid",
                                              "Extinction"="dashed")) +
+    #equilibrium points and segment
     geom_point(data=eq_data,
                aes(x=s_eq,y=rate_eq,
                    text=paste0(island,
@@ -140,7 +153,7 @@ build_rate_static_plot<-function(rate_data,eq_data){
     geom_segment(data=eq_data,
                  aes(x=s_eq,xend=s_eq,y=0,yend=rate_eq),
                     color="gray80", linetype="dotted") +
-    labs(title="Effect of island species richness on colonization & extinction rates",
+    labs(title="Relationship betwen island species richness and colonization & extinction rates",
          x="Species richness of island",
          y="Rate (spp/time)") +
     theme_bw() -> rate_static_p
@@ -189,10 +202,12 @@ build_svt_static_df<-function(isle, d, a) {
 #### Create Function to Build Spp v Time Plot=======================================================
 ### Custom mode
 build_svt_plot<-function(data1,sec_isle,data2){
+  #if sec_isle is "yes" then DF adds in island 2 data
   data1 %>%
     {if(sec_isle=="yes") bind_rows(.,data2) else .} %>%
     ggplot() +
     geom_point(aes(x=t,y=s,shape=island,color=island,
+                   #text is for tooltip
                    text=paste0(island,
                                "\nSpecies: ",s,
                                "\nTime: ",t))) +
@@ -216,6 +231,7 @@ build_svt_plot<-function(data1,sec_isle,data2){
 
 ### Static mode
 build_svt_static_plot<-function(data){
+  #reverse naming order to match rate plot
   data %>%
     pull(island) %>%
     unique() %>%
@@ -255,6 +271,9 @@ build_svt_static_plot<-function(data){
 #### Create Function to Build Schematic of Islands and Mainland=====================================
 ### Develop DF
 build_schematic_df<-function(nm,a1,d1,sec_isle="no",a2,d2){
+  #to match rate and spp v time plots
+  nm<-sort(nm,decreasing=TRUE)
+  
   reps<-104
   
   tibble(
@@ -299,7 +318,7 @@ data %>%
   #island 1 shape and text
   geom_circle(data=. %>% filter(mainx==xref,mainy==yref1),
               aes(x0=mainx+d1+a1,y0=yref1,r=a1),
-              fill="green1",alpha=0.3) +
+              fill="green1",color="darkred",linewidth=4,alpha=0.3) +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
             aes(x=mainx+d1+a1,y=yref1,
                 label=paste0(island1,
@@ -308,7 +327,8 @@ data %>%
   #line segment indicating distance between island 1 and mainland
   geom_segment(data=. %>% filter(mainx==xref,mainy==yref1),
                aes(x=mainx,xend=.95*(mainx+d1),y=yref1,yend=yref1),
-               arrow=arrow(length=unit(0.2,"cm"))) +
+               arrow=arrow(length=unit(0.2,"cm")),
+               color="darkred") +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
             aes(x=mainx+.2*d1,y=yref1+3,
                 label=paste0("d = ",round(d1^2,0))),
@@ -326,21 +346,15 @@ data %>%
 
 if(sec_isle=="no"){
   is1_plot -> is_plot
-    # xlim(c(0,150)) +
-    # ylim(c(0,100)) +
-    # theme_void() +
-    # labs(caption=paste("island areas log2-transformed",
-    #                    "\ndistances sqrt-transformed")) +
-    # theme(plot.caption=element_text(face="italic",hjust=0,size=9)) ->is_plot
 }
 
-
+#second island
 else if(sec_isle=="yes"){
   is1_plot +
   #island 2 shape and text
   geom_circle(data = . %>% filter(mainx==xref,mainy==yref2),
               aes(x0=mainx+d2+a2,y0=yref2,r=a2),
-              fill="green1",alpha=0.3) +
+              fill="green1",color="darkblue",linewidth=4,alpha=0.3) +
   geom_text(data= . %>% filter(mainx==xref,mainy==yref2),
             aes(x=mainx+d2+a2,y=yref2,
                 label=paste0(island2,
@@ -349,17 +363,12 @@ else if(sec_isle=="yes"){
   #island 2 distance to mainland
   geom_segment(data=. %>% filter(mainx==xref,mainy==yref2),
                aes(x=mainx,xend=.95*(mainx+d2),y=yref2,yend=yref2),
-               arrow=arrow(length=unit(0.2,"cm"))) +
+               arrow=arrow(length=unit(0.2,"cm")),
+               color="darkblue") +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref2),
             aes(x=mainx+.2*d2,y=yref2+3,
                 label=paste0("d = ",round(d2^2,0))),
           hjust=0.5,size=4.5) -> is_plot
-  # xlim(c(0,150)) +
-  # ylim(c(0,100)) +
-  # theme_void() +
-  # labs(caption=paste("island areas log2-transformed",
-  #                    "\ndistances sqrt-transformed")) +
-  # theme(plot.caption=element_text(face="italic",hjust=0,size=9)) -> is_plot
 }
 
 return(is_plot)

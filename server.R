@@ -40,6 +40,7 @@ server<-function(input,output,session){
                  inline=TRUE,label="Select a scenario")
     })
   
+  
   ### Dynamically display sidebar and main panel
   observeEvent(input$rad_scenario1_ib,{
     updateTabsetPanel(inputId="input_tabset_ib",selected=input$rad_scenario1_ib)
@@ -51,14 +52,78 @@ server<-function(input,output,session){
   
   
   ### Reset button
+  #resets all values in sidebar (custom UI panel)
   observeEvent(input$reset_ib, {
     reset("Sidebar")
   })
+  
+
+  # show("plot_cust_schematic_ib")
+  # show("plotly_cust_rate_ib")
+  # show("plotly_cust_sppt_ib")
+  
+  ### Toggle outputs for custom settings
+  # observeEvent({
+  #   if(input$chkgrp_plotoutputs_ib=="schematic"){
+  #     show("plot_cust_schematic_ib")
+  #     hide("plotly_cust_rate_ib")
+  #     hide("plotly_cust_sppt_ib")
+  #   }
+  #   if(input$chkgrp_plotoutputs_ib=="rate"){
+  #     show("plotly_cust_rate_ib")
+  #     hide("plot_cust_schematic_ib")
+  #     hide("plotly_cust_sppt_ib")
+  #   }
+  #   if(input$chkgrp_plotoutputs_ib=="svt"){
+  #     show("plotly_cust_sppt_ib")
+  #     hide("plot_cust_schematic_ib")
+  #     hide("plotly_cust_rate_ib")
+  #   }
+  #   if(is.na(input$chkgrp_plotoutputs_ib)){
+  #     hide("plotly_cust_sppt_ib")
+  #     hide("plot_cust_schematic_ib")
+  #     hide("plotly_cust_rate_ib")
+  #   }
+  # })
+  
+  observeEvent(input$chkgrp_plotoutputs_ib,{
+    if(input$chkgrp_plotoutputs_ib=="schematic"){
+      show("plot_cust_schematic_ib")
+    } else{
+      hide("plot_cust_schematic_ib")
+    }
+    if(input$chkgrp_plotoutputs_ib=="rate"){
+      show("plotly_cust_rate_ib")
+    } else{
+      hide("plotly_cust_rate_ib")
+    }
+    if(input$chkgrp_plotoutputs_ib=="svt"){
+      show("plotly_cust_sppt_ib")
+    } else{
+      hide("plotly_cust_sppt_ib")
+    }
+  },ignoreInit=TRUE,ignoreNULL=FALSE)
+
+  # observeEvent(input$chkgrp_plotoutputs_ib,{
+  # observe({
+  #   toggle("plot_cust_schematic_ib",
+  #          condition=input$chkgrp_plotoutputs_ib=="schematic")
+  #   toggle("plotly_cust_rate_ib",
+  #          condition=input$chkgrp_plotoutputs_ib=="rate")
+  #   toggle("plotly_cust_sppt_ib",
+  #          condition=input$chkgrp_plotoutputs_ib=="svt")
+  #   }
+  # )
+
+  
+
+
   
   ##### Back-end------------------------------------------------------------------------------------
   #### Scenarios
   ### Set up switches for text sidebar, schematic DF, rate DF, eq rate DF, & spp v time DF to create reactive objects
   ## Text sidebar
+  #display different text in sidebar when sc1-4 is selected
   sc1_4_text_ib<-reactive({
     req(input$rad_scenario1_ib==scenarios1_ib[1])
     req(input$rad_scenario2_ib)
@@ -71,6 +136,7 @@ server<-function(input,output,session){
   
   
   ## Schematic DF
+  #build reactive DF for schematic plot depending on sc1-4
   sc1_4_schematicDF_ib<-reactive({
     req(input$rad_scenario1_ib==scenarios1_ib[1])
     req(input$rad_scenario2_ib)
@@ -85,6 +151,7 @@ server<-function(input,output,session){
   })
   
   ## Rate DF
+  #build reactive DF for rate plot depending on sc1-4 
   sc1_4_rateDF_ib<-reactive({
     req(input$rad_scenario1_ib==scenarios1_ib[1])
     req(input$rad_scenario2_ib)
@@ -97,6 +164,7 @@ server<-function(input,output,session){
   
   
   ## Eq Rate DF
+  #same as directly above except for equilibrium points of rate plot
   sc1_4_rate_eqDF_ib<-reactive({
     req(input$rad_scenario1_ib==scenarios1_ib[1])
     req(input$rad_scenario2_ib)
@@ -109,6 +177,7 @@ server<-function(input,output,session){
   
   
   ## Spp vs Time DF
+  #build spp v time DF reactive object for sc1-4 depending on selection
   sc1_4_spptDF_ib<-reactive({
     req(input$rad_scenario1_ib==scenarios1_ib[1])
     req(input$rad_scenario2_ib)
@@ -182,14 +251,14 @@ server<-function(input,output,session){
 
 
   ## Island 2
-  # Create reactive object of rate DF
+  # Create separate reactive object of rate DF (for island 2)
   rate2DF_ib<-reactive({
     build_rate_df(island="Island 2",s_len=300,c=input$sld_c2_ib, p=input$sld_p_ib, phi=input$sld_phi2_ib,
                 d=input$num_d2_ib, ep=input$sld_ep2_ib, a=input$num_a2_ib)
   })
 
 
-  # Create reactive object of eq rate DF
+  # Create reactive object of eq rate DF (for island 2)
   rate_eq2DF_ib<-reactive({
     build_eq_df(island="Island 2",c=input$sld_c2_ib, p=input$sld_p_ib, phi=input$sld_phi2_ib,
                 d=input$num_d2_ib, ep=input$sld_ep2_ib, a=input$num_a2_ib)
