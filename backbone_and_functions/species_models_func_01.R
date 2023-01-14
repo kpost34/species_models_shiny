@@ -117,12 +117,11 @@ rate12_p %>%
 
 ### Static version
 build_rate_static_plot<-function(rate_data,eq_data){
-  #reverse order of islands so that "gray30" matches with "Both" (not present in all scenarios)
+  #set order of islands based on how rate_data is built and so that "gray30" matches with "Both" 
+    #(not present in all scenarios)
   rate_data %>%
     pull(island) %>%
-    unique() %>%
-    sort() %>%
-    rev() -> nm
+    unique() -> nm
   
   col<-c("red4","blue4","gray30")
   names(col)<-nm
@@ -231,12 +230,10 @@ build_svt_plot<-function(data1,sec_isle,data2){
 
 ### Static mode
 build_svt_static_plot<-function(data){
-  #reverse naming order to match rate plot
+  #naming order matches how data are built
   data %>%
     pull(island) %>%
-    unique() %>%
-    sort() %>%
-    rev() -> nm
+    unique() -> nm
   
   col<-c("red4","blue4")
   names(col)<-nm
@@ -271,9 +268,7 @@ build_svt_static_plot<-function(data){
 #### Create Function to Build Schematic of Islands and Mainland=====================================
 ### Develop DF
 build_schematic_df<-function(nm,a1,d1,sec_isle="no",a2,d2){
-  #to match rate and spp v time plots
-  nm<-sort(nm,decreasing=TRUE)
-  
+  nm_vec<-nm
   reps<-104
   
   tibble(
@@ -283,13 +278,13 @@ build_schematic_df<-function(nm,a1,d1,sec_isle="no",a2,d2){
     mainy=c(0,
             seq(0,100,length.out=reps-3),
             100,0),
-    island1=rep(nm[1],reps),
+    island1=rep(nm_vec[1],reps),
     a1=rep(a1,reps),
     d1=rep(d1,reps),
   ) %>%
     {if(sec_isle=="yes") bind_cols(.,
       tibble(
-        island2=rep(nm[2],reps),
+        island2=rep(nm_vec[2],reps),
         a2=rep(a2,reps),
         d2=rep(d2,reps),
       )
@@ -313,12 +308,12 @@ data %>%
   ggplot() +
   #wavy vertical line to designate mainland boundary with text
   geom_polygon(aes(x=mainx,y=mainy),
-               fill="burlywood",alpha=0.8) +
+               fill="burlywood",color="black",alpha=0.8) +
   annotate("text",x=10,y=50,label="Mainland",size=6,fontface=2) +
   #island 1 shape and text
   geom_circle(data=. %>% filter(mainx==xref,mainy==yref1),
-              aes(x0=mainx+d1+a1,y0=yref1,r=a1),
-              fill="green1",color="darkred",linewidth=4,alpha=0.3) +
+              aes(x0=mainx+d1+a1,y0=yref1,r=a1,linewidth=0.5),
+              fill="green1",color="darkred",alpha=0.3) +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
             aes(x=mainx+d1+a1,y=yref1,
                 label=paste0(island1,
@@ -353,8 +348,8 @@ else if(sec_isle=="yes"){
   is1_plot +
   #island 2 shape and text
   geom_circle(data = . %>% filter(mainx==xref,mainy==yref2),
-              aes(x0=mainx+d2+a2,y0=yref2,r=a2),
-              fill="green1",color="darkblue",linewidth=4,alpha=0.3) +
+              aes(x0=mainx+d2+a2,y0=yref2,r=a2,linewidth=0.5),
+              fill="green1",color="darkblue",alpha=0.3) +
   geom_text(data= . %>% filter(mainx==xref,mainy==yref2),
             aes(x=mainx+d2+a2,y=yref2,
                 label=paste0(island2,

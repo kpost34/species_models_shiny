@@ -40,10 +40,20 @@ ui<-navbarPage("Species Models App",
             ),
             #custom panel has various inputs
             tabPanel(title=scenarios1_ib[2],
-              #checkbox group to display each plot
-              checkboxGroupInput(inputId="chkgrp_plotoutputs_ib",
-                                 choices=plotoutputs_ib,selected=plotoutputs_ib,
-                                 label="Select which output(s) to display"),
+              #checkboxes to select what to output
+              #h5(strong()) is equivalent to a shiny input label
+              h5(strong("Select which output(s) to display")), 
+              checkboxInput(inputId="chk_schematicOut_ib",
+                            label="schematic",
+                            value=TRUE),
+              #div compresses vertical spacing among checkboxes to resemble checkboxGroupInput
+              div(checkboxInput(inputId="chk_rateOut_ib",
+                            label="rate plot",
+                            value=TRUE),
+                  style="margin-top: -10px; margin-bottom: -10px"),
+              checkboxInput(inputId="chk_svtOut_ib",
+                            label="spp v time plot",
+                            value=TRUE),
               #species pool slider (above tabs)
               sliderInput(inputId="sld_p_ib",value=100,min=20,max=200,step=10,
                           label="Number of species on mainland (p)"
@@ -162,6 +172,7 @@ ui<-navbarPage("Species Models App",
 # new output
   # 2) add a radio button in custom specifications to turn on/off each output
   # 3) add pictures of MacArthur and Wilson (maybe in user guide)
+# linewidth arg in geom_circle does not appear to do anything
 
 
 
@@ -170,9 +181,10 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# colored arrows and circle borders to match plots
-# corrected inconsistencies in labels in plots and schematic
-# added code annotations
+# added checkboxes which toggle plot displays for custom settings
+# added thick border around islands
+# fixed discrepancies (which remained after previous commit) regarding names, colors, and order
+  #of island among the three plots
 
 
 

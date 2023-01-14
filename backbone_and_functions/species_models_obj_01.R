@@ -3,7 +3,7 @@
 
 
 
-#### Scenario and Plot Options======================================================================
+#### Scenario Options===============================================================================
 ### Choices for first radio button
 #choose between a scenario or custom settings
 scenarios1_ib<-c("scenario (e.g., large vs small islands)"="scenario",
@@ -16,13 +16,6 @@ scenarios2_ib<-c("large vs small islands"="lvs",
                 "near vs distant islands"="nvd",
                 "large, near vs small, distant islands"="lnvsd",
                 "large, distant vs small, near islands"="ldvsn")
-
-
-### Plot output choices
-plotoutputs_ib<-c("schematic"="schematic",
-                  "rate plot"="rate",
-                  "spp v time plot"="svt")
-
 
 
 
@@ -61,8 +54,8 @@ sc4_text_ib<-"Scenario 4 text"
 
 ### Sc1
 sc1_rateDF_ib <- bind_rows(
-  build_rate_static_df(island="small island",d=1000,a=1000,rate="Extinction"),
   build_rate_static_df(island="large island",d=1000,a=5000,rate="Extinction"),
+  build_rate_static_df(island="small island",d=1000,a=1000,rate="Extinction"),
   #note: area does not affect colonization rate
   build_rate_static_df(island="both islands",d=1000,a=1000,rate="Colonization")
   ) 
@@ -94,8 +87,8 @@ sc4_rateDF_ib <- bind_rows(
 
 ### Sc1
 sc1_rate_eqDF_ib<-bind_rows(
-  build_eq_df(island="small island",a=1000,d=1000),
-  build_eq_df(island="large island",a=5000,d=1000)
+  build_eq_df(island="large island",a=5000,d=1000),
+  build_eq_df(island="small island",a=1000,d=1000)
 )
 
 ### Sc2
@@ -122,8 +115,9 @@ sc4_rate_eqDF_ib<-bind_rows(
 #build each scenario spptDF separately to make switch() in reactive({}) easier to read
 ### Sc1
 sc1_spptDF_ib<-bind_rows(
-  build_svt_static_df(isle="small island", d=1000,a=1000),
-  build_svt_static_df(isle="large island", d=1000,a=5000)
+  build_svt_static_df(isle="large island", d=1000,a=5000),
+  build_svt_static_df(isle="small island", d=1000,a=1000)
+  
 )
   
 ### Sc2

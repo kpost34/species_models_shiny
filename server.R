@@ -57,63 +57,19 @@ server<-function(input,output,session){
     reset("Sidebar")
   })
   
-
-  # show("plot_cust_schematic_ib")
-  # show("plotly_cust_rate_ib")
-  # show("plotly_cust_sppt_ib")
   
-  ### Toggle outputs for custom settings
-  # observeEvent({
-  #   if(input$chkgrp_plotoutputs_ib=="schematic"){
-  #     show("plot_cust_schematic_ib")
-  #     hide("plotly_cust_rate_ib")
-  #     hide("plotly_cust_sppt_ib")
-  #   }
-  #   if(input$chkgrp_plotoutputs_ib=="rate"){
-  #     show("plotly_cust_rate_ib")
-  #     hide("plot_cust_schematic_ib")
-  #     hide("plotly_cust_sppt_ib")
-  #   }
-  #   if(input$chkgrp_plotoutputs_ib=="svt"){
-  #     show("plotly_cust_sppt_ib")
-  #     hide("plot_cust_schematic_ib")
-  #     hide("plotly_cust_rate_ib")
-  #   }
-  #   if(is.na(input$chkgrp_plotoutputs_ib)){
-  #     hide("plotly_cust_sppt_ib")
-  #     hide("plot_cust_schematic_ib")
-  #     hide("plotly_cust_rate_ib")
-  #   }
-  # })
-  
-  observeEvent(input$chkgrp_plotoutputs_ib,{
-    if(input$chkgrp_plotoutputs_ib=="schematic"){
-      show("plot_cust_schematic_ib")
-    } else{
-      hide("plot_cust_schematic_ib")
-    }
-    if(input$chkgrp_plotoutputs_ib=="rate"){
-      show("plotly_cust_rate_ib")
-    } else{
-      hide("plotly_cust_rate_ib")
-    }
-    if(input$chkgrp_plotoutputs_ib=="svt"){
-      show("plotly_cust_sppt_ib")
-    } else{
-      hide("plotly_cust_sppt_ib")
-    }
-  },ignoreInit=TRUE,ignoreNULL=FALSE)
+  ### Toggle plot outputs of custom settings
+  observeEvent(input$chk_schematicOut_ib,{
+    toggle("plot_cust_schematic_ib")
+  },ignoreInit=TRUE)
 
-  # observeEvent(input$chkgrp_plotoutputs_ib,{
-  # observe({
-  #   toggle("plot_cust_schematic_ib",
-  #          condition=input$chkgrp_plotoutputs_ib=="schematic")
-  #   toggle("plotly_cust_rate_ib",
-  #          condition=input$chkgrp_plotoutputs_ib=="rate")
-  #   toggle("plotly_cust_sppt_ib",
-  #          condition=input$chkgrp_plotoutputs_ib=="svt")
-  #   }
-  # )
+  observeEvent(input$chk_rateOut_ib,{
+    toggle("plotly_cust_rate_ib")
+  },ignoreInit=TRUE)
+  
+  observeEvent(input$chk_svtOut_ib,{
+    toggle("plotly_cust_sppt_ib")
+  },ignoreInit=TRUE)
 
   
 
