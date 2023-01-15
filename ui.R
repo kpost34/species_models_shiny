@@ -40,75 +40,78 @@ ui<-navbarPage("Species Models App",
             ),
             #custom panel has various inputs
             tabPanel(title=scenarios1_ib[2],
-              #checkboxes to select what to output
-              #h5(strong()) is equivalent to a shiny input label
-              h5(strong("Select which output(s) to display")), 
-              checkboxInput(inputId="chk_schematicOut_ib",
-                            label="schematic",
-                            value=TRUE),
-              #div compresses vertical spacing among checkboxes to resemble checkboxGroupInput
-              div(checkboxInput(inputId="chk_rateOut_ib",
-                            label="rate plot",
-                            value=TRUE),
-                  style="margin-top: -10px; margin-bottom: -10px"),
-              checkboxInput(inputId="chk_svtOut_ib",
-                            label="spp v time plot",
-                            value=TRUE),
-              #species pool slider (above tabs)
-              sliderInput(inputId="sld_p_ib",value=100,min=20,max=200,step=10,
-                          label="Number of species on mainland (p)"
-              ),
-            hr(),
-            
+              #output selector
+              h4(strong("Plots")),
+                #checkboxes to select what to output
+                #h5(strong()) is equivalent to a shiny input label
+                h5(strong("Select which output(s) to display")), 
+                checkboxInput(inputId="chk_schematicOut_ib",
+                              label="schematic",
+                              value=TRUE),
+                #div compresses vertical spacing among checkboxes to resemble checkboxGroupInput
+                div(checkboxInput(inputId="chk_rateOut_ib",
+                                  label="rate plot",
+                                  value=TRUE),
+                    style="margin-top: -10px; margin-bottom: -10px"),
+                checkboxInput(inputId="chk_svtOut_ib",
+                              label="spp v time plot",
+                              value=TRUE),
+              hr(style = "border-top: 1px solid #000000;"),
+              h4(strong("Species Pool & Time")),
+                #species pool slider (above tabs)
+                sliderInput(inputId="sld_p_ib",value=100,min=20,max=200,step=10,
+                            label="Number of species on mainland (p)"),
+                #time slider (below tabs)
+                sliderInput(inputId="sld_t_ib",value=50,min=20,max=100,step=10,
+                            label="Length of time (t)"),
+              hr(style = "border-top: 1px solid #000000;"),
+              h5(em("Adjust inputs for each island")),
             tabsetPanel(id="custom_tabset_ib",type="pills",
                         
               #Island 1 ui
               tabPanel(title="Island 1",
-                h5(strong("Immigration")),
-                numericInput(inputId="num_d1_ib",value=1000,min=100,max=10000,
-                             label="Distance from mainland (d; 100-10,000)"),
-                sliderInput(inputId="sld_phi1_ib",value=.0002,min=0,max=.001,step=.0002,
-                             label="Distance decay of colonization rate 
-                             (\u03d5)"),
-                sliderInput(inputId="sld_c1_ib",value=0.6,min=0.1,max=1,step=0.05,
-                             label="Mean colonization rate over all species (c)"),
-                hr(),
-                h5(strong("Extinction")),
-                  numericInput(inputId="num_a1_ib",value=1200,min=100,max=10000,
-                               label="Area of island 1 (a; 100-10,000)"),
-                  sliderInput(inputId="sld_ep1_ib",value=.0006,min=0,max=.001,step=.0002,
-                               label="Effect of area on extinction 
-                               (\u03b5)"),
-                hr(),
+                h4(strong("Immigration")),
+                  numericInput(inputId="num_d1_ib",value=1000,min=100,max=10000,
+                               label="Distance from mainland (d; 100-10,000)"),
+                  sliderInput(inputId="sld_phi1_ib",value=.0002,min=0,max=.001,step=.0002,
+                               label="Distance decay of colonization rate 
+                               (\u03d5)"),
+                  sliderInput(inputId="sld_c1_ib",value=0.6,min=0.1,max=1,step=0.05,
+                               label="Mean colonization rate over all species (c)"),
+                # hr(style = "border-top: 1px solid #000000;"),
+                br(),
+                h4(strong("Extinction")),
+                    numericInput(inputId="num_a1_ib",value=1200,min=100,max=10000,
+                                 label="Area of island 1 (a; 100-10,000)"),
+                    sliderInput(inputId="sld_ep1_ib",value=.0006,min=0,max=.001,step=.0002,
+                                 label="Effect of area on extinction 
+                                 (\u03b5)"),
               ),
               
               #Island 2 ui
               tabPanel(title="Island 2",
-                h5(strong("Immigration")),
-                numericInput(inputId="num_d2_ib",value=1000,min=100,max=10000,
-                             label="d (100-10,000)"),
-                sliderInput(inputId="sld_phi2_ib",value=.0002,min=0,max=.001,step=.0002,
-                             label="\u03d5"),
-                sliderInput(inputId="sld_c2_ib",value=0.6,min=0.1,max=1,step=0.05,
-                             label="c"),
-                hr(),
-                h5(strong("Extinction")),
-                numericInput(inputId="num_a2_ib",value=1200,min=100,max=10000,
-                             label="a (100-10,000)"),
-                sliderInput(inputId="sld_ep2_ib",value=.0006,min=0,max=.001,step=.0002,
-                             label="\u03b5")
+                h4(strong("Immigration")),
+                  numericInput(inputId="num_d2_ib",value=1000,min=100,max=10000,
+                               label="d (100-10,000)"),
+                  sliderInput(inputId="sld_phi2_ib",value=.0002,min=0,max=.001,step=.0002,
+                               label="\u03d5"),
+                  sliderInput(inputId="sld_c2_ib",value=0.6,min=0.1,max=1,step=0.05,
+                               label="c"),
+                hr(style = "border-top: 1px solid #000000;"),
+                h4(strong("Extinction")),
+                  numericInput(inputId="num_a2_ib",value=1200,min=100,max=10000,
+                               label="a (100-10,000)"),
+                  sliderInput(inputId="sld_ep2_ib",value=.0006,min=0,max=.001,step=.0002,
+                               label="\u03b5")
               )
             ),
-            hr(),
-            #time slider (below tabs)
-            sliderInput(inputId="sld_t_ib",value=50,min=20,max=100,step=10,
-                          label="Length of time (t)"),
+            hr(style = "border-top: 1px solid #000000;"),
             #display second island (below tabs)
-            radioButtons(inputId="rad_is2_ib",label="Display second island on plots?",
+            radioButtons(inputId="rad_is2_ib",label="Display Island 2 on plots?",
                            choices=c("no","yes"),selected="no"),
             br(),
             #add reset button
-            actionButton("reset_ib","Reset to initial values")
+            actionButton("reset_ib","Reset all values")
             )
           )
         )
@@ -169,11 +172,12 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-# new output
-  # 2) add a radio button in custom specifications to turn on/off each output
-  # 3) add pictures of MacArthur and Wilson (maybe in user guide)
-# linewidth arg in geom_circle does not appear to do anything
 
+
+
+#LATER
+#IB
+#add pictures of MacArthur and Wilson (perhaps in user guide)
 
 
 # DONE
@@ -181,10 +185,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# added checkboxes which toggle plot displays for custom settings
-# added thick border around islands
-# fixed discrepancies (which remained after previous commit) regarding names, colors, and order
-  #of island among the three plots
+#added text, formatted text, thickened horizontal lines, and created more space in UI of
+  #custom settings to improve UX
 
 
 
