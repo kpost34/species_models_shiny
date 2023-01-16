@@ -17,7 +17,17 @@ plot_power_mod<-function(data,c,z,col){
     theme_bw()
 }
 
+
 ### Power law on log-log scale
+plot_powerlog_mod<-function(data,c,z,col){
+  data %>%
+  ggplot(aes(x=log_a)) +
+  ggtitle("Power Law: Log-log scale") +
+  geom_function(fun = ~log10(c) + z*.x,color="darkgreen") +
+  labs(x="log10(Area)",
+       y="log10(No. of Species)") +
+  theme_bw()
+}
 
 
 #### Create Functions to Filter and Plot on Different Scales========================================
