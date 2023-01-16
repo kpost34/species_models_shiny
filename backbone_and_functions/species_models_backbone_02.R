@@ -1,8 +1,8 @@
 #Created by Keith Post on 1/14/23
 #Backbone code for Species Models App: Species-Area Curves
 
-pacman::p_load(here,tidyverse,sars)
-source(here("backbone_and_functions","species_models_func_01.R"))
+pacman::p_load(here,tidyverse,sars,cowplot)
+source(here("backbone_and_functions","species_models_func_02.R"))
 
 ###### Species-Area Curves===========================================================================
 #### Defining the relationship
@@ -12,22 +12,34 @@ source(here("backbone_and_functions","species_models_func_01.R"))
 # S: number of species in a patch of size A
 # c & z: fitted constants
 
-# Create DF and scalars
-sar_aDF<-tibble(A = 10^(-5:10))
-                  
+## Create DF and scalars
+# UI inputs
+a_start<-10^-5
+a_end<-10^10
 c<-2.5
 z<-0.35
 
+# Build reactive DF
+sar_aDF<-tibble(a=seq(a_start,a_end,length.out=20),
+                log_a=log10(a))
+
+## Make plots
 # Plot with geom_function
 sar_aDF %>%
-  ggplot(aes(x=A)) +
+  ggplot(aes(x=a)) +
   ggtitle("Power Law: Linear Scale") +
   geom_function(fun=~c*.x^z,color="darkgreen") +
-  scale_x_continuous(expand=c(0,0),limits=c(0,NA)) +
-  scale_y_continuous(expand=c(0,0),limits=c(0,NA)) +
+  # scale_x_continuous(expand=c(0,0),limits=c(0,NA)) +
+  # scale_y_continuous(expand=c(0,0),limits=c(0,NA)) +
   labs(x="Area (ha)",
        y="No. of Species") +
   theme_bw()
+
+
+# Plot with custom function
+sar_aDF %>%
+  plot_power_mod(c=c,z=z,col="darkgreen")
+
 
 
 ## Often plotted as log-log relation to make curve linear
@@ -35,15 +47,10 @@ sar_aDF %>%
 # b: intercept (equal to log c)
 # z: slope
 
-# Create DF 
-sar_aDF %>%
-  mutate(log_A=log10(A)) -> sar_logaDF
-
-
-
-# Plot
-sar_logaDF %>% 
-  ggplot(aes(x=log_A)) +
+## Make plots
+# Plot with geom_function
+sar_aDF %>% 
+  ggplot(aes(x=log_a)) +
   ggtitle("Power Law: Log-log scale") +
   geom_function(fun = ~log10(c) + z*.x,color="darkgreen") +
   # scale_x_continuous(expand=c(0,0),limits=c(0,NA)) +
@@ -51,6 +58,10 @@ sar_logaDF %>%
   labs(x="log10(Area (ha))",
        y="log10(No. of Species)") +
   theme_bw()
+
+# Plot with custom function
+sar_aDF %>%
+  plot_powerlog_mod(c=c,z=z,col="darkgreen")
   
 
 
@@ -58,8 +69,11 @@ sar_logaDF %>%
  ### Semi-log model
  ## Equation and parameters
  # S = log(cA^z) = log(c) + zlog(A)
-sar_logaDF %>%
-  ggplot(aes(x=log_A)) +
+
+## Make plots
+# Plot with geom_function
+sar_aDF %>%
+  ggplot(aes(x=log_a)) +
   ggtitle("Semi-log model: log Area-linear species") +
   geom_function(fun=~log10(c) + z*.x) +
   # scale_x_continuous(expand=c(0,0),limits=c(0,NA)) +
@@ -67,6 +81,8 @@ sar_logaDF %>%
   labs(x="log10(Area (ha))",
        y="No. of Species") +
   theme_bw()
+
+# Plot with custom function
 
 
 
@@ -110,26 +126,11 @@ sars_dfs %>%
   filter(name=="aegean") %>%
   plot_semilog_sars(col="darkblue",reg=TRUE)
 
-
+#all plots
 sars_dfs %>%
   filter(name=="aegean") %>%
-  ggplot(aes(x=a,y=s)) +
-  geom_point() +
-  theme_bw()
+  plot_sars_grid(col="darkgreen")
 
-#log-log
-sars_dfs %>%
-  filter(name=="aegean") %>%
-  ggplot(aes(x=log10(a),y=log10(s))) +
-  geom_point() +
-  theme_bw() 
-
-#semi-log
-sars_dfs %>%
-  filter(name=="aegean") %>%
-  ggplot(aes(x=log10(a),y=s)) +
-  geom_point() +
-  theme_bw()
 
 
 galap %>%
@@ -176,7 +177,7 @@ aegean
 
 
 #### LAST COMMIT
-# began creating backbone code and functions for species-area curves
+# continued building out backbone code and developing functions for s-a curves
 
 
 
