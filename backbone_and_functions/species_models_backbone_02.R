@@ -21,7 +21,9 @@ z<-0.35
 
 ## Build reactive DF
 sar_aDF<-tibble(a=seq(a_start,a_end,length.out=20),
-                log_a=log10(a))
+                log_a=log10(a),
+                c=rep(c,20),
+                z=rep(z,20))
 
 ### Make plots
 ## Plot with geom_function

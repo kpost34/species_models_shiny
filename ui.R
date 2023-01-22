@@ -9,6 +9,7 @@ pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce)
 
 #source in functions and objects
 source(here("backbone_and_functions","species_models_func_01.R"))
+source(here("backbone_and_functions","species_models_func_02.R"))
 source(here("backbone_and_functions","species_models_obj_01.R"))
 
 
@@ -22,7 +23,7 @@ ui<-navbarPage("Species Models App",
   ##### Create first navbarMenu (Island Biogeography=ib)============================================
   navbarMenu(title="Theory of Island Biogeography",
     #### App component for custom specifications----------------------------------------------------
-    tabPanel(title="Island Biogeography Simulator",id="app_ib1",
+    tabPanel(title="Mini-app",id="app_ib1",
       #scenario vs custom & scenarios radio buttons
       radioButtons(inputId="rad_scenario1_ib",choices=scenarios1_ib,selected=character(0),
                    inline=TRUE,label="Choose an option"),
@@ -136,7 +137,36 @@ ui<-navbarPage("Species Models App",
   ##### Create second navbarMenu (Species-Area Curves=sa)===========================================
   navbarMenu(title="Species-Area Curves",
     #### App component------------------------------------------------------------------------------
-    tabPanel(title="Species-Area Curve Generator",id="app_sa1",
+    tabPanel(title="Mini-app",id="app_sa1",
+      sidebarLayout(
+        sidebarPanel(width=3,position="left",
+          #define variables and describe models
+          h3(strong("Models")),
+            h4(strong("Variables")),
+               h5("S = number of species"),
+               h5("A = habitat area"),
+            h4(strong("Power Law")),
+              h5("linear space: S = cA^z"),
+              h5("log-log space: log(S) = log(c) + zlog(A)"),
+            h4(strong("Semilog Model")),
+              h5("S = log(c) + zlog(A)"),
+          hr(),
+          #three simple, slider inputs: a (start and end), c, and z
+          sliderInput(inputId="sld_a_sa",value=c(-5,5),min=-10,max=10,step=1,
+                      label="x in A (10^x)"),
+          sliderInput(inputId="sld_c_sa",value=5,min=2,max=13,step=1,
+                      label="c"),
+          sliderInput(inputId="sld_z_sa",value=.25,min=.1,max=.35,step=.05,
+                      label="z")
+          ),
+        mainPanel(
+          splitLayout(
+            plotlyOutput("plotly_draw_plline_sa"),
+            plotlyOutput("plotly_draw_pllog_sa")
+          ),
+          plotly("plotly_draw_semilog_sa")            
+        )
+      )
     ),
   
     #### User guide component-----------------------------------------------------------------------
@@ -147,7 +177,7 @@ ui<-navbarPage("Species Models App",
   ##### Create third navbarMenu (Rarefaction=rf)====================================================
   navbarMenu(title="Rarefaction",
     #### App component------------------------------------------------------------------------------
-    tabPanel(title="Rarefaction Simulator",id="app_rf1"
+    tabPanel(title="Mini-app",id="app_rf1"
     ),
   
     #### User guide component-----------------------------------------------------------------------
@@ -185,9 +215,7 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-#added text, formatted text, thickened horizontal lines, and created more space in UI of
-  #custom settings to improve UX
-
+#began developing UI and server code for species-area curves mini-app
 
 
 

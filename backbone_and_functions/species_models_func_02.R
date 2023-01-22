@@ -14,7 +14,10 @@ plot_power_mod<-function(data,c,z,col){
     scale_y_continuous(expand=c(0,0),limits=c(0,NA)) +
     labs(x="Area",
          y="No. of Species") +
-    theme_bw()
+    theme_bw() -> p
+  
+  p %>%
+    ggplotly()
 }
 
 
