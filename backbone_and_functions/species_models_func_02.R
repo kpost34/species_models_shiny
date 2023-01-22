@@ -3,7 +3,7 @@
 
 
 
-#### Create Functions to Draw Models================================================================
+#### Create Functions to Plot SARS Models===========================================================
 ### Power law on linear scale
 plot_power_mod<-function(data,c,z,col){
   data %>%
@@ -30,73 +30,92 @@ plot_powerlog_mod<-function(data,c,z,col){
 }
 
 
-#### Create Functions to Filter and Plot on Different Scales========================================
+### Semilog model
+plot_semilog_mod<-function(data,c,z,col){
+  data %>%
+    ggplot(aes(x=log_a)) +
+    ggtitle("Semi-log model: log Area-linear species") +
+    geom_function(fun=~log10(c) + z*.x,color="darkgreen") +
+    labs(x="log10(Area)",
+         y="No. of Species") +
+    theme_bw()
+}
+
+
+#### Create Functions to Plot SARS Data=============================================================
 ### Single plots
 ## Linear
-plot_linear_sars<-function(data,col,reg=FALSE){
+plot_power_sars<-function(data,col="black",reg=FALSE,mod,col_reg){
   data %>%
+    {if(reg==TRUE) 
+    mutate(.,lwr=confint2(mod)[1,1]*a^confint2(mod)[2,1],
+           upr=confint2(mod)[1,2]*a^confint2(mod)[2,2])
+    else .} %>%
     ggplot(aes(x=a,y=s)) +
     ggtitle("Power Law: Linear") +
-    geom_point(color=col) +
-    labs(x="Area (hectares)",
+    geom_point(color="black") +
+    labs(x="Area",
          y="No. of species") +
     theme_bw() -> p
+
   
   if(reg){
     p +
-      stat_smooth(method="nls",
-                  formula=y~c*x^z,
-                  method.args=list(start=c(c=2.5,z=.35)),
-                  se=FALSE)
+      #model
+      geom_function(fun=~coef(mod)[1]*.x^coef(mod)[2],linewidth=1.2,color=col_reg) +
+      #CIs
+      geom_ribbon(aes(ymin=lwr,ymax=upr),fill="gray50",alpha=0.2) -> p
   }
+  return(p)
 }
 
 
 ## Log-log
-plot_log_sars<-function(data,col,reg=FALSE){
+plot_powerlog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
   data %>%
     ggplot(aes(x=log10(a),y=log10(s)),) +
     ggtitle("Power Law: Log") +
     geom_point(color=col) +
-    labs(x="log10(Area (hectares))",
+    labs(x="log10(Area)",
          y="log10(No. of species)") +
     theme_bw() -> p
   
   if(reg){
     p +
-      geom_smooth(method="lm")
+      geom_smooth(method="lm",color=col_reg) -> p
   }
+  return(p)
 }
 
 
 ## Semi-log
-plot_semilog_sars<-function(data,col,reg=TRUE){
+plot_semilog_sars<-function(data,col="black",reg=TRUE,col_reg=NA){
   data %>%
     ggplot(aes(x=log10(a),y=s)) +
     ggtitle("Semilog Model") +
     geom_point(color=col) +
-    labs(x="log10(Area (hectares))",
+    labs(x="log10(Area)",
          y="No. of species") +
     theme_bw()  -> p
   
   if(reg){
     p +
-      # geom_smooth(aes(x=log10(a),y=s),method="lm")
-      geom_smooth(method="lm")
+      geom_smooth(method="lm",color=col_reg) -> p
   }
+  return(p)
 }
 
 
 ### Multiple plots
-plot_sars_grid<-function(data,col){
+plot_sars_grid<-function(data,mod,col_reg,reg=TRUE){
   data %>%
-    plot_linear_sars(col=col,reg=TRUE) -> p1a
+    plot_power_sars(reg=reg,mod=mod,col_reg=col_reg) -> p1a
   
   data %>%
-    plot_log_sars(col=col,reg=TRUE) -> p1b
+    plot_powerlog_sars(reg=reg,col_reg=col_reg) -> p1b
   
   data %>%
-    plot_semilog_sars(col=col,reg=TRUE) -> p2
+    plot_semilog_sars(reg=reg,col_reg=col_reg) -> p2
   
   plot_grid(p1a,p1b,p2,nrow=2)
   
