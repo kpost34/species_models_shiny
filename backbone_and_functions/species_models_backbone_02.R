@@ -115,8 +115,7 @@ sars_dfs %>%
 
 ### aegean only
 ## Power law: linear
-# Create model and grab parameters and CIs
-#create nls object
+# Create model 
 power_nls<-nls(s~c*a^z,
     data=sars_dfs %>%
       filter(name=="aegean") %>%
@@ -126,7 +125,6 @@ power_nls<-nls(s~c*a^z,
 
 # Plot data and model
 #hard code
-reg<-TRUE
 sars_dfs %>%
   filter(name=="aegean") %>%
   mutate(lwr=confint2(power_nls)[1,1]*a^confint2(power_nls)[2,1],
@@ -148,12 +146,47 @@ sars_dfs %>%
 
 
 
-#power law: log-log
+## Power law: log-log
+# Create model
+powerlog_lm<-sars_dfs %>%
+  filter(name=="aegean") %>%
+  mutate(log_a=log10(a),
+         log_s=log10(s)) %>%
+  lm(formula=log_s~log_a)
+
+#plot model from predict(lm object)
+sars_dfs %>%
+  filter(name=="aegean") %>%
+  mutate(log_a=log10(a),
+         pred_log_s=predict(powerlog_lm)) %>%
+  ggplot() +
+  geom_line(aes(x=log_a,y=pred_log_s)) +
+  theme_bw()
+
+# Plot data and model (using function)
 sars_dfs %>%
   filter(name=="aegean") %>%
   plot_powerlog_sars(reg=TRUE,col_reg="darkgreen")
 
-#semi-log
+
+
+## Semi-log model
+# Create model
+semilog_lm<-sars_dfs %>%
+  filter(name=="aegean") %>%
+  mutate(log_a=log10(a)) %>%
+  lm(formula=s~log_a)
+
+#plot model from predict(lm object)
+sars_dfs %>%
+  filter(name=="aegean") %>%
+  mutate(log_a=log10(a),
+         pred_s=predict(semilog_lm)) %>%
+  ggplot() +
+  geom_line(aes(x=log_a,y=pred_s)) +
+  theme_bw()
+
+# Plot data and model (using function)
 sars_dfs %>%
   filter(name=="aegean") %>%
   plot_semilog_sars(reg=TRUE,col_reg="darkgreen")
@@ -164,8 +197,68 @@ sars_dfs %>%
   plot_sars_grid(reg=TRUE,mod=power_nls,col_reg="darkgreen")
 
 
+### aegean2
+## Create model
+power_nls_aegean2<-nls(s~c*a^z,
+    data=sars_dfs %>%
+      filter(name=="aegean2") %>%
+      select(-name),
+    start=list(c=c,z=z))
+
+## Output all plots
+sars_dfs %>%
+  filter(name=="aegean2") %>%
+  plot_sars_grid(reg=TRUE,mod=power_nls_aegean2,col_reg="darkblue")
 
 
+### galap
+## Create model
+power_nls_galap<-nls(s~c*a^z,
+    data=sars_dfs %>%
+      filter(name=="galap") %>%
+      select(-name),
+    start=list(c=c,z=z))
+
+## Output all plots
+sars_dfs %>%
+  filter(name=="galap") %>%
+  plot_sars_grid(reg=TRUE,mod=power_nls_galap,col_reg="darkred")
+
+
+### niering
+## Create model
+c<-1
+z<-0.4
+power_nls_niering<-nls(s~c*a^z,
+    data=sars_dfs %>%
+      filter(name=="niering") %>%
+      select(-name),
+    start=list(c=c,z=z))
+
+
+## Output all plots
+sars_dfs %>%
+  filter(name=="niering") %>%
+  plot_sars_grid(reg=TRUE,mod=power_nls_niering,col_reg="purple")
+
+
+
+#### Compare models
+### aegean
+## Plot
+sars_dfs %>%
+  filter(name=="aegean") %>%
+  plot_sars_grid(reg=TRUE,mod=power_nls,col_reg="darkgreen")
+
+## Pull model info
+tidy(powerlog_lm); tidy(semilog_lm)
+glance(powerlog_lm); glance(semilog_lm)
+glance(powerlog_lm) %>%
+  select(r.squared,rse=sigma,AIC)
+glance(semilog_lm) %>%
+  select(r.squared,rse=sigma,AIC)
+#compare R2 (since only one pred var) and sigma (=residual standard error)
+#here: semilog slightly better R2 but greater sigma
 
 
 #### App ideas
@@ -176,7 +269,7 @@ sars_dfs %>%
   #a) radio button--choose data set
   #b) plot data--linear, log-log, semilog
   #c) tinker with model over it (just to get a feel for it)
-#3) linear model for log-log of power law and semi-log model
+#3) create linear models for log-log of power law and semi-log model
 #4) compare results
 
 
@@ -185,11 +278,14 @@ sars_dfs %>%
 
 
 ### DONE
-# again, continuing developing backbone code and functions for s-a curves
+
+
 
 
 #### LAST COMMIT
-# continued building out backbone code and developing functions for s-a curves
+# cleaned up background script
+# outputted data and models for the remaining data sets in sars package
+# began comparing models
 
 
 
