@@ -169,6 +169,25 @@ ui<-navbarPage("Species Models App",
             #create inputs for fitting models
             radioButtons(inputId="rad_dataset_sa",choices=datasets_sa,selected=character(0),
                          label="Select a dataset to work with")
+            # checkboxInput(inputId="chk_modfitPowline_sa",
+            #               label=""
+          
+          
+          # h5(strong("Select which output(s) to display")), 
+          #       checkboxInput(inputId="chk_schematicOut_ib",
+          #                     label="schematic",
+          #                     value=TRUE),
+          #       #div compresses vertical spacing among checkboxes to resemble checkboxGroupInput
+          #       div(checkboxInput(inputId="chk_rateOut_ib",
+          #                         label="rate plot",
+          #                         value=TRUE),
+          #           style="margin-top: -10px; margin-bottom: -10px"),
+          #       checkboxInput(inputId="chk_svtOut_ib",
+          #                     label="spp v time plot",
+          #                     value=TRUE),
+          
+          
+          
         ),
         mainPanel(
           splitLayout(
@@ -178,7 +197,8 @@ ui<-navbarPage("Species Models App",
           br(),
           column(width=12,align="center",
             plotOutput("plotly_draw_semilog_sa",height="350px",width="80%")            
-          )
+          ),
+          hr(),
         )
       )
     ),
@@ -216,25 +236,29 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
+# SA
 # decide whether to alter approach for 'drawing' functions of sa mini-app so that they can be
   #fed into ggplotly (which can't take geom_function)
 # titles for mini-apps?
-#darken hr()
+# darken hr()
+# increase font size of plots, thicken plot lines/curves
+
 
 
 #LATER
 #IB
 #add pictures of MacArthur and Wilson (perhaps in user guide)
 #add text to explain scenarios 
+#change plot dimensions
 
 
 # DONE
 
 
 
+
 # LAST COMMIT
-# added server code to output power law plots and semilog model plot (via renderPlot)
-# adjusted sizes and alignmnet of plots
-# tinkered with UI spacing for sa mini-app
+#corrected issue with area slider
+#create reactive df of dataset via switch & for models
 
 

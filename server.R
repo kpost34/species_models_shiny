@@ -266,7 +266,7 @@ server<-function(input,output,session){
   ### Curve drawing
   ## Create reactive df
   curve_drawDF_sa<-reactive({
-    tibble(a=seq(input$sld_a_sa[1],input$sld_a_sa[2],length.out=20),
+    tibble(a=seq(10^input$sld_a_sa[1],10^input$sld_a_sa[2],length.out=20),
            log_a=log10(a)
     )
   })
@@ -294,6 +294,44 @@ server<-function(input,output,session){
   
   
   ### Model fitting
+  ## Create reactive df
+  model_fitDF_sa<-reactive({
+    switch(input$rad_dataset_sa,
+      "aegean"=aegean,
+      "aegean2"=aegean2,
+      "galap"=galap,
+      "niering"=niering)
+  })
+  
+  ## Create models
+  # Power law: linear (nls)
+  pl_nls_mod<-reactive({
+    nls(s~c*a^z,
+      data=model_fitDF_sa(),
+      start=list(c=5,z=.25)
+    )
+  })
+  
+  # Power law: log (lm)
+  pl_lm_mod<-reactive({
+    model_fit_DF_sa() %>%
+      mutate(log_a=log10(a),
+             log_s=log10(s)) %>%
+      lm(formula=log_s~log_a)
+  })
+    
+  
+  # Semilog (lm)
+  semilog_lm_mod<-reactive({
+    model_fit_DF_sa() %>%
+      mutate(log_a=log10(a)) %>%
+      lm(formula=s~log_a)
+  })
+    
+    
+  ## 
+  
+  
   
   
   ##### Rarefaction (=rf)===========================================================================
