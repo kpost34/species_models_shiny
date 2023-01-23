@@ -21,9 +21,7 @@ z<-0.35
 
 ## Build reactive DF
 sar_aDF<-tibble(a=seq(a_start,a_end,length.out=20),
-                log_a=log10(a),
-                c=rep(c,20),
-                z=rep(z,20))
+                log_a=log10(a))
 
 ### Make plots
 ## Plot with geom_function
@@ -285,9 +283,7 @@ glance(semilog_lm) %>%
 
 
 #### LAST COMMIT
-# cleaned up background script
-# outputted data and models for the remaining data sets in sars package
-# began comparing models
+
 
 
 

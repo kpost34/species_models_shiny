@@ -268,26 +268,33 @@ server<-function(input,output,session){
   curve_drawDF_sa<-reactive({
     tibble(a=seq(input$sld_a_sa[1],input$sld_a_sa[2],length.out=20),
            log_a=log10(a)
-           # c=rep(input$sld_c_sa,20),
-           # z=rep(input$sld_z_sa,20)
     )
   })
   
   ## Power law
   #linear scale
-  output$plotly_draw_plline_sa<-renderPlotly({
+  output$plotly_draw_plline_sa<-renderPlot({
     curve_drawDF_sa() %>%
       plot_power_mod(c=input$sld_c_sa,z=input$sld_z_sa,col="darkgreen") 
   })
   
   
   #log-log scale
+  output$plotly_draw_pllog_sa<-renderPlot({
+    curve_drawDF_sa() %>%
+      plot_powerlog_mod(c=input$sld_c_sa,z=input$sld_z_sa,col="darkgreen")
+  })
   
-          # 
-          #     plotlyOutput("plotly_draw_plline_sa"),
-          #   plotlyOutput("plotly_draw_pllog_sa")
-          # ),
-          # plotly("plotly_draw_semilog_sa")     
+  
+  ## Semilog model
+  output$plotly_draw_semilog_sa<-renderPlot({
+    curve_drawDF_sa() %>%
+      plot_semilog_mod(c=input$sld_c_sa,z=input$sld_z_sa,col="darkgreen")
+  })
+  
+  
+  ### Model fitting
+  
   
   ##### Rarefaction (=rf)===========================================================================
   #### UI-------------------------------------------------------------------------------------------

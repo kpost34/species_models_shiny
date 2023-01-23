@@ -14,10 +14,7 @@ plot_power_mod<-function(data,c,z,col){
     scale_y_continuous(expand=c(0,0),limits=c(0,NA)) +
     labs(x="Area",
          y="No. of Species") +
-    theme_bw() -> p
-  
-  p %>%
-    ggplotly()
+    theme_bw() 
 }
 
 
@@ -37,7 +34,7 @@ plot_powerlog_mod<-function(data,c,z,col){
 plot_semilog_mod<-function(data,c,z,col){
   data %>%
     ggplot(aes(x=log_a)) +
-    ggtitle("Semi-log model: log Area-linear species") +
+    ggtitle("Semi-log model") +
     geom_function(fun=~log10(c) + z*.x,color="darkgreen") +
     labs(x="log10(Area)",
          y="No. of Species") +

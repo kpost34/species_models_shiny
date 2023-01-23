@@ -11,7 +11,7 @@ pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce)
 source(here("backbone_and_functions","species_models_func_01.R"))
 source(here("backbone_and_functions","species_models_func_02.R"))
 source(here("backbone_and_functions","species_models_obj_01.R"))
-
+source(here("backbone_and_functions","species_models_obj_02.R"))
 
 
 
@@ -141,30 +141,44 @@ ui<-navbarPage("Species Models App",
       sidebarLayout(
         sidebarPanel(width=3,position="left",
           #define variables and describe models
-          h3(strong("Models")),
-            h4(strong("Variables")),
-               h5("S = number of species"),
-               h5("A = habitat area"),
-            h4(strong("Power Law")),
+          h4(strong("Variables")),
+             h5("S = number of species"),
+             h5("A = habitat area"),
+          h4(strong("Models")),
+            h5(strong("Power Law")),
               h5("linear space: S = cA^z"),
               h5("log-log space: log(S) = log(c) + zlog(A)"),
-            h4(strong("Semilog Model")),
+            h5(strong("Semilog Model")),
               h5("S = log(c) + zlog(A)"),
           hr(),
-          #three simple, slider inputs: a (start and end), c, and z
-          sliderInput(inputId="sld_a_sa",value=c(-5,5),min=-10,max=10,step=1,
-                      label="x in A (10^x)"),
-          sliderInput(inputId="sld_c_sa",value=5,min=2,max=13,step=1,
-                      label="c"),
-          sliderInput(inputId="sld_z_sa",value=.25,min=.1,max=.35,step=.05,
-                      label="z")
-          ),
+          #create inputs for drawing models
+          h4(strong("Drawing models")),
+          h5(em("Adjust inputs for species-area plots")),
+            #three simple, slider inputs: a (start and end), c, and z
+            sliderInput(inputId="sld_a_sa",value=c(-5,5),min=-10,max=10,step=1,
+                        #put label on two lines
+                        label=HTML("A (10^x) 
+                                   <br />Select x")),
+            sliderInput(inputId="sld_c_sa",value=5,min=2,max=13,step=1,
+                        label="c"),
+            sliderInput(inputId="sld_z_sa",value=.25,min=.1,max=.35,step=.05,
+                        label="z"),
+          br(),
+          hr(),
+          h4(strong("Model fitting")),
+            #create inputs for fitting models
+            radioButtons(inputId="rad_dataset_sa",choices=datasets_sa,selected=character(0),
+                         label="Select a dataset to work with")
+        ),
         mainPanel(
           splitLayout(
-            plotlyOutput("plotly_draw_plline_sa"),
-            plotlyOutput("plotly_draw_pllog_sa")
+            plotOutput("plotly_draw_plline_sa",height="350px"),
+            plotOutput("plotly_draw_pllog_sa",height="350px")
           ),
-          plotly("plotly_draw_semilog_sa")            
+          br(),
+          column(width=12,align="center",
+            plotOutput("plotly_draw_semilog_sa",height="350px",width="80%")            
+          )
         )
       )
     ),
@@ -202,12 +216,16 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-
+# decide whether to alter approach for 'drawing' functions of sa mini-app so that they can be
+  #fed into ggplotly (which can't take geom_function)
+# titles for mini-apps?
+#darken hr()
 
 
 #LATER
 #IB
 #add pictures of MacArthur and Wilson (perhaps in user guide)
+#add text to explain scenarios 
 
 
 # DONE
@@ -215,7 +233,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-#began developing UI and server code for species-area curves mini-app
-
+# added server code to output power law plots and semilog model plot (via renderPlot)
+# adjusted sizes and alignmnet of plots
+# tinkered with UI spacing for sa mini-app
 
 
