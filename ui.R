@@ -24,6 +24,7 @@ ui<-navbarPage("Species Models App",
   navbarMenu(title="Theory of Island Biogeography",
     #### App component for custom specifications----------------------------------------------------
     tabPanel(title="Mini-app",id="app_ib1",
+      titlePanel("Island Biogeography Mini-App"),
       #scenario vs custom & scenarios radio buttons
       radioButtons(inputId="rad_scenario1_ib",choices=scenarios1_ib,selected=character(0),
                    inline=TRUE,label="Choose an option"),
@@ -31,7 +32,7 @@ ui<-navbarPage("Species Models App",
       
       sidebarLayout(
         #name sidebarPanel for shinyjs code
-        div(id="Sidebar",sidebarPanel(width=3,position="left",
+        div(id="sidebar_ib",sidebarPanel(width=3,position="left",
           tabsetPanel(id="input_tabset_ib",type="hidden",
             #use a blank panel to open
             tabPanel(title="tab_blank_ib"),
@@ -138,8 +139,10 @@ ui<-navbarPage("Species Models App",
   navbarMenu(title="Species-Area Curves",
     #### App component------------------------------------------------------------------------------
     tabPanel(title="Mini-app",id="app_sa1",
+      titlePanel("Species-Area Curves Mini-App"),
       sidebarLayout(
-        sidebarPanel(width=3,position="left",
+        #name sidebarPanel for shinyjs code
+        div(id="sidebar_sa",sidebarPanel(width=3,position="left",
           #define variables and describe models
           h4(strong("Variables")),
              h5("S = number of species"),
@@ -150,7 +153,7 @@ ui<-navbarPage("Species Models App",
               h5("log-log space: log(S) = log(c) + zlog(A)"),
             h5(strong("Semilog Model")),
               h5("S = log(c) + zlog(A)"),
-          hr(),
+          hr(style = "border-top: 1px solid #000000;"),
           #create inputs for drawing models
           h4(strong("Drawing models")),
           h5(em("Adjust inputs for species-area plots")),
@@ -163,12 +166,15 @@ ui<-navbarPage("Species Models App",
                         label="c"),
             sliderInput(inputId="sld_z_sa",value=.25,min=.1,max=.35,step=.05,
                         label="z"),
+            #add reset button
+            actionButton("reset_sa","Reset all values"),
           br(),
-          hr(),
+          hr(style = "border-top: 1px solid #000000;"),
           h4(strong("Model fitting")),
             #create inputs for fitting models
             radioButtons(inputId="rad_dataset_sa",choices=datasets_sa,selected=character(0),
                          label="Select a dataset to work with")
+          )
             # checkboxInput(inputId="chk_modfitPowline_sa",
             #               label=""
           
@@ -239,9 +245,8 @@ ui<-navbarPage("Species Models App",
 # SA
 # decide whether to alter approach for 'drawing' functions of sa mini-app so that they can be
   #fed into ggplotly (which can't take geom_function)
-# titles for mini-apps?
-# darken hr()
 # increase font size of plots, thicken plot lines/curves
+# center reset buttons (sa and ib)
 
 
 
@@ -258,7 +263,9 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-#corrected issue with area slider
-#create reactive df of dataset via switch & for models
+# added and integrated a reset button
+# thickened horizontal lines
+# added mini-app titles
+# increased label sizes and linewidths for plots
 
 

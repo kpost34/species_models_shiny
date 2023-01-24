@@ -13,22 +13,22 @@ server<-function(input,output,session){
   ##### Island Biogeography (=ib)===================================================================
   #### UI-------------------------------------------------------------------------------------------
   ### Load IB mini-app with sidebar hidden
-  hide("Sidebar")
+  hide("sidebar_ib")
   
   ### Show sidebar if custom or specific scenario is selected and hide otherwise
   observeEvent(input$rad_scenario1_ib,{
     if(input$rad_scenario1_ib=="custom"){
-      show("Sidebar")
+      show("sidebar_ib")
     }
   })
   
   observeEvent(input$rad_scenario2_ib,{
-    show("Sidebar")
+    show("sidebar_ib")
   })
   
   observeEvent(input$rad_scenario1_ib,{
     if(input$rad_scenario1_ib=="scenario"){
-      hide("Sidebar")
+      hide("sidebar_ib")
     }
   })
   
@@ -54,7 +54,7 @@ server<-function(input,output,session){
   ### Reset button
   #resets all values in sidebar (custom UI panel)
   observeEvent(input$reset_ib, {
-    reset("Sidebar")
+    reset("sidebar_ib")
   })
   
   
@@ -260,7 +260,11 @@ server<-function(input,output,session){
   
   ##### Species-Area Curves (=sa)===================================================================
   #### UI-------------------------------------------------------------------------------------------
-  
+  ### Reset button
+  #resets all values in sidebar
+  observeEvent(input$reset_sa, {
+    reset("sidebar_sa")
+  })
   
   #### Back-end-------------------------------------------------------------------------------------
   ### Curve drawing

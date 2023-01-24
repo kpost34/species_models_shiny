@@ -9,12 +9,17 @@ plot_power_mod<-function(data,c,z,col){
   data %>%
     ggplot(aes(x=a)) +
     ggtitle("Power Law: Linear Scale") +
-    geom_function(fun=~c*.x^z,color=col) +
+    geom_function(fun=~c*.x^z,color=col,linewidth=1.5) +
     scale_x_continuous(expand=c(0,0),limits=c(0,NA)) +
     scale_y_continuous(expand=c(0,0),limits=c(0,NA)) +
     labs(x="Area",
          y="No. of Species") +
-    theme_bw() 
+    theme_bw() +
+    theme(plot.title=element_text(size=18,face="bold"),
+          axis.title=element_text(size=15,face="bold"),
+          axis.text=element_text(size=12),
+          text=element_text(family="Helvetica"),
+          plot.margin=margin(0,20,0,0)) 
 }
 
 
@@ -23,10 +28,14 @@ plot_powerlog_mod<-function(data,c,z,col){
   data %>%
   ggplot(aes(x=log_a)) +
   ggtitle("Power Law: Log-log scale") +
-  geom_function(fun = ~log10(c) + z*.x,color="darkgreen") +
+  geom_function(fun = ~log10(c) + z*.x,color=col,linewidth=1.5) +
   labs(x="log10(Area)",
        y="log10(No. of Species)") +
-  theme_bw()
+  theme_bw() +
+  theme(plot.title=element_text(size=18,face="bold"),
+        axis.title=element_text(size=15,face="bold"),
+        axis.text=element_text(size=12),
+        text=element_text(family="Helvetica")) 
 }
 
 
@@ -35,10 +44,14 @@ plot_semilog_mod<-function(data,c,z,col){
   data %>%
     ggplot(aes(x=log_a)) +
     ggtitle("Semi-log model") +
-    geom_function(fun=~log10(c) + z*.x,color="darkgreen") +
+    geom_function(fun=~log10(c) + z*.x,color=col,linewidth=1.5) +
     labs(x="log10(Area)",
          y="No. of Species") +
-    theme_bw()
+    theme_bw() +
+    theme(plot.title=element_text(size=18,face="bold"),
+          axis.title=element_text(size=15,face="bold"),
+          axis.text=element_text(size=12),
+          text=element_text(family="Helvetica")) 
 }
 
 

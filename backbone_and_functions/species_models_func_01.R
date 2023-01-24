@@ -331,7 +331,7 @@ data %>%
   xlim(c(0,150)) +
   ylim(c(0,100)) +
   theme_void() +
-  labs(title="         Mainland-Island(s) Schematic",
+  labs(title="         Mainland-Island Schematic",
        caption=paste("Notes:",
                      "\n*island areas are log2-transformed",
                      "\n*distances are square root-transformed")) + 
