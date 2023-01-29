@@ -58,7 +58,7 @@ plot_semilog_mod<-function(data,c,z,col){
 #### Create Functions to Plot SARS Data=============================================================
 ### Single plots
 ## Linear
-plot_power_sars<-function(data,col="black",reg=FALSE,mod,col_reg){
+plot_power_sars<-function(data,col="black",reg=FALSE,mod,col_reg=NA){
   data %>%
     {if(reg==TRUE) 
     mutate(.,lwr=confint2(mod)[1,1]*a^confint2(mod)[2,1],
@@ -69,7 +69,11 @@ plot_power_sars<-function(data,col="black",reg=FALSE,mod,col_reg){
     geom_point(color="black") +
     labs(x="Area",
          y="No. of species") +
-    theme_bw() -> p
+    theme_bw() +
+    theme(plot.title=element_text(size=18,face="bold"),
+          axis.title=element_text(size=15,face="bold"),
+          axis.text=element_text(size=12),
+          text=element_text(family="Helvetica")) -> p
 
   
   if(reg){
@@ -91,7 +95,11 @@ plot_powerlog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
     geom_point(color=col) +
     labs(x="log10(Area)",
          y="log10(No. of species)") +
-    theme_bw() -> p
+    theme_bw() +
+    theme(plot.title=element_text(size=18,face="bold"),
+          axis.title=element_text(size=15,face="bold"),
+          axis.text=element_text(size=12),
+          text=element_text(family="Helvetica")) -> p
   
   if(reg){
     p +
@@ -109,7 +117,11 @@ plot_semilog_sars<-function(data,col="black",reg=TRUE,col_reg=NA){
     geom_point(color=col) +
     labs(x="log10(Area)",
          y="No. of species") +
-    theme_bw()  -> p
+    theme_bw() +
+    theme(plot.title=element_text(size=18,face="bold"),
+          axis.title=element_text(size=15,face="bold"),
+          axis.text=element_text(size=12),
+          text=element_text(family="Helvetica")) -> p
   
   if(reg){
     p +

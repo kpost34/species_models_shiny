@@ -266,6 +266,21 @@ server<-function(input,output,session){
     reset("sidebar_sa")
   })
   
+  
+  ### Toggle plot outputs of custom settings
+  observeEvent(input$chk_plline_sa,{
+    toggle("plotly_draw_plline_sa")
+  },ignoreInit=TRUE)
+
+  observeEvent(input$chk_pllog_ib,{
+    toggle("plotly_draw_pllog_sa")
+  },ignoreInit=TRUE)
+  
+  observeEvent(input$chk_semilog_sa,{
+    toggle("plotly_draw_semilog_sa")
+  },ignoreInit=TRUE)
+  
+  
   #### Back-end-------------------------------------------------------------------------------------
   ### Curve drawing
   ## Create reactive df
@@ -312,7 +327,7 @@ server<-function(input,output,session){
   pl_nls_mod<-reactive({
     nls(s~c*a^z,
       data=model_fitDF_sa(),
-      start=list(c=5,z=.25)
+      start=list(c=5,z=.35)
     )
   })
   
@@ -333,7 +348,32 @@ server<-function(input,output,session){
   })
     
     
-  ## 
+  ## Create plots
+  # Power law
+  #linear scale
+  output$plotly_datmod_plline_sa<-renderPlot({
+    req(input$rad_dataset_sa)
+    model_fitDF_sa() %>%
+      plot_power_sars(reg=TRUE,mod=pl_nls_mod(),col_reg="darkblue")
+  })
+  
+  # Power law
+  #log-log scale
+  output$plotly_datamod_pllog_sa<-renderPlot({
+    req(input$rad_dataset_sa)
+    model_fitDF_sa() %>%
+      plot_powerlog_sars(reg=TRUE,col_reg="darkblue")
+  })
+    
+  
+  # Semilog model
+  output$plotly_datamod_semilog_sa<-renderPlot({
+    req(input$rad_dataset_sa)
+    model_fitDF_sa() %>%
+      plot_semilog_sars(reg=TRUE,col_reg="darkblue")
+  })
+  
+  
   
   
   

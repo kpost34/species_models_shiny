@@ -5,7 +5,7 @@
   #3) Rarefaction
 
 #load packages
-pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce)
+pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools)
 
 #source in functions and objects
 source(here("backbone_and_functions","species_models_func_01.R"))
@@ -154,6 +154,22 @@ ui<-navbarPage("Species Models App",
             h5(strong("Semilog Model")),
               h5("S = log(c) + zlog(A)"),
           hr(style = "border-top: 1px solid #000000;"),
+          #output selector
+          h4(strong("Plots")),
+            #checkboxes to select what to output
+            #h5(strong()) is equivalent to a shiny input label
+            h5(strong("Select which output(s) to display")), 
+            checkboxInput(inputId="chk_plline_sa",
+                          label="power law: linear scale",
+                          value=TRUE),
+            #div compresses vertical spacing among checkboxes to resemble checkboxGroupInput
+            div(checkboxInput(inputId="chk_pllog_ib",
+                              label="power law: log-log scale",
+                              value=TRUE),
+                style="margin-top: -10px; margin-bottom: -10px"),
+            checkboxInput(inputId="chk_semilog_sa",
+                          label="semilog model",
+                          value=TRUE),
           #create inputs for drawing models
           h4(strong("Drawing models")),
           h5(em("Adjust inputs for species-area plots")),
@@ -167,33 +183,16 @@ ui<-navbarPage("Species Models App",
             sliderInput(inputId="sld_z_sa",value=.25,min=.1,max=.35,step=.05,
                         label="z"),
             #add reset button
-            actionButton("reset_sa","Reset all values"),
+            actionButton("reset_sa","Reset sliders"),
           br(),
-          hr(style = "border-top: 1px solid #000000;"),
+          br(),
+          br(),
+          # hr(style = "border-top: 1px solid #000000;"),
           h4(strong("Model fitting")),
             #create inputs for fitting models
             radioButtons(inputId="rad_dataset_sa",choices=datasets_sa,selected=character(0),
                          label="Select a dataset to work with")
           )
-            # checkboxInput(inputId="chk_modfitPowline_sa",
-            #               label=""
-          
-          
-          # h5(strong("Select which output(s) to display")), 
-          #       checkboxInput(inputId="chk_schematicOut_ib",
-          #                     label="schematic",
-          #                     value=TRUE),
-          #       #div compresses vertical spacing among checkboxes to resemble checkboxGroupInput
-          #       div(checkboxInput(inputId="chk_rateOut_ib",
-          #                         label="rate plot",
-          #                         value=TRUE),
-          #           style="margin-top: -10px; margin-bottom: -10px"),
-          #       checkboxInput(inputId="chk_svtOut_ib",
-          #                     label="spp v time plot",
-          #                     value=TRUE),
-          
-          
-          
         ),
         mainPanel(
           splitLayout(
@@ -201,10 +200,22 @@ ui<-navbarPage("Species Models App",
             plotOutput("plotly_draw_pllog_sa",height="350px")
           ),
           br(),
-          column(width=12,align="center",
-            plotOutput("plotly_draw_semilog_sa",height="350px",width="80%")            
+          fluidRow(
+            column(width=12,align="center",
+              plotOutput("plotly_draw_semilog_sa",height="350px",width="80%") 
+            )
           ),
-          hr(),
+          hr(style = "border-top: 1px solid #000000;"),
+          splitLayout(
+            plotOutput("plotly_datmod_plline_sa",height="350px"),
+            plotOutput("plotly_datamod_pllog_sa",height="350px")
+          ),
+          br(),
+          fluidRow(
+            column(width=12,align="center",
+              plotOutput("plotly_datamod_semilog_sa",height="350px",width="80%")
+            )
+          )
         )
       )
     ),
@@ -245,7 +256,6 @@ ui<-navbarPage("Species Models App",
 # SA
 # decide whether to alter approach for 'drawing' functions of sa mini-app so that they can be
   #fed into ggplotly (which can't take geom_function)
-# increase font size of plots, thicken plot lines/curves
 # center reset buttons (sa and ib)
 
 
@@ -262,10 +272,8 @@ ui<-navbarPage("Species Models App",
 
 
 
+
 # LAST COMMIT
-# added and integrated a reset button
-# thickened horizontal lines
-# added mini-app titles
-# increased label sizes and linewidths for plots
+# added checkboxes for display of first set of outputs & accompanying server code
 
 

@@ -116,7 +116,7 @@ sars_dfs %>%
 ### aegean only
 ## Power law: linear
 # Create model 
-power_nls<-nls(s~c*a^z,
+power_nls2<-nls(s~c*a^z,
     data=sars_dfs %>%
       filter(name=="aegean") %>%
       select(-name),
