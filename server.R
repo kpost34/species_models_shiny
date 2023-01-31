@@ -331,16 +331,16 @@ server<-function(input,output,session){
   
   ## Create models
   # Power law: linear (nls)
-  pl_nls_mod<-reactive({
-    nls(s~c*a^z,
-      data=model_fitDF_sa(),
-      start=list(c=5,z=.35)
-    )
-  })
+  # pl_nls_mod<-reactive({
+  #   nls(s~c*a^z,
+  #     data=model_fitDF_sa(),
+  #     start=list(c=5,z=.35)
+  #   )
+  # })
   
   # Power law: log (lm)
   pl_lm_mod<-reactive({
-    model_fit_DF_sa() %>%
+    model_fitDF_sa() %>%
       mutate(log_a=log10(a),
              log_s=log10(s)) %>%
       lm(formula=log_s~log_a)
@@ -349,21 +349,13 @@ server<-function(input,output,session){
   
   # Semilog (lm)
   semilog_lm_mod<-reactive({
-    model_fit_DF_sa() %>%
+    model_fitDF_sa() %>%
       mutate(log_a=log10(a)) %>%
       lm(formula=s~log_a)
   })
     
     
   ## Create plots
-  # Power law
-  #linear scale
-  output$plotly_datmod_plline_sa<-renderPlot({
-    req(input$rad_dataset_sa)
-    model_fitDF_sa() %>%
-      plot_power_sars(reg=TRUE,mod=pl_nls_mod(),col_reg="darkblue")
-  })
-  
   # Power law
   #log-log scale
   output$plotly_datamod_pllog_sa<-renderPlot({
@@ -379,6 +371,13 @@ server<-function(input,output,session){
     model_fitDF_sa() %>%
       plot_semilog_sars(reg=TRUE,col_reg="darkblue")
   })
+  
+  
+  ## Compare models
+  output$dt_modcomp_sa<-renderDT({
+    req(input$rad_dataset_sa)
+    compare_sars_mods(pl_lm_mod(),semilog_lm_mod(),nm=c("Power Law","Semi-log Model"))
+  },options=list(dom="t"))
   
   
   

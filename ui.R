@@ -5,7 +5,7 @@
   #3) Rarefaction
 
 #load packages
-pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools)
+pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools,broom,DT)
 
 #source in functions and objects
 source(here("backbone_and_functions","species_models_func_01.R"))
@@ -213,14 +213,13 @@ ui<-navbarPage("Species Models App",
             ),
             tabPanel(title=out_tab_titles_sa[2],
               splitLayout(
-                plotOutput("plotly_datmod_plline_sa",height="350px"),
-                plotOutput("plotly_datamod_pllog_sa",height="350px")
+                # plotOutput("plotly_datmod_plline_sa",height="350px"),
+                plotOutput("plotly_datamod_pllog_sa",height="350px"),
+                plotOutput("plotly_datamod_semilog_sa",height="350px")
               ),
               br(),
               fluidRow(
-                column(width=12,align="center",
-                  plotOutput("plotly_datamod_semilog_sa",height="350px",width="80%")
-                )
+                DTOutput("dt_modcomp_sa")
               )
             )
           )
@@ -262,8 +261,9 @@ ui<-navbarPage("Species Models App",
 
 # NEXT
 # SA
-# continue with building out app--compare models for each dataset
-# consider using a collapseable panel for model/variable info for s-a miniapp
+# update functions so that they output via plotly (and consider changing names of first
+  #set of plots b/c they are not plotlys)
+
 # decide whether to alter approach for 'drawing' functions of sa mini-app so that they can be
   #fed into ggplotly (which can't take geom_function)
 # center reset buttons (sa and ib)
@@ -285,8 +285,7 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# created tabs for sa mini-app and dynamically linked input and output tabs
-# moved model info to bottom of first sidebarPanel
-# reset sliders button now does just that and only that
+# removed power law - linear plot from data/models section
+# developed function and created table to compare the two models
 
 

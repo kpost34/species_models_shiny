@@ -127,22 +127,22 @@ power_nls2<-nls(s~c*a^z,
 #hard code
 sars_dfs %>%
   filter(name=="aegean") %>%
-  mutate(lwr=confint2(power_nls)[1,1]*a^confint2(power_nls)[2,1],
-         upr=confint2(power_nls)[1,2]*a^confint2(power_nls)[2,2]) %>% 
+  mutate(lwr=confint2(power_nls2)[1,1]*a^confint2(power_nls2)[2,1],
+         upr=confint2(power_nls2)[1,2]*a^confint2(power_nls2)[2,2]) %>% 
   ggplot(aes(x=a,y=s)) +
   ggtitle("Power Law: Linear") +
   geom_point(color="black") +
   labs(x="Area (hectares)",
        y="No. of species") +
   theme_bw() +
-  geom_function(fun=~coef(power_nls)[1]*.x^coef(power_nls)[2],color="darkgreen",
+  geom_function(fun=~coef(power_nls2)[1]*.x^coef(power_nls2)[2],color="darkgreen",
                 linewidth=1.2) +
   geom_ribbon(aes(ymin=lwr,ymax=upr),fill="gray50",alpha=0.2)
   
 #from function
 sars_dfs %>%
   filter(name=="aegean") %>%
-  plot_power_sars(col="darkgreen",reg=TRUE,mod=power_nls,col_reg="darkgreen")
+  plot_power_sars(col="darkgreen",reg=TRUE,mod=power_nls2,col_reg="darkgreen")
 
 
 
@@ -177,13 +177,17 @@ semilog_lm<-sars_dfs %>%
   mutate(log_a=log10(a)) %>%
   lm(formula=s~log_a)
 
-#plot model from predict(lm object)
+#plot data and model from predict(lm object)
 sars_dfs %>%
   filter(name=="aegean") %>%
   mutate(log_a=log10(a),
-         pred_s=predict(semilog_lm)) %>%
+         pred_s=predict(semilog_lm),
+         pred_s_upr=predict(semilog_lm,interval="confidence")[,3],
+         pred_s_lwr=predict(semilog_lm,interval="confidence")[,2]) %>%
   ggplot() +
-  geom_line(aes(x=log_a,y=pred_s)) +
+  geom_point(aes(x=log_a,y=s)) +
+  geom_line(aes(x=log_a,y=pred_s),color="darkgreen",linewidth=1.3) +
+  geom_ribbon(aes(x=log_a,ymin=pred_s_lwr,ymax=pred_s_upr),alpha=0.2) +
   theme_bw()
 
 # Plot data and model (using function)
@@ -194,7 +198,7 @@ sars_dfs %>%
 #all plots
 sars_dfs %>%
   filter(name=="aegean") %>%
-  plot_sars_grid(reg=TRUE,mod=power_nls,col_reg="darkgreen")
+  plot_sars_grid(reg=TRUE,mod=power_nls2,col_reg="darkgreen")
 
 
 ### aegean2
@@ -230,10 +234,10 @@ sars_dfs %>%
 c<-1
 z<-0.4
 power_nls_niering<-nls(s~c*a^z,
-    data=sars_dfs %>%
-      filter(name=="niering") %>%
-      select(-name),
-    start=list(c=c,z=z))
+  data=sars_dfs %>%
+    filter(name=="niering") %>%
+    select(-name),
+  start=list(c=c,z=z))
 
 
 ## Output all plots
@@ -248,7 +252,7 @@ sars_dfs %>%
 ## Plot
 sars_dfs %>%
   filter(name=="aegean") %>%
-  plot_sars_grid(reg=TRUE,mod=power_nls,col_reg="darkgreen")
+  plot_sars_grid(reg=TRUE,mod=power_nls2,col_reg="darkgreen")
 
 ## Pull model info
 tidy(powerlog_lm); tidy(semilog_lm)
@@ -259,6 +263,20 @@ glance(semilog_lm) %>%
   select(r.squared,rse=sigma,AIC)
 #compare R2 (since only one pred var) and sigma (=residual standard error)
 #here: semilog slightly better R2 but greater sigma
+
+## Compare in one pipe
+list(powerlog_lm,semilog_lm) %>%
+  set_names("Power Law","Semi-log") %>% 
+  purrr::imap(function(x,y){
+    x %>%
+      glance() %>%
+      select(statistic,p.value,r.squared,rse=sigma,AIC) %>%
+      mutate(model=y,.before="statistic")
+  }) %>%
+  bind_rows()
+
+## Compare using function
+compare_sars_mods(powerlog_lm,semilog_lm,nm=c("Power Law","Semi-log"))
 
 
 #### App ideas

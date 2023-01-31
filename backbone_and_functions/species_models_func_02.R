@@ -43,7 +43,7 @@ plot_powerlog_mod<-function(data,c,z,col){
 plot_semilog_mod<-function(data,c,z,col){
   data %>%
     ggplot(aes(x=log_a)) +
-    ggtitle("Semi-log model") +
+    ggtitle("Semi-log Model") +
     geom_function(fun=~log10(c) + z*.x,color=col,linewidth=1.5) +
     labs(x="log10(Area)",
          y="No. of Species") +
@@ -65,7 +65,7 @@ plot_power_sars<-function(data,col="black",reg=FALSE,mod,col_reg=NA){
            upr=confint2(mod)[1,2]*a^confint2(mod)[2,2])
     else .} %>%
     ggplot(aes(x=a,y=s)) +
-    ggtitle("Power Law: Linear") +
+    ggtitle("Power Law: Linear Scale") +
     geom_point(color="black") +
     labs(x="Area",
          y="No. of species") +
@@ -91,7 +91,7 @@ plot_power_sars<-function(data,col="black",reg=FALSE,mod,col_reg=NA){
 plot_powerlog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
   data %>%
     ggplot(aes(x=log10(a),y=log10(s)),) +
-    ggtitle("Power Law: Log") +
+    ggtitle("Power Law: Log-log scale") +
     geom_point(color=col) +
     labs(x="log10(Area)",
          y="log10(No. of species)") +
@@ -113,7 +113,7 @@ plot_powerlog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
 plot_semilog_sars<-function(data,col="black",reg=TRUE,col_reg=NA){
   data %>%
     ggplot(aes(x=log10(a),y=s)) +
-    ggtitle("Semilog Model") +
+    ggtitle("Semi-log Model") +
     geom_point(color=col) +
     labs(x="log10(Area)",
          y="No. of species") +
@@ -145,6 +145,28 @@ plot_sars_grid<-function(data,mod,col_reg,reg=TRUE){
   plot_grid(p1a,p1b,p2,nrow=2)
   
 }
+
+
+#### Create Function to Create Models of SARS Data===================================================
+compare_sars_mods<-function(mod1,mod2,nm){
+  list(mod1,mod2) %>%
+    set_names(nm) %>%
+    purrr::imap(function(x,y){
+      x %>%
+        glance() %>%
+        select(statistic,p.value,r.squared,rse=sigma,AIC) %>%
+        mutate(model=y,.before="statistic")
+    }) %>%
+    bind_rows() %>%
+    mutate(across(!model,~signif(.x,3)))
+}
+
+
+
+
+
+
+
 
 
 
