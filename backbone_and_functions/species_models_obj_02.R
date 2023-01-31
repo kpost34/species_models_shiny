@@ -14,3 +14,7 @@ data(list=sars_dfs_names)
 
 
 
+##### tabPanel titles===============================================================================
+out_tab_titles_sa<-c("Drawing Models","Model Fitting")
+
+

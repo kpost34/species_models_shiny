@@ -260,10 +260,17 @@ server<-function(input,output,session){
   
   ##### Species-Area Curves (=sa)===================================================================
   #### UI-------------------------------------------------------------------------------------------
+  ### Dynamically display mainPanel tab based on sidebarPanel tab
+  observeEvent(input$input_tabset_sa,{
+    updateTabsetPanel(inputId="out_tabset_sa",selected=input$input_tabset_sa)
+  })
+  
+  
+  
   ### Reset button
   #resets all values in sidebar
   observeEvent(input$reset_sa, {
-    reset("sidebar_sa")
+    reset("drawMod_tab_sa")
   })
   
   

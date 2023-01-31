@@ -142,78 +142,86 @@ ui<-navbarPage("Species Models App",
       titlePanel("Species-Area Curves Mini-App"),
       sidebarLayout(
         #name sidebarPanel for shinyjs code
-        div(id="sidebar_sa",sidebarPanel(width=3,position="left",
-          #define variables and describe models
-          h4(strong("Variables")),
-             h5("S = number of species"),
-             h5("A = habitat area"),
-          h4(strong("Models")),
-            h5(strong("Power Law")),
-              h5("linear space: S = cA^z"),
-              h5("log-log space: log(S) = log(c) + zlog(A)"),
-            h5(strong("Semilog Model")),
-              h5("S = log(c) + zlog(A)"),
-          hr(style = "border-top: 1px solid #000000;"),
-          #output selector
-          h4(strong("Plots")),
-            #checkboxes to select what to output
-            #h5(strong()) is equivalent to a shiny input label
-            h5(strong("Select which output(s) to display")), 
-            checkboxInput(inputId="chk_plline_sa",
-                          label="power law: linear scale",
-                          value=TRUE),
-            #div compresses vertical spacing among checkboxes to resemble checkboxGroupInput
-            div(checkboxInput(inputId="chk_pllog_ib",
-                              label="power law: log-log scale",
+        sidebarPanel(width=3,position="left",
+          tabsetPanel(id="input_tabset_sa",
+            tabPanel("Drawing Models",
+              #output selector
+              h4(strong("Plots")),
+                #checkboxes to select what to output
+                #h5(strong()) is equivalent to a shiny input label
+                h5(strong("Select which output(s) to display")), 
+                checkboxInput(inputId="chk_plline_sa",
+                              label="power law: linear scale",
                               value=TRUE),
-                style="margin-top: -10px; margin-bottom: -10px"),
-            checkboxInput(inputId="chk_semilog_sa",
-                          label="semilog model",
-                          value=TRUE),
-          #create inputs for drawing models
-          h4(strong("Drawing models")),
-          h5(em("Adjust inputs for species-area plots")),
-            #three simple, slider inputs: a (start and end), c, and z
-            sliderInput(inputId="sld_a_sa",value=c(-5,5),min=-10,max=10,step=1,
-                        #put label on two lines
-                        label=HTML("A (10^x) 
-                                   <br />Select x")),
-            sliderInput(inputId="sld_c_sa",value=5,min=2,max=13,step=1,
-                        label="c"),
-            sliderInput(inputId="sld_z_sa",value=.25,min=.1,max=.35,step=.05,
-                        label="z"),
-            #add reset button
-            actionButton("reset_sa","Reset sliders"),
-          br(),
-          br(),
-          br(),
-          # hr(style = "border-top: 1px solid #000000;"),
-          h4(strong("Model fitting")),
-            #create inputs for fitting models
-            radioButtons(inputId="rad_dataset_sa",choices=datasets_sa,selected=character(0),
-                         label="Select a dataset to work with")
+                #div compresses vertical spacing among checkboxes to resemble checkboxGroupInput
+                div(checkboxInput(inputId="chk_pllog_ib",
+                                  label="power law: log-log scale",
+                                  value=TRUE),
+                    style="margin-top: -10px; margin-bottom: -10px"),
+                checkboxInput(inputId="chk_semilog_sa",
+                              label="semilog model",
+                              value=TRUE),
+                #create inputs for drawing models
+                h4(strong("Drawing models")),
+                h5(em("Adjust inputs for species-area plots")),
+                  div(id="drawMod_tab_sa",
+                    #three simple, slider inputs: a (start and end), c, and z
+                    sliderInput(inputId="sld_a_sa",value=c(-5,5),min=-10,max=10,step=1,
+                                #put label on two lines
+                                label=HTML("A (10^x) 
+                                           <br />Select x")),
+                    sliderInput(inputId="sld_c_sa",value=5,min=2,max=13,step=1,
+                                label="c"),
+                    sliderInput(inputId="sld_z_sa",value=.25,min=.1,max=.35,step=.05,
+                                label="z")
+                  ),
+                  #add reset button
+                  actionButton("reset_sa","Reset sliders"),
+                hr(style = "border-top: 1px solid #000000;"),
+              #define variables and describe models
+              h4(strong("Variables")),
+                 h5("S = number of species"),
+                 h5("A = habitat area"),
+              h4(strong("Models")),
+                h5(strong("Power Law")),
+                  h5("linear space: S = cA^z"),
+                  h5("log-log space: log(S) = log(c) + zlog(A)"),
+                h5(strong("Semilog Model")),
+                  h5("S = log(c) + zlog(A)")
+            ),
+            tabPanel("Model Fitting",
+              h4(strong("Model fitting")),
+              #create inputs for fitting models
+              radioButtons(inputId="rad_dataset_sa",choices=datasets_sa,selected=character(0),
+                           label="Select a dataset to work with")
+            )
           )
         ),
         mainPanel(
-          splitLayout(
-            plotOutput("plotly_draw_plline_sa",height="350px"),
-            plotOutput("plotly_draw_pllog_sa",height="350px")
-          ),
-          br(),
-          fluidRow(
-            column(width=12,align="center",
-              plotOutput("plotly_draw_semilog_sa",height="350px",width="80%") 
-            )
-          ),
-          hr(style = "border-top: 1px solid #000000;"),
-          splitLayout(
-            plotOutput("plotly_datmod_plline_sa",height="350px"),
-            plotOutput("plotly_datamod_pllog_sa",height="350px")
-          ),
-          br(),
-          fluidRow(
-            column(width=12,align="center",
-              plotOutput("plotly_datamod_semilog_sa",height="350px",width="80%")
+          tabsetPanel(id="out_tabset_sa",type="hidden",
+            tabPanel(title=out_tab_titles_sa[1],
+              splitLayout(
+                plotOutput("plotly_draw_plline_sa",height="350px"),
+                plotOutput("plotly_draw_pllog_sa",height="350px")
+              ),
+              br(),
+              fluidRow(
+                column(width=12,align="center",
+                  plotOutput("plotly_draw_semilog_sa",height="350px",width="80%") 
+                )
+              )
+            ),
+            tabPanel(title=out_tab_titles_sa[2],
+              splitLayout(
+                plotOutput("plotly_datmod_plline_sa",height="350px"),
+                plotOutput("plotly_datamod_pllog_sa",height="350px")
+              ),
+              br(),
+              fluidRow(
+                column(width=12,align="center",
+                  plotOutput("plotly_datamod_semilog_sa",height="350px",width="80%")
+                )
+              )
             )
           )
         )
@@ -254,6 +262,8 @@ ui<-navbarPage("Species Models App",
 
 # NEXT
 # SA
+# continue with building out app--compare models for each dataset
+# consider using a collapseable panel for model/variable info for s-a miniapp
 # decide whether to alter approach for 'drawing' functions of sa mini-app so that they can be
   #fed into ggplotly (which can't take geom_function)
 # center reset buttons (sa and ib)
@@ -267,6 +277,7 @@ ui<-navbarPage("Species Models App",
 #change plot dimensions
 
 
+
 # DONE
 
 
@@ -274,6 +285,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# added checkboxes for display of first set of outputs & accompanying server code
+# created tabs for sa mini-app and dynamically linked input and output tabs
+# moved model info to bottom of first sidebarPanel
+# reset sliders button now does just that and only that
 
 
