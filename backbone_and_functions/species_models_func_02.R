@@ -90,7 +90,9 @@ plot_power_sars<-function(data,col="black",reg=FALSE,mod,col_reg=NA){
 ## Log-log
 plot_powerlog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
   data %>%
-    ggplot(aes(x=log10(a),y=log10(s)),) +
+    ggplot(aes(x=log10(a),y=log10(s),
+               text=paste("log a =",round(a,2),
+                          "\nlog s = ",round(s,2)))) +
     ggtitle("Power Law: Log-log scale") +
     geom_point(color=col) +
     labs(x="log10(Area)",

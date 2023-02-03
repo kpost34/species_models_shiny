@@ -201,21 +201,21 @@ ui<-navbarPage("Species Models App",
           tabsetPanel(id="out_tabset_sa",type="hidden",
             tabPanel(title=out_tab_titles_sa[1],
               splitLayout(
-                plotOutput("plotly_draw_plline_sa",height="350px"),
-                plotOutput("plotly_draw_pllog_sa",height="350px")
+                plotOutput("plot_draw_plline_sa",height="350px"),
+                plotOutput("plot_draw_pllog_sa",height="350px")
               ),
               br(),
               fluidRow(
                 column(width=12,align="center",
-                  plotOutput("plotly_draw_semilog_sa",height="350px",width="80%") 
+                  plotOutput("plot_draw_semilog_sa",height="350px",width="80%") 
                 )
               )
             ),
             tabPanel(title=out_tab_titles_sa[2],
               splitLayout(
                 # plotOutput("plotly_datmod_plline_sa",height="350px"),
-                plotOutput("plotly_datamod_pllog_sa",height="350px"),
-                plotOutput("plotly_datamod_semilog_sa",height="350px")
+                plotlyOutput("plotly_datamod_pllog_sa",height="350px"),
+                plotlyOutput("plotly_datamod_semilog_sa",height="350px")
               ),
               br(),
               fluidRow(
@@ -261,11 +261,8 @@ ui<-navbarPage("Species Models App",
 
 # NEXT
 # SA
-# update functions so that they output via plotly (and consider changing names of first
-  #set of plots b/c they are not plotlys)
+# update functions so that they output via plotly 
 
-# decide whether to alter approach for 'drawing' functions of sa mini-app so that they can be
-  #fed into ggplotly (which can't take geom_function)
 # center reset buttons (sa and ib)
 
 
@@ -283,9 +280,8 @@ ui<-navbarPage("Species Models App",
 
 
 
-
 # LAST COMMIT
-# removed power law - linear plot from data/models section
-# developed function and created table to compare the two models
+# changed names of species-area model plots so that they no longer say 'plotly'
+# updated data-model plots so that they output to plotly and began modifying tooltip text
 
 

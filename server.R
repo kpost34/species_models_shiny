@@ -276,15 +276,15 @@ server<-function(input,output,session){
   
   ### Toggle plot outputs of custom settings
   observeEvent(input$chk_plline_sa,{
-    toggle("plotly_draw_plline_sa")
+    toggle("plot_draw_plline_sa")
   },ignoreInit=TRUE)
 
   observeEvent(input$chk_pllog_ib,{
-    toggle("plotly_draw_pllog_sa")
+    toggle("plot_draw_pllog_sa")
   },ignoreInit=TRUE)
   
   observeEvent(input$chk_semilog_sa,{
-    toggle("plotly_draw_semilog_sa")
+    toggle("plot_draw_semilog_sa")
   },ignoreInit=TRUE)
   
   
@@ -299,21 +299,21 @@ server<-function(input,output,session){
   
   ## Power law
   #linear scale
-  output$plotly_draw_plline_sa<-renderPlot({
+  output$plot_draw_plline_sa<-renderPlot({
     curve_drawDF_sa() %>%
       plot_power_mod(c=input$sld_c_sa,z=input$sld_z_sa,col="darkgreen") 
   })
   
   
   #log-log scale
-  output$plotly_draw_pllog_sa<-renderPlot({
+  output$plot_draw_pllog_sa<-renderPlot({
     curve_drawDF_sa() %>%
       plot_powerlog_mod(c=input$sld_c_sa,z=input$sld_z_sa,col="darkgreen")
   })
   
   
   ## Semilog model
-  output$plotly_draw_semilog_sa<-renderPlot({
+  output$plot_draw_semilog_sa<-renderPlot({
     curve_drawDF_sa() %>%
       plot_semilog_mod(c=input$sld_c_sa,z=input$sld_z_sa,col="darkgreen")
   })
@@ -358,18 +358,20 @@ server<-function(input,output,session){
   ## Create plots
   # Power law
   #log-log scale
-  output$plotly_datamod_pllog_sa<-renderPlot({
+  output$plotly_datamod_pllog_sa<-renderPlotly({
     req(input$rad_dataset_sa)
     model_fitDF_sa() %>%
-      plot_powerlog_sars(reg=TRUE,col_reg="darkblue")
+      plot_powerlog_sars(reg=TRUE,col_reg="darkblue") %>%
+      ggplotly(tooltip="text")
   })
     
   
   # Semilog model
-  output$plotly_datamod_semilog_sa<-renderPlot({
+  output$plotly_datamod_semilog_sa<-renderPlotly({
     req(input$rad_dataset_sa)
     model_fitDF_sa() %>%
-      plot_semilog_sars(reg=TRUE,col_reg="darkblue")
+      plot_semilog_sars(reg=TRUE,col_reg="darkblue") %>%
+      ggplotly()
   })
   
   
