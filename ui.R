@@ -5,7 +5,7 @@
   #3) Rarefaction
 
 #load packages
-pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools,broom,DT)
+pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools,broom,DT,withr)
 
 #source in functions and objects
 source(here("backbone_and_functions","species_models_func_01.R"))
@@ -261,8 +261,6 @@ ui<-navbarPage("Species Models App",
 
 # NEXT
 # SA
-# update functions so that they output via plotly 
-
 # center reset buttons (sa and ib)
 
 
@@ -281,7 +279,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# changed names of species-area model plots so that they no longer say 'plotly'
-# updated data-model plots so that they output to plotly and began modifying tooltip text
+#fixed issue of tooltip displaying excessive digits for geom_smooth line
+#removed logo and many plotly options in modebar so that it does not interfere with
+  #plot titles
 
 

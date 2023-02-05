@@ -90,15 +90,13 @@ plot_power_sars<-function(data,col="black",reg=FALSE,mod,col_reg=NA){
 ## Log-log
 plot_powerlog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
   data %>%
-    ggplot(aes(x=log10(a),y=log10(s),
-               text=paste("log a =",round(a,2),
-                          "\nlog s = ",round(s,2)))) +
+    ggplot(aes(x=log10(a),y=log10(s))) +
     ggtitle("Power Law: Log-log scale") +
     geom_point(color=col) +
     labs(x="log10(Area)",
          y="log10(No. of species)") +
     theme_bw() +
-    theme(plot.title=element_text(size=18,face="bold"),
+    theme(plot.title=element_text(size=17,face="bold"),
           axis.title=element_text(size=15,face="bold"),
           axis.text=element_text(size=12),
           text=element_text(family="Helvetica")) -> p
@@ -112,7 +110,7 @@ plot_powerlog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
 
 
 ## Semi-log
-plot_semilog_sars<-function(data,col="black",reg=TRUE,col_reg=NA){
+plot_semilog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
   data %>%
     ggplot(aes(x=log10(a),y=s)) +
     ggtitle("Semi-log Model") +
@@ -120,7 +118,7 @@ plot_semilog_sars<-function(data,col="black",reg=TRUE,col_reg=NA){
     labs(x="log10(Area)",
          y="No. of species") +
     theme_bw() +
-    theme(plot.title=element_text(size=18,face="bold"),
+    theme(plot.title=element_text(size=17,face="bold"),
           axis.title=element_text(size=15,face="bold"),
           axis.text=element_text(size=12),
           text=element_text(family="Helvetica")) -> p

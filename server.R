@@ -361,8 +361,24 @@ server<-function(input,output,session){
   output$plotly_datamod_pllog_sa<-renderPlotly({
     req(input$rad_dataset_sa)
     model_fitDF_sa() %>%
-      plot_powerlog_sars(reg=TRUE,col_reg="darkblue") %>%
-      ggplotly(tooltip="text")
+      plot_powerlog_sars(reg=TRUE,col_reg="darkblue") -> p
+
+    #tooltip displays values to fewer digits for data points and model without any
+      #additional formatting/mutating/etc
+    with_options(list(digits=2),
+                 ggplotly(p) %>%
+                   config(displaylogo=FALSE,
+                          modeBarButtonsToRemove=list(
+                            "toImage",
+                            "hoverClosestCartesian",
+                            "hoverCompareCartesian",
+                            "autoScale2d",
+                            "pan2d",
+                            "lasso2d",
+                            "zoom2d",
+                            "select2d")
+                    )
+    )
   })
     
   
@@ -370,8 +386,22 @@ server<-function(input,output,session){
   output$plotly_datamod_semilog_sa<-renderPlotly({
     req(input$rad_dataset_sa)
     model_fitDF_sa() %>%
-      plot_semilog_sars(reg=TRUE,col_reg="darkblue") %>%
-      ggplotly()
+      plot_semilog_sars(reg=TRUE,col_reg="darkblue") -> p
+    
+    with_options(list(digits=2),
+                 ggplotly(p) %>%
+                  config(displaylogo=FALSE,
+                         modeBarButtonsToRemove=list(
+                          "toImage",
+                          "hoverClosestCartesian",
+                          "hoverCompareCartesian",
+                          "autoScale2d",
+                          "pan2d",
+                          "lasso2d",
+                          "zoom2d",
+                          "select2d")
+                  )
+    )
   })
   
   
