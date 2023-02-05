@@ -92,7 +92,7 @@ plot_powerlog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
   data %>%
     ggplot(aes(x=log10(a),y=log10(s))) +
     ggtitle("Power Law: Log-log scale") +
-    geom_point(color=col) +
+    geom_point(color=col,size=1,alpha=0.7) +
     labs(x="log10(Area)",
          y="log10(No. of species)") +
     theme_bw() +
@@ -114,7 +114,7 @@ plot_semilog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
   data %>%
     ggplot(aes(x=log10(a),y=s)) +
     ggtitle("Semi-log Model") +
-    geom_point(color=col) +
+    geom_point(color=col,size=1,alpha=0.7) +
     labs(x="log10(Area)",
          y="No. of species") +
     theme_bw() +

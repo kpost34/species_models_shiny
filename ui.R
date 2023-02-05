@@ -279,8 +279,6 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-#fixed issue of tooltip displaying excessive digits for geom_smooth line
-#removed logo and many plotly options in modebar so that it does not interfere with
-  #plot titles
+#reduced size of points and made them more translucent for species-area curves mini-app
 
 
