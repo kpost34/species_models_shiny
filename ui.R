@@ -260,8 +260,7 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-# SA
-# center reset buttons (sa and ib)
+
 
 
 
@@ -270,6 +269,10 @@ ui<-navbarPage("Species Models App",
 #add pictures of MacArthur and Wilson (perhaps in user guide)
 #add text to explain scenarios 
 #change plot dimensions
+
+#SA
+#center reset button
+#if plots of data with model do not have legends, then add them
 
 
 
