@@ -235,7 +235,27 @@ ui<-navbarPage("Species Models App",
   ##### Create third navbarMenu (Rarefaction=rf)====================================================
   navbarMenu(title="Rarefaction",
     #### App component------------------------------------------------------------------------------
-    tabPanel(title="Mini-app",id="app_rf1"
+    tabPanel(title="Mini-app",id="app_rf1",
+      titlePanel(title="Rarefaction Mini-App"),
+      sidebarLayout(
+        sidebarPanel(width=3,position="left",
+          tabsetPanel(id="input_tabset_rf",
+            tabPanel("Species Accumulation Curves",
+              radioButtons(inputId="rad_dataset_rf",choices=datasets_rf,select=character(0),
+                           label="Select a dataset to work with"),
+              sliderInput(inputId="Choose number of samples (r)",min=5,max=10,step=1
+      )
+      
+
+      
+                    
+                    
+                          titlePanel("Species-Area Curves Mini-App"),
+      sidebarLayout(
+        #name sidebarPanel for shinyjs code
+        sidebarPanel(width=3,position="left",
+          tabsetPanel(id="input_tabset_sa",
+            tabPanel("Drawing Models",
     ),
   
     #### User guide component-----------------------------------------------------------------------
@@ -282,6 +302,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-#reduced size of points and made them more translucent for species-area curves mini-app
+# began creating UI for rarefaction mini-app
+#added backbone code
+#started objects code
 
 

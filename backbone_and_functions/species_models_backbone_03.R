@@ -1,10 +1,9 @@
 #Created by Keith Post on 2/5/23
 #Backbone code for Species Models App: Rarefaction
-#from A Primer of Ecology With R”, part of the Use R! series
 
 pacman::p_load(here,tidyverse,vegan)
 
-#### Barro Colorado Island (BCI) data: 50-1 ha plots (in a total area of 50 ha)of 225 neotropical 
+#### Barro Colorado Island (BCI) data: 50-1 ha plots (in a total area of 50 ha) of 225 neotropical 
   #tree species with counts of inds greater than 10 cm DBH
 data(BCI)
 
@@ -44,6 +43,8 @@ specaccum(BCI,method="collector") %>%
 bci_spac_sites_orderDF %>%
   ggplot(aes(sites,richness)) +
   geom_point()
+
+
 
 #random order
 specaccum(BCI,method="random",permutations=100) %>%
