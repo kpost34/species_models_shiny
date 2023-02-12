@@ -418,11 +418,42 @@ server<-function(input,output,session){
   
   ##### Rarefaction (=rf)===========================================================================
   #### UI-------------------------------------------------------------------------------------------
+  ### Species Accumulation
+  ## Load IB mini-app with sidebar hidden
+  hide("sidebar_rf")
   
+  ## Show sidebar if custom or specific scenario is selected and hide otherwise
+  observeEvent(input$rad_dataset_rf,{
+    show("sidebar_rf")
+  })
+  
+  ## Update slider input following dataset selection
+  observeEvent(input$rad_dataset_rf,{
+    if(input$rad_dataset_rf=="BCI"){
+      updateSliderInput(inputId="sld_r_rf",value=20,max=40,step=5)
+    }
+    if(input$rad_dataset_rf=="dune"){
+      updateSliderInput(inputId="sld_r_rf",value=10,max=15,step=1)
+    }
+    if(input$rad_dataset_rf=="mite"){
+      updateSliderInput(inputId="sld_r_rf",value=30,max=60,step=5)
+    }
+    if(input$rad_dataset_rf=="sipoo"){
+      updateSliderInput(inputId="sld_r_rf",value=10,max=15,step=1)
+    }
+  })
   
   
   #### Back-end-------------------------------------------------------------------------------------
-               
+  ### Species Accumulation
+  ## Create reactive df
+  spec_accDF_rf<-reactive({
+    switch(input$rad_dataset_rf,
+      "BCI"=BCI,
+      "dune"=dune,
+      "mite"=mite,
+      "sipoo"=sipoo)
+  })              
                
                
 

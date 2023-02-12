@@ -13,5 +13,12 @@ rf_dfs_names<-c("BCI","dune","mite","sipoo")
 data(list=rf_dfs_names)
 
 
-
+#### Choices========================================================================================
+### Species-accumulation curve options
+specaccum_curves_rf<-c(
+  "Use site order in dataset" = "collector",
+  "Random order of sites" = "random",
+  "Expected species richness (by site)" = "exact",
+  "Expected species richness (by ind)" = "rarefaction"
+)
 

@@ -10,8 +10,10 @@ pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools,broom,D
 #source in functions and objects
 source(here("backbone_and_functions","species_models_func_01.R"))
 source(here("backbone_and_functions","species_models_func_02.R"))
+# source(here("backbone_and_functions","species_models_func_03.R"))
 source(here("backbone_and_functions","species_models_obj_01.R"))
 source(here("backbone_and_functions","species_models_obj_02.R"))
+source(here("backbone_and_functions","species_models_obj_03.R"))
 
 
 
@@ -242,21 +244,28 @@ ui<-navbarPage("Species Models App",
           tabsetPanel(id="input_tabset_rf",
             tabPanel("Species Accumulation Curves",
               radioButtons(inputId="rad_dataset_rf",choices=datasets_rf,select=character(0),
-                           label="Select a dataset to work with"),
-              sliderInput(inputId="Choose number of samples (r)",min=5,max=10,step=1
+                           label="Select a dataset"),
+              div(id="sidebar_rf",
+                sliderInput(inputId="sld_r_rf",value=10,min=5,max=15,step=1,
+                            label="Choose number of samples (r)"),
+                radioButtons(inputId="rad_specaccumtype_rf",choices=specaccum_curves_rf),
+                checkboxInput(inputId="chk_specaccumplot_rf",
+                              label="Species accumulation curve")
+                checkboxInput(inputId="chk_totS_rf",
+                              label="Expected species richness")
+              )
+            )
+          )
+        ),
+        mainPanel()
       )
+    ),
       
 
       
                     
                     
-                          titlePanel("Species-Area Curves Mini-App"),
-      sidebarLayout(
-        #name sidebarPanel for shinyjs code
-        sidebarPanel(width=3,position="left",
-          tabsetPanel(id="input_tabset_sa",
-            tabPanel("Drawing Models",
-    ),
+
   
     #### User guide component-----------------------------------------------------------------------
     tabPanel(title="User Guide",id="guide_rf2"
@@ -302,8 +311,6 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# began creating UI for rarefaction mini-app
-#added backbone code
-#started objects code
+
 
 

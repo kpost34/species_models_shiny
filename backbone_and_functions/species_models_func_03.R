@@ -3,10 +3,10 @@
 
 
 #### Create Functions to Subsample Data and Rarefy==================================================
-sub_rare<-function(data,n){
-  data %>%
-    
-}
+# sub_rare<-function(data,n){
+#   data %>%
+#     
+# }
 
 
 
