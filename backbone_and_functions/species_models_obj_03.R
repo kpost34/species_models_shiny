@@ -22,3 +22,6 @@ specaccum_curves_rf<-c(
   "Expected species richness (by ind)" = "rarefaction"
 )
 
+
+##### tabPanel titles===============================================================================
+out_tab_titles_rf<-c("Collector's Curves","Rarefaction")

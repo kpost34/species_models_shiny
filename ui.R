@@ -5,7 +5,8 @@
   #3) Rarefaction
 
 #load packages
-pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools,broom,DT,withr)
+pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools,broom,DT,withr,
+               vegan)
 
 #source in functions and objects
 source(here("backbone_and_functions","species_models_func_01.R"))
@@ -242,22 +243,34 @@ ui<-navbarPage("Species Models App",
       sidebarLayout(
         sidebarPanel(width=3,position="left",
           tabsetPanel(id="input_tabset_rf",
-            tabPanel("Species Accumulation Curves",
+            tabPanel("Collector's Curves",
               radioButtons(inputId="rad_dataset_rf",choices=datasets_rf,select=character(0),
                            label="Select a dataset"),
               div(id="sidebar_rf",
                 sliderInput(inputId="sld_r_rf",value=10,min=5,max=15,step=1,
                             label="Choose number of samples (r)"),
-                radioButtons(inputId="rad_specaccumtype_rf",choices=specaccum_curves_rf),
-                checkboxInput(inputId="chk_specaccumplot_rf",
-                              label="Species accumulation curve")
-                checkboxInput(inputId="chk_totS_rf",
-                              label="Expected species richness")
+                radioButtons(inputId="rad_specaccumtype_rf",choices=specaccum_curves_rf,
+                             label="Select species accumulation curve method"),
+                br(),
+                h4(strong("Outputs")),
+                  checkboxInput(inputId="chk_specaccumplot_rf",
+                                label="Species accumulation curve"),
+                  checkboxInput(inputId="chk_totS_rf",
+                                label="Expected species richness")
               )
-            )
+            ),
+            tabPanel("Rarefaction",
+              )
+            
           )
         ),
-        mainPanel()
+        mainPanel(
+          tabsetPanel(id="out_tabset_rf",type="hidden",
+            tabPanel(title=out_tab_titles_rf[1],
+            ),
+            tabPanel(title=out_tab_titles_rf[2])
+          )
+        )
       )
     ),
       
@@ -305,12 +318,14 @@ ui<-navbarPage("Species Models App",
 
 
 
+
+
 # DONE
 
 
 
 
 # LAST COMMIT
-
+# added more structure to UI of rarefaction mini-app
 
 
