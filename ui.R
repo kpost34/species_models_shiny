@@ -267,6 +267,7 @@ ui<-navbarPage("Species Models App",
         mainPanel(
           tabsetPanel(id="out_tabset_rf",type="hidden",
             tabPanel(title=out_tab_titles_rf[1],
+              plotlyOutput("plotly_specaccum_rf")
             ),
             tabPanel(title=out_tab_titles_rf[2])
           )
@@ -326,6 +327,6 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# added more structure to UI of rarefaction mini-app
+# added code to generate species-accumulation curve
 
 

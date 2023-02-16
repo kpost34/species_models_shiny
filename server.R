@@ -447,13 +447,50 @@ server<-function(input,output,session){
   #### Back-end-------------------------------------------------------------------------------------
   ### Species Accumulation
   ## Create reactive df
-  spec_accDF_rf<-reactive({
+  specaccumDF_rf<-reactive({
     switch(input$rad_dataset_rf,
       "BCI"=BCI,
       "dune"=dune,
       "mite"=mite,
       "sipoo"=sipoo)
-  })              
+  })
+  
+  ## Create reactive object for differentiating individuals and sites
+  specaccum_type_vec_rf<-reactive({
+    req(input$rad_specaccumtype_rf)
+    if(input$rad_specaccumtype_rf=="rarefaction"){
+      "individuals"
+    } 
+    # else if(input$rad_specaccumtype_rf %in% c("collector","random","exact")){
+    #   "sites"
+    # }
+    else{"sites"}
+  })
+  
+  ## Create reactive specaccum df
+  specaccum_curveDF_rf<-reactive({
+    req(input$rad_specaccumtype_rf)
+    specaccumDF_rf() %>%
+      specaccum(method=input$rad_specaccumtype_rf) %>%
+      # {if(input$rad_specaccumtype_rf=="rarefaction") .[c("individuals","richness")]
+      #  else .[c("sites","richness")]} %>%
+      .[c(specaccum_type_vec_rf(),"richness")] %>%
+      bind_rows()
+    })
+  
+  
+  ## Create plots
+  output$plotly_specaccum_rf<-renderPlotly({
+    req(input$chk_specaccumplot_rf)
+    specaccum_curveDF_rf() %>%
+      ggplot(aes(x=!!sym(specaccum_type_vec_rf()),y=richness)) +
+      geom_point() -> p
+    
+    p %>%
+      ggplotly()
+  })
+  
+  
                
                
 
