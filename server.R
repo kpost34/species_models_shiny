@@ -449,10 +449,10 @@ server<-function(input,output,session){
   ## Create reactive df
   specaccumDF_rf<-reactive({
     switch(input$rad_dataset_rf,
-      "BCI"=BCI,
-      "dune"=dune,
-      "mite"=mite,
-      "sipoo"=sipoo)
+      "BCI"=BCI[sample(input$sld_r_rf),],
+      "dune"=dune[sample(input$sld_r_rf),],
+      "mite"=mite[sample(input$sld_r_rf),],
+      "sipoo"=sipoo[sample(input$sld_r_rf),])
   })
   
   ## Create reactive object for differentiating individuals and sites
@@ -484,13 +484,28 @@ server<-function(input,output,session){
     req(input$chk_specaccumplot_rf)
     specaccum_curveDF_rf() %>%
       ggplot(aes(x=!!sym(specaccum_type_vec_rf()),y=richness)) +
-      geom_point() -> p
+      ggtitle("Species-Accumulation Curve") +
+      geom_point() +
+      theme_bw() +
+      theme(title=element_text(size=12)) -> p
     
     p %>%
       ggplotly()
   })
   
   
+  ## Create table
+  output$dt_estTotS_rf<-renderDT({
+    req(input$chk_estTotS_rf)
+    specaccumDF_rf() %>%
+      est_s_as_tib()
+  },
+  options=list(dom="t"),
+  #add caption as a centered title
+  caption=htmltools::tags$caption(style="caption-side: top; text-align: left;
+                                  color: black; font-size: 150%;",
+                                  "Estimated Richness")
+  )
                
                
 

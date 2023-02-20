@@ -44,6 +44,17 @@ bci_spac_sites_orderDF %>%
   ggplot(aes(sites,richness)) +
   geom_point()
 
+#subsample
+bci<-BCI[sample(10),]
+
+specaccum(bci,method="collector") %>%
+    .[3:4] %>%
+  bind_rows() -> subbci_spac_sites_orderDF
+
+subbci_spac_sites_orderDF %>%
+  ggplot(aes(sites,richness)) +
+  geom_point()
+
 
 
 #random order

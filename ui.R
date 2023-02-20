@@ -6,16 +6,18 @@
 
 #load packages
 pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools,broom,DT,withr,
-               vegan)
+               vegan,janitor)
 
 #source in functions and objects
-source(here("backbone_and_functions","species_models_func_01.R"))
-source(here("backbone_and_functions","species_models_func_02.R"))
+# source(here("backbone_and_functions","species_models_func_01.R"))
+# source(here("backbone_and_functions","species_models_func_02.R"))
 # source(here("backbone_and_functions","species_models_func_03.R"))
-source(here("backbone_and_functions","species_models_obj_01.R"))
-source(here("backbone_and_functions","species_models_obj_02.R"))
-source(here("backbone_and_functions","species_models_obj_03.R"))
+# source(here("backbone_and_functions","species_models_obj_01.R"))
+# source(here("backbone_and_functions","species_models_obj_02.R"))
+# source(here("backbone_and_functions","species_models_obj_03.R"))
 
+purrr::map(list.files(here("backbone_and_functions"),pattern="obj|func",
+               full.names=TRUE),source)
 
 
 #--------------------------------------------------------------------------------------------------#
@@ -255,7 +257,7 @@ ui<-navbarPage("Species Models App",
                 h4(strong("Outputs")),
                   checkboxInput(inputId="chk_specaccumplot_rf",
                                 label="Species accumulation curve"),
-                  checkboxInput(inputId="chk_totS_rf",
+                  checkboxInput(inputId="chk_estTotS_rf",
                                 label="Expected species richness")
               )
             ),
@@ -267,7 +269,15 @@ ui<-navbarPage("Species Models App",
         mainPanel(
           tabsetPanel(id="out_tabset_rf",type="hidden",
             tabPanel(title=out_tab_titles_rf[1],
-              plotlyOutput("plotly_specaccum_rf")
+              plotlyOutput("plotly_specaccum_rf"),
+              br(),
+              fluidRow(
+                column(2),
+                column(align="center",width=8,
+                  DTOutput("dt_estTotS_rf")
+                ),
+                column(2),
+              )
             ),
             tabPanel(title=out_tab_titles_rf[2])
           )
@@ -327,6 +337,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# added code to generate species-accumulation curve
+# incorporated subsampling of data frames
+# created estimated richness table
+# added titles to species-accumulation curve and estimated richness and table
 
 
