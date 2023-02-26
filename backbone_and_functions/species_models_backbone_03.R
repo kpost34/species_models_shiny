@@ -1,7 +1,7 @@
 #Created by Keith Post on 2/5/23
 #Backbone code for Species Models App: Rarefaction
 
-pacman::p_load(here,tidyverse,vegan)
+pacman::p_load(here,tidyverse,vegan,plotly)
 
 #### Barro Colorado Island (BCI) data: 50-1 ha plots (in a total area of 50 ha) of 225 neotropical 
   #tree species with counts of inds greater than 10 cm DBH
@@ -109,27 +109,74 @@ specaccum(bci_samp,method="random")
 
 
 ### Rarefaction 
-# rarefy to mininum number of individuals from a site
+## Rarefy to mininum number of individuals from a site
 raremax<-min(rowSums(BCI))
 BCI_rareDF<-rrarefy(BCI,raremax)
 rarefy(BCI,raremax)
 
 rarefy(BCI[1:10,],20)
 
+## Generate curve
+rarecurve(BCI)
 
-data("mite")
-mite
+#use subset of community
+bci<-BCI[sample(10),]
 
-data("sipoo")
-sipoo
+# By individuals
+out<-rarecurve(bci,label=FALSE)
+names(out)<-as.character(1:nrow(bci))
+
+map2_df(out,names(out),.f=function(x,y){
+  x %>%
+    as_tibble() %>%
+    mutate(individuals=row_number(),
+           site=y) %>%
+    rename(species="value") %>%
+    relocate(site,individuals,species)
+}) -> protox
+
+
+protox %>%
+  ggplot(aes(x=individuals,y=species,color=site)) +
+  geom_line() +
+  theme_bw() +
+  theme(legend.position="none") -> p
+
+p %>%
+  ggplotly()
+
+
+# By samples
+out2<-rarecurve(BCI,step=10)
 
 
 
 
-#### Data Sets from vegan Package===================================================================
-### Load data sets from vegan package
+map2_df(out,names(out),.f=function(x,y){
+  mydf <- as.data.frame(x)
+  colnames(mydf) <- "value"
+  mydf$species <- y
+  mydf$subsample <- attr(x, "Subsample")
+  mydf
+}) -> protox
 
-vegan_dfs_names<-c("BCI","dune","mite","sipoo")
+rownames(protox)<-NULL
+
+
+xy <- do.call(rbind, protox)
+rownames(xy) <- NULL  # pretty
+
+ggplot(xy, aes(x = subsample, y = value, color = species)) +
+  theme_bw() +
+  scale_color_discrete(guide = "none") +  # turn legend on or off
+  geom_line()
+
+ggplotly(
+  ggplot(xy, aes(x = subsample, y = value, color = species)) +
+    theme_bw() +
+    theme(legend.position = "none") +  # ggplotly doesn't respect scales?
+    geom_line()
+)
 
 
 
@@ -166,7 +213,7 @@ vegan_dfs_names<-c("BCI","dune","mite","sipoo")
 
 
 
-s
+
 
 
 

@@ -418,13 +418,19 @@ server<-function(input,output,session){
   
   ##### Rarefaction (=rf)===========================================================================
   #### UI-------------------------------------------------------------------------------------------
-  ### Species Accumulation
-  ## Load IB mini-app with sidebar hidden
-  hide("sidebar_rf")
+  ### Dynamically display mainPanel tab based on sidebarPanel tab
+  observeEvent(input$input_tabset_rf,{
+    updateTabsetPanel(inputId="out_tabset_rf",selected=input$input_tabset_rf)
+  })
   
-  ## Show sidebar if custom or specific scenario is selected and hide otherwise
+  
+  ### Species Accumulation
+  ## Load RF mini-app (spec acc) with sidebar hidden
+  hide("sidebar_cc_rf")
+  
+  ## Show remainder of sidebar if custom or specific scenario is selected and hide otherwise
   observeEvent(input$rad_dataset_rf,{
-    show("sidebar_rf")
+    show("sidebar_cc_rf")
   })
   
   ## Update slider input following dataset selection
@@ -444,6 +450,33 @@ server<-function(input,output,session){
   })
   
   
+  ### Rarefaction
+  ## Load RF mini-app (rarefaction) with sidebar hidden
+  hide("sidebar_rare_rf")
+  
+  ## Show remainder of sidebar if custom or specific scenario is selected and hide otherwise
+   observeEvent(input$rad_dataset_rf,{
+    show("sidebar_rare_rf")
+  })
+  
+  ## Update slider input following dataset selection
+  observeEvent(input$rad_dataset_rf,{
+    if(input$rad_dataset_rf=="BCI"){
+      updateSliderInput(inputId="sld_r2a_rf",value=20,max=50,step=5)
+    }
+    if(input$rad_dataset_rf=="dune"){
+      updateSliderInput(inputId="sld_r2a_rf",value=10,max=20,step=1)
+    }
+    if(input$rad_dataset_rf=="mite"){
+      updateSliderInput(inputId="sld_r2a_rf",value=30,max=70,step=5)
+    }
+    if(input$rad_dataset_rf=="sipoo"){
+      updateSliderInput(inputId="sld_r2a_rf",value=10,max=18,step=1)
+    }
+  })
+  
+  
+  
   #### Back-end-------------------------------------------------------------------------------------
   ### Species Accumulation
   ## Create reactive df
@@ -461,9 +494,6 @@ server<-function(input,output,session){
     if(input$rad_specaccumtype_rf=="rarefaction"){
       "individuals"
     } 
-    # else if(input$rad_specaccumtype_rf %in% c("collector","random","exact")){
-    #   "sites"
-    # }
     else{"sites"}
   })
   
@@ -472,8 +502,6 @@ server<-function(input,output,session){
     req(input$rad_specaccumtype_rf)
     specaccumDF_rf() %>%
       specaccum(method=input$rad_specaccumtype_rf) %>%
-      # {if(input$rad_specaccumtype_rf=="rarefaction") .[c("individuals","richness")]
-      #  else .[c("sites","richness")]} %>%
       .[c(specaccum_type_vec_rf(),"richness")] %>%
       bind_rows()
     })
@@ -481,6 +509,7 @@ server<-function(input,output,session){
   
   ## Create plots
   output$plotly_specaccum_rf<-renderPlotly({
+    req(input$rad_dataset_rf)
     req(input$chk_specaccumplot_rf)
     specaccum_curveDF_rf() %>%
       ggplot(aes(x=!!sym(specaccum_type_vec_rf()),y=richness)) +

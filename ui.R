@@ -244,25 +244,31 @@ ui<-navbarPage("Species Models App",
       titlePanel(title="Rarefaction Mini-App"),
       sidebarLayout(
         sidebarPanel(width=3,position="left",
+          radioButtons(inputId="rad_dataset_rf",choices=datasets_rf,select=character(0),
+                       label="Select a dataset"),
           tabsetPanel(id="input_tabset_rf",
             tabPanel("Collector's Curves",
-              radioButtons(inputId="rad_dataset_rf",choices=datasets_rf,select=character(0),
-                           label="Select a dataset"),
-              div(id="sidebar_rf",
+              div(id="sidebar_cc_rf",
                 sliderInput(inputId="sld_r_rf",value=10,min=5,max=15,step=1,
-                            label="Choose number of samples (r)"),
+                            label="Choose number of sites (r)"),
                 radioButtons(inputId="rad_specaccumtype_rf",choices=specaccum_curves_rf,
                              label="Select species accumulation curve method"),
                 br(),
                 h4(strong("Outputs")),
                   checkboxInput(inputId="chk_specaccumplot_rf",
-                                label="Species accumulation curve"),
+                                label="Species accumulation curve",
+                                value=TRUE),
                   checkboxInput(inputId="chk_estTotS_rf",
                                 label="Expected species richness")
               )
             ),
             tabPanel("Rarefaction",
-              )
+              div(id="sidebar_rare_rf",
+                sliderInput(inputId="sld_r2a_rf",value=5,min=2,max=10,step=1,
+                            label="Choose number of sites (r)"),
+                sliderInput(inputId="sld_r2b_rf",value=10,min=5,max=15,step=1,
+                            label="Choose number of subsamples (n)"),         
+                  ))
             
           )
         ),
@@ -279,7 +285,9 @@ ui<-navbarPage("Species Models App",
                 column(2),
               )
             ),
-            tabPanel(title=out_tab_titles_rf[2])
+            tabPanel(title=out_tab_titles_rf[2],
+            )
+                    
           )
         )
       )
@@ -313,7 +321,10 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-
+# change slider(s) for rarefaction tab: 1) for number of sites/plots/cores (up to 10) and 2) for size
+  # of subsample (inds)
+# rarecurve visual -> turn hard code into function
+# grouped boxplots? inds & species?
 
 
 
@@ -337,8 +348,9 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# incorporated subsampling of data frames
-# created estimated richness table
-# added titles to species-accumulation curve and estimated richness and table
+# moved dataset radio buttons to top of side panel
+# began developing rarefaction side panel 
+# started creating rarefaction backbone code
+# got mainPanel of rf mini-app to switch
 
 
