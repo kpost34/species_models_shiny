@@ -417,7 +417,7 @@ server<-function(input,output,session){
   
   
   ##### Rarefaction (=rf)===========================================================================
-  #### UI-------------------------------------------------------------------------------------------
+   #### UI-------------------------------------------------------------------------------------------
   ### Dynamically display mainPanel tab based on sidebarPanel tab
   observeEvent(input$input_tabset_rf,{
     updateTabsetPanel(inputId="out_tabset_rf",selected=input$input_tabset_rf)
@@ -433,7 +433,7 @@ server<-function(input,output,session){
     show("sidebar_cc_rf")
   })
   
-  ## Update slider input following dataset selection
+  ## Update slider input for # of sites in collector's curve following dataset selection
   observeEvent(input$rad_dataset_rf,{
     if(input$rad_dataset_rf=="BCI"){
       updateSliderInput(inputId="sld_r_rf",value=20,max=40,step=5)
@@ -451,27 +451,33 @@ server<-function(input,output,session){
   
   
   ### Rarefaction
+  ## Dynamically alter datasets choices after selecting rarefaction
+  # observeEvent(input$input_tabset_rf, {
+  #   if(input$input_tabset_rf=="Rarefaction")
+  #   updateRadioButtons(inputId="rad_dataset_rf",choices=datasets_rf[-4],select=character(0),
+  #                      label="Select a dataset")
+  # })
+  
+  
   ## Load RF mini-app (rarefaction) with sidebar hidden
   hide("sidebar_rare_rf")
   
   ## Show remainder of sidebar if custom or specific scenario is selected and hide otherwise
-   observeEvent(input$rad_dataset_rf,{
+  observeEvent(input$rad_dataset2_rf,{
     show("sidebar_rare_rf")
   })
+
   
-  ## Update slider input following dataset selection
-  observeEvent(input$rad_dataset_rf,{
-    if(input$rad_dataset_rf=="BCI"){
-      updateSliderInput(inputId="sld_r2a_rf",value=20,max=50,step=5)
+  ## Update slider input for # of subsamples in rarefaction following dataset selection
+  observeEvent(input$rad_dataset2_rf,{
+    if(input$rad_dataset2_rf=="BCI"){
+      updateSliderInput(inputId="sld_n_rf",value=100,min=20,max=340,step=20)
     }
-    if(input$rad_dataset_rf=="dune"){
-      updateSliderInput(inputId="sld_r2a_rf",value=10,max=20,step=1)
+    if(input$rad_dataset2_rf=="dune"){
+      updateSliderInput(inputId="sld_n_rf",value=10,min=5,max=15,step=1)
     }
-    if(input$rad_dataset_rf=="mite"){
-      updateSliderInput(inputId="sld_r2a_rf",value=30,max=70,step=5)
-    }
-    if(input$rad_dataset_rf=="sipoo"){
-      updateSliderInput(inputId="sld_r2a_rf",value=10,max=18,step=1)
+    if(input$rad_dataset2_rf=="mite"){
+      updateSliderInput(inputId="sld_n_rf",value=30,min=6,max=42,step=3)
     }
   })
   
@@ -535,6 +541,19 @@ server<-function(input,output,session){
                                   color: black; font-size: 150%;",
                                   "Estimated Richness")
   )
+  
+  
+  ### Rarefaction
+  ### Species Accumulation
+  ## Create reactive df
+  rarefacDF_rf<-reactive({
+    switch(input$rad_dataset2_rf,
+      "BCI"=BCI[sample(input$sld_r2_rf),],
+      "dune"=dune[sample(input$sld_r2_rf),],
+      "mite"=mite %>%
+        .[-c(57,62),] %>%
+        .[sample(input$sld_r2_rf),])
+  })
                
                
 

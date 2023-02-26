@@ -178,6 +178,23 @@ ggplotly(
     geom_line()
 )
 
+### Sample sizes
+## Check max inds in each dataset
+list(BCI,dune,mite,sipoo) %>% 
+  map(function(x) {
+    x %>% 
+      rowSums() %>% 
+      sort() %>%
+      .[1:10]
+    })
+#sipoo are mostly small, so eliminate
+#smallest two mite samples should be removed
+#keep everything else...mins become 340 (BCI), 15 (dune), and 42 (mite)
+
+mite %>%
+  .[-c(57,62),] %>%
+  .[sample(8),] %>%
+  rowSums()
 
 
 
