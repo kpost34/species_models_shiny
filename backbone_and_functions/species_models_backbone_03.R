@@ -109,24 +109,27 @@ specaccum(bci_samp,method="random")
 
 
 ### Rarefaction 
-## Rarefy to mininum number of individuals from a site
+## Rarefy to mininum number of individuals from a site using vegan functions
 raremax<-min(rowSums(BCI))
 BCI_rareDF<-rrarefy(BCI,raremax)
 rarefy(BCI,raremax)
 
 rarefy(BCI[1:10,],20)
 
-## Generate curve
-rarecurve(BCI)
+# Generate curve
+rarecurve(BCI,tidy=TRUE)
 
-#use subset of community
-bci<-BCI[sample(10),]
 
-# By individuals
-out<-rarecurve(bci,label=FALSE)
-names(out)<-as.character(1:nrow(bci))
+## Rarefy using tidyverse approach
+# Subset community
+bci<-BCI %>%
+  slice_sample(n=10)
 
-map2_df(out,names(out),.f=function(x,y){
+# Hard-coded approach
+rarecurve_obj<-rarecurve(bci,label=FALSE)
+rare_nm<-names(rarecurve_obj)<-as.character(1:nrow(bci))
+
+map2_df(rarecurve_obj,rare_nm,.f=function(x,y){
   x %>%
     as_tibble() %>%
     mutate(individuals=row_number(),
@@ -136,47 +139,25 @@ map2_df(out,names(out),.f=function(x,y){
 }) -> protox
 
 
-protox %>%
+## Rarefy using built-in feature 
+protox2<-rarecurve(bci,tidy=TRUE) %>%
+  rename(site="Site",individuals="Sample",species="Species") %>% 
+  arrange(site) %>%
+  mutate(site=fct_inseq(site),
+         species=round(species,2))
+
+# Graph result
+protox2 %>%
   ggplot(aes(x=individuals,y=species,color=site)) +
   geom_line() +
   theme_bw() +
-  theme(legend.position="none") -> p
+  theme(legend.position="none") -> p2
 
-p %>%
+p2 %>%
   ggplotly()
 
+rarecurve(bci,sample=100)
 
-# By samples
-out2<-rarecurve(BCI,step=10)
-
-
-
-
-map2_df(out,names(out),.f=function(x,y){
-  mydf <- as.data.frame(x)
-  colnames(mydf) <- "value"
-  mydf$species <- y
-  mydf$subsample <- attr(x, "Subsample")
-  mydf
-}) -> protox
-
-rownames(protox)<-NULL
-
-
-xy <- do.call(rbind, protox)
-rownames(xy) <- NULL  # pretty
-
-ggplot(xy, aes(x = subsample, y = value, color = species)) +
-  theme_bw() +
-  scale_color_discrete(guide = "none") +  # turn legend on or off
-  geom_line()
-
-ggplotly(
-  ggplot(xy, aes(x = subsample, y = value, color = species)) +
-    theme_bw() +
-    theme(legend.position = "none") +  # ggplotly doesn't respect scales?
-    geom_line()
-)
 
 ### Sample sizes
 ## Check max inds in each dataset

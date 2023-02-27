@@ -266,7 +266,7 @@ ui<-navbarPage("Species Models App",
               radioButtons(inputId="rad_dataset2_rf",choices=datasets2_rf,select=character(0),
                            label="Select a dataset"),
               div(id="sidebar_rare_rf",
-                sliderInput(inputId="sld_r2_rf",value=5,min=2,max=10,step=1,
+                sliderInput(inputId="sld_r2_rf",value=4,min=2,max=6,step=1,
                             label="Choose number of sites (r)"),
                 sliderInput(inputId="sld_n_rf",value=10,min=5,max=15,step=1,
                             label="Choose number of subsamples (n)"),         
@@ -288,7 +288,7 @@ ui<-navbarPage("Species Models App",
               )
             ),
             tabPanel(title=out_tab_titles_rf[2],
-            )
+              plotlyOutput("plotly_rare_curve_rf"))
                     
           )
         )
@@ -323,12 +323,11 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-# have dynamic slider for # of subsamples: varies by dataset
-# signif() richness on spec accum curve
-# add rarefaction by individuals (????)
-
-# rarecurve visual -> turn hard code into function
+# retain original site values
+# add table underneath that outputs intersection points: row of sites with row of richness
 # grouped boxplots? inds & species?
+
+# working on re-ordering factor levels to display sites correctly in ggplotly legend of rareplot
 
 
 
@@ -346,12 +345,14 @@ ui<-navbarPage("Species Models App",
 
 # DONE
 
-
+ 
 
 
 # LAST COMMIT
-# updated radioButton choices to remove sipoo if rarefaction selected
-# made static slider for # of sites: 2-10 with value of 5
-# updated UI for rarefaction simulations, including dynamic slider for subsamples
+# rounded richness on species-accumulation curve to nearest tenth of a species
+# created reactive DF of data for rarecurve
+# plotted rarefaction curve with legend containing sites in numerical order
+# added vertical line to plot
+# made subsample slider more dynamic in that max value corresponds with sites on screen
 
 

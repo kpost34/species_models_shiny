@@ -469,15 +469,23 @@ server<-function(input,output,session){
 
   
   ## Update slider input for # of subsamples in rarefaction following dataset selection
-  observeEvent(input$rad_dataset2_rf,{
+  #from reactive obj below
+  max_n_rf<-reactive({
+    rarefacDF_rf() %>%
+      rowSums() %>%
+      min()
+  })
+  
+  observeEvent(ignoreInit=TRUE,
+               c(input$rad_dataset2_rf,input$sld_r2_rf),{
     if(input$rad_dataset2_rf=="BCI"){
-      updateSliderInput(inputId="sld_n_rf",value=100,min=20,max=340,step=20)
+      updateSliderInput(inputId="sld_n_rf",value=100,min=20,max=max_n_rf(),step=20)
     }
     if(input$rad_dataset2_rf=="dune"){
-      updateSliderInput(inputId="sld_n_rf",value=10,min=5,max=15,step=1)
+      updateSliderInput(inputId="sld_n_rf",value=10,min=5,max=max_n_rf(),step=2)
     }
     if(input$rad_dataset2_rf=="mite"){
-      updateSliderInput(inputId="sld_n_rf",value=30,min=6,max=42,step=3)
+      updateSliderInput(inputId="sld_n_rf",value=10,min=6,max=max_n_rf(),step=2)
     }
   })
   
@@ -509,7 +517,8 @@ server<-function(input,output,session){
     specaccumDF_rf() %>%
       specaccum(method=input$rad_specaccumtype_rf) %>%
       .[c(specaccum_type_vec_rf(),"richness")] %>%
-      bind_rows()
+      bind_rows() %>%
+      {if(input$rad_specaccumtype_rf!="collector") round(.,1) else .}
     })
   
   
@@ -517,15 +526,16 @@ server<-function(input,output,session){
   output$plotly_specaccum_rf<-renderPlotly({
     req(input$rad_dataset_rf)
     req(input$chk_specaccumplot_rf)
-    specaccum_curveDF_rf() %>%
-      ggplot(aes(x=!!sym(specaccum_type_vec_rf()),y=richness)) +
-      ggtitle("Species-Accumulation Curve") +
-      geom_point() +
-      theme_bw() +
-      theme(title=element_text(size=12)) -> p
-    
-    p %>%
-      ggplotly()
+    # specaccum_curveDF_rf() %>%
+    #   ggplot(aes(x=!!sym(specaccum_type_vec_rf()),y=richness)) +
+    #   ggtitle("Species-Accumulation Curve") +
+    #   geom_point() +
+    #   theme_bw() +
+    #   theme(title=element_text(size=12)) -> p
+    # 
+    # p %>%
+    #   ggplotly()
+    plotly_specaccum(specaccum_curveDF_rf(),specaccum_type_vec_rf())
   })
   
   
@@ -544,20 +554,31 @@ server<-function(input,output,session){
   
   
   ### Rarefaction
-  ### Species Accumulation
-  ## Create reactive df
+  ## Create reactive df of data subset
   rarefacDF_rf<-reactive({
     switch(input$rad_dataset2_rf,
-      "BCI"=BCI[sample(input$sld_r2_rf),],
-      "dune"=dune[sample(input$sld_r2_rf),],
-      "mite"=mite %>%
-        .[-c(57,62),] %>%
-        .[sample(input$sld_r2_rf),])
+      "BCI"=BCI %>% slice_sample(n=input$sld_r2_rf),
+      "dune"=dune %>% slice_sample(n=input$sld_r2_rf),
+      "mite"=mite %>% 
+        filter(!row_number() %in% c(57,62)) %>%
+        slice_sample(n=input$sld_r2_rf))
   })
                
-               
+  ## Create reactive df for rarecurve
+  rarefac_curveDF_rf<-reactive({
+    rarecurve(x=rarefacDF_rf(),tidy=TRUE) %>%
+    rename(site="Site",individuals="Sample",species="Species") %>%
+    arrange(site) %>%
+    mutate(site=fct_inseq(site),
+           species=round(species,2))
+  })
 
 
+  ## Output rarefaction curves
+  output$plotly_rare_curve_rf<-renderPlotly({
+    req(input$rad_dataset2_rf)
+    plotly_rarefy(data=rarefac_curveDF_rf(),n=input$sld_n_rf)
+  })
 
 }
 
