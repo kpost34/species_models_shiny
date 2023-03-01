@@ -288,8 +288,9 @@ ui<-navbarPage("Species Models App",
               )
             ),
             tabPanel(title=out_tab_titles_rf[2],
-              plotlyOutput("plotly_rare_curve_rf"))
-                    
+              plotlyOutput("plotly_rare_curve_rf"),
+              DTOutput("dt_rarefac_rf")
+            )
           )
         )
       )
@@ -323,11 +324,7 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-# retain original site values
-# add table underneath that outputs intersection points: row of sites with row of richness
-# grouped boxplots? inds & species?
 
-# working on re-ordering factor levels to display sites correctly in ggplotly legend of rareplot
 
 
 
@@ -349,10 +346,7 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# rounded richness on species-accumulation curve to nearest tenth of a species
-# created reactive DF of data for rarecurve
-# plotted rarefaction curve with legend containing sites in numerical order
-# added vertical line to plot
-# made subsample slider more dynamic in that max value corresponds with sites on screen
+# updated value of rarefaction slider for sites so that it is ~middle of rnage
+# added table underneath rarecurve that outputs intersection points: row of individuals with row of richness
 
 

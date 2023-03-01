@@ -49,9 +49,22 @@ plotly_rarefy<-function(data,n){
 }
 
 
+### Find middle default value of a slider given a max value and step
+find_value<-function(min,max,step){
+  half_total <- (min + max)/2
+  half_total - (half_total %% step)
+}
 
 
-
+### Wrangle intersection values of rarecurve into table
+find_rarefac_intersect<-function(data, n){
+  data %>%
+    filter(individuals==n) %>%
+    t() %>%
+    as.data.frame() %>%
+    rownames_to_column() %>%
+    row_to_names(1)
+}
 
 
 
