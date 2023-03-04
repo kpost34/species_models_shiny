@@ -9,13 +9,6 @@ pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools,broom,D
                vegan,janitor)
 
 #source in functions and objects
-# source(here("backbone_and_functions","species_models_func_01.R"))
-# source(here("backbone_and_functions","species_models_func_02.R"))
-# source(here("backbone_and_functions","species_models_func_03.R"))
-# source(here("backbone_and_functions","species_models_obj_01.R"))
-# source(here("backbone_and_functions","species_models_obj_02.R"))
-# source(here("backbone_and_functions","species_models_obj_03.R"))
-
 purrr::map(list.files(here("backbone_and_functions"),pattern="obj|func",
                full.names=TRUE),source)
 
@@ -233,7 +226,9 @@ ui<-navbarPage("Species Models App",
     ),
   
     #### User guide component-----------------------------------------------------------------------
-    tabPanel(title="User Guide",id="guide_sa2"
+    tabPanel(title="User Guide",id="guide_sa2",
+      h3(strong("Background and Purpose")),
+      
     )
   ),
   
@@ -251,7 +246,7 @@ ui<-navbarPage("Species Models App",
               div(id="sidebar_cc_rf",
                 sliderInput(inputId="sld_r_rf",value=10,min=5,max=15,step=1,
                             label="Choose number of sites (r)"),
-                radioButtons(inputId="rad_specaccumtype_rf",choices=specaccum_curves_rf,
+                radioButtons(inputId="rad_specaccumtype_rf",choices=sac_rf,
                              label="Select species accumulation curve method"),
                 br(),
                 h4(strong("Outputs")),
@@ -289,6 +284,7 @@ ui<-navbarPage("Species Models App",
             ),
             tabPanel(title=out_tab_titles_rf[2],
               plotlyOutput("plotly_rare_curve_rf"),
+              br(),
               DTOutput("dt_rarefac_rf")
             )
           )
@@ -324,7 +320,12 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-
+#user guides
+#acknowledgements & further info
+#appearance
+#re-size plots & rearrange plots where necessary
+#make plot labels (e.g., capitalization, bolding, etc) consistent
+#replace "power law" with "power function"
 
 
 
@@ -338,6 +339,9 @@ ui<-navbarPage("Species Models App",
 #center reset button
 #if plots of data with model do not have legends, then add them
 
+#rare
+
+
 
 
 # DONE
@@ -346,7 +350,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# updated value of rarefaction slider for sites so that it is ~middle of rnage
-# added table underneath rarecurve that outputs intersection points: row of individuals with row of richness
+# removed all row names/numbers in tables
+# added titles for rarefaction plot and table
+# wrote out text for background/instructions for all three mini-apps
 
 

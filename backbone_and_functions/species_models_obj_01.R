@@ -139,6 +139,61 @@ sc4_spptDF_ib<-bind_rows(
 )
 
 
+#### Scenario Intro Text============================================================================
+### Scenario 1
+
+
+### Scenario 2
+
+
+### Scenario 3
+
+
+### Scenario 4
+
+
+#### User Guide=====================================================================================
+### Background
+bp_ib<-"The Theory of Island Biogeography was developed by Robert MacArthur and Edward O. Wilson
+in a book of the same title published in 1967. The theory proposes that immigration rates of
+organisms from a mainland to islands is a function of distance, while extinction rates of species
+on islands are a function of island area. Combined, these two rates determine the equilibrium
+numbers of species on islands. Although these ideas were developed using islands, their application
+extends deeply into conversation biology as suitable habitat of threatened species can be thought
+of as a matrix of islands in unsuitable habitat."
+
+
+### Instructions
+### Scenarios
+instruct_sc_ib<-"If you choose 'scenario' under the first set of options, then you are presented with 
+four different scenarios. Select one of them. This displays a schematic, which illustrates the 
+island areas and their distances from the mainland; the (immigration-colonization) rate-richness
+plot; and the richness-time plot. These visuals are supported by descriptive text. The two plots
+are interactive in that you can hover over lines and points for more information."
+
+### Custom specifications
+instruct_cu_ib<-"If you select 'custom specifications', you are presented with a series of inputs. 
+At the top of the sidebar, you are free to de-select one or more of the three visuals. Use the two
+sliders to set the richness on the mainland (p) and length of time (t). Input the distance from the
+mainland, d, using any number between 100 and 10,000. Choose the decay of colonization rate and
+mean colonization rate over all species using the two sliders. Input the area of island 1 using
+any number between 100 and 10,000. Set the effect of area on extinction using the slider. If you
+would like to display a second island on the rate vs richness and rate vs time plots, select
+the radio button, switch to the island 2 tab, and set the inputs using desired values. The two
+plots are interactive; feel free to hover over lines and points for more information. To reset
+all values, press the button below the inputs."
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

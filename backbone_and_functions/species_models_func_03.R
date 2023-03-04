@@ -36,12 +36,13 @@ plotly_specaccum<-function(data,nm){
 plotly_rarefy<-function(data,n){
   data %>%
     ggplot(aes(x=individuals,y=species,color=site)) +
+    ggtitle("Rarefaction Curve") +
     geom_line() +
     geom_vline(xintercept=n) +
     scale_color_viridis_d(end=0.85) +
     theme_bw() +
     labs(color="site") +
-    theme() -> p
+    theme(title=element_text(size=12)) -> p
   
   p %>%
     ggplotly() %>%

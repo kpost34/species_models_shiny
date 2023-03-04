@@ -409,7 +409,7 @@ server<-function(input,output,session){
   output$dt_modcomp_sa<-renderDT({
     req(input$rad_dataset_sa)
     compare_sars_mods(pl_lm_mod(),semilog_lm_mod(),nm=c("Power Law","Semi-log Model"))
-  },options=list(dom="t"))
+  },rownames=FALSE,options=list(dom="t"))
   
   
   
@@ -480,17 +480,27 @@ server<-function(input,output,session){
                c(input$rad_dataset2_rf,input$sld_r2_rf),{
     if(input$rad_dataset2_rf=="BCI"){
       #dynamically populate max and value args
-      updateSliderInput(inputId="sld_n_rf",value=find_value(20,max_n_rf(),20),
-                        min=20,max=max_n_rf(),step=20)
+      updateSliderInput(inputId="sld_n_rf",value=20,min=20,max=max_n_rf(),step=20)
     }
     if(input$rad_dataset2_rf=="dune"){
-      updateSliderInput(inputId="sld_n_rf",value=find_value(4,max_n_rf(),2),
-                        min=4,max=max_n_rf(),step=2)
+      updateSliderInput(inputId="sld_n_rf",value=2,min=4,max=max_n_rf(),step=2)
     }
     if(input$rad_dataset2_rf=="mite"){
-      updateSliderInput(inputId="sld_n_rf",value=find_value(5,max_n_rf(),5),
-                        min=5,max=max_n_rf(),step=5)
+      updateSliderInput(inputId="sld_n_rf",value=5,min=5,max=max_n_rf(),step=5)
     }
+    # if(input$rad_dataset2_rf=="BCI"){
+    #   #dynamically populate max and value args
+    #   updateSliderInput(inputId="sld_n_rf",value=find_value(20,max_n_rf(),20),
+    #                     min=20,max=max_n_rf(),step=20)
+    # }
+    # if(input$rad_dataset2_rf=="dune"){
+    #   updateSliderInput(inputId="sld_n_rf",value=find_value(4,max_n_rf(),2),
+    #                     min=4,max=max_n_rf(),step=2)
+    # }
+    # if(input$rad_dataset2_rf=="mite"){
+    #   updateSliderInput(inputId="sld_n_rf",value=find_value(5,max_n_rf(),5),
+    #                     min=5,max=max_n_rf(),step=5)
+    # }
   })
   
   
@@ -511,10 +521,11 @@ server<-function(input,output,session){
     req(input$rad_specaccumtype_rf)
     if(input$rad_specaccumtype_rf=="rarefaction"){
       "individuals"
-    } 
-    else if(input$rad_specaccumtype_rf %in% specaccum_curves_rf[specaccum_curves_rf!="rarefaction"]){
+    }
+    else if(input$rad_specaccumtype_rf %in% sac_rf[sac_rf!="rarefaction"]){
       "sites"}
   })
+  
   
   ## Create reactive specaccum df
   specaccum_curveDF_rf<-reactive({
@@ -524,11 +535,13 @@ server<-function(input,output,session){
       specaccum(method=input$rad_specaccumtype_rf) %>%
       .[c(specaccum_type_vec_rf(),"richness")] %>%
       bind_rows() %>%
-      {if(input$rad_specaccumtype_rf %in% specaccum_curves_rf[specaccum_curves_rf!="collector"]) round(.,1) else .}
+    round(1)
+      # {if(input$rad_specaccumtype_rf %in% sac_rf[sac_rf!="collector"]) round(.,1) else .}
     })
+
+   
   
-  
-  ## Create plots
+  ## Create plot
   output$plotly_specaccum_rf<-renderPlotly({
     req(input$rad_dataset_rf)
     req(input$rad_specaccumtype_rf)
@@ -537,12 +550,14 @@ server<-function(input,output,session){
   })
   
   
+  
   ## Create table
   output$dt_estTotS_rf<-renderDT({
     req(input$chk_estTotS_rf)
     specaccumDF_rf() %>%
       est_s_as_tib()
   },
+  rownames=FALSE,
   options=list(dom="t"),
   #add caption as a centered title
   caption=htmltools::tags$caption(style="caption-side: top; text-align: left;
@@ -584,7 +599,11 @@ server<-function(input,output,session){
     req(input$rad_dataset2_rf)
     find_rarefac_intersect(rarefac_curveDF_rf(),input$sld_n_rf)
   },
-  rownames=FALSE,options=list(dom="t"))
+  rownames=FALSE,options=list(dom="t"),
+  #add caption as a centered title
+  caption=htmltools::tags$caption(style="caption-side: top; text-align: left;
+                                  color: black; font-size: 150%;",
+                                  "Rarefaction Table"))
 
 }
 
