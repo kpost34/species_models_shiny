@@ -2,6 +2,10 @@
 #Code for functions used in Species Models App for Island Biogeography mini-app
 
 
+### Function to easily create multiple line breaks--------------------------------------------------
+linebreaks <- function(n){HTML(strrep(br(), n))}
+
+
 #### Create Function to Build DF of s, C, and E=====================================================
 ### Custom version
 build_rate_df<-function(island,s_len,c,p,phi,d,ep,a){

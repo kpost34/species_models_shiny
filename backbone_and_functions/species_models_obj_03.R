@@ -39,7 +39,7 @@ out_tab_titles_rf<-c("Collector's Curves","Rarefaction")
 ## SACs
 bp_sac_rf<-"This Shiny mini-app demonstrates two critical ideas in community ecology: species-
 accumulation curves (SACs) and rarefaction. In SACs or collector's curves, species richness is 
-plotted against either sites or individuals sampled from a given area to visualize this relationship. SACs, or collector's 
+plotted against either sites or individuals sampled from a given area to visualize this relationship.
 This information can be used to extrapolate the numbers of species in a given area (i.e., estimated 
 species richness) using various estimators."
 

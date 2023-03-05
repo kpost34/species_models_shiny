@@ -124,11 +124,21 @@ ui<-navbarPage("Species Models App",
     )
   ),
   
-    
-    #### Theory and Reach---------------------------------------------------------------------------
-    tabPanel(title="Theory and Reach",id="theory_reach_ib2"),
     #### User guide component-----------------------------------------------------------------------
-    tabPanel(title="User Guide",id="guide_ib3"
+    tabPanel(title="User Guide",id="guide_ib2",
+      div(titlePanel("Island Biogeography Mini-App"),
+        h3(strong("Background")),
+          bp_ib,
+        linebreaks(3),
+        h3(strong("Instructions")),
+          h4("Scenarios"),
+            instruct_sc_ib,
+          linebreaks(2),
+          h4("Custom specifications"),
+            instruct_cu_ib,
+        #add left and rights margins
+        style="margin-left:200px; margin-right: 200px"
+      )
     )
   ),
   
@@ -227,10 +237,22 @@ ui<-navbarPage("Species Models App",
   
     #### User guide component-----------------------------------------------------------------------
     tabPanel(title="User Guide",id="guide_sa2",
-      h3(strong("Background and Purpose")),
-      
+      div(titlePanel("Species-Area Curves Mini-App"),
+        h3(strong("Background")),
+          bp_sa,
+        linebreaks(3),
+        h3(strong("Instructions")),
+          h4("Scenarios"),
+            instruct_dm_sa,
+          linebreaks(2),
+          h4("Custom specifications"),
+            instruct_mf_sa,
+        #add left and rights margins
+        style="margin-left:200px; margin-right: 200px"
+      )
     )
   ),
+
   
   ##### Create third navbarMenu (Rarefaction=rf)====================================================
   navbarMenu(title="Rarefaction",
@@ -292,19 +314,46 @@ ui<-navbarPage("Species Models App",
       )
     ),
       
-
-      
-                    
-                    
-
   
     #### User guide component-----------------------------------------------------------------------
-    tabPanel(title="User Guide",id="guide_rf2"
+    tabPanel(title="User Guide",id="guide_rf2",
+      div(titlePanel(title="Rarefaction Mini-App"),
+        h3(strong("Background")),
+          h4("Species-Area Curves"),
+            bp_sac_rf,
+          linebreaks(2),
+          h4("Rarefaction"),
+            bp_rare_rf,
+        linebreaks(3),
+        h3(strong("Instructions")),
+          h4("Scenarios"),
+            instruct_sac_rf,
+          linebreaks(2),
+          h4("Rarefaction"),
+            instruct_rare_rf,
+        #add left and rights margins
+        style="margin-left:200px; margin-right: 200px"
+      )
     )
   ),
   
   #### Create tabPanel (developer info)=============================================================
-  tabPanel(title="Developer Info")             
+  tabPanel(title="Developer Info",
+    fluidRow(
+      column(5,
+        wellPanel(width="50%",
+          p(h4(strong("Keith Post"))),
+          p("If you would like to see the code for this Shiny app, please visit the",
+           tags$a(href="https://github.com/kpost34/species_models_shiny",
+                  "Github repo"),
+           "for this project."
+          ),
+          p(tags$a(href="https://github.com/kpost34","GitHub Profile")),
+          p(tags$a(href="https://www.linkedin.com/in/keith-post","LinkedIn"))
+        )
+      )
+    )
+  )
                
                
                
@@ -312,16 +361,9 @@ ui<-navbarPage("Species Models App",
 
 
 
-
-
-
-
-
 #### NOTES==========================================================================================
 
 # NEXT
-#user guides
-#acknowledgements & further info
 #appearance
 #re-size plots & rearrange plots where necessary
 #make plot labels (e.g., capitalization, bolding, etc) consistent
@@ -346,12 +388,14 @@ ui<-navbarPage("Species Models App",
 
 # DONE
 
+
  
 
 
 # LAST COMMIT
-# removed all row names/numbers in tables
-# added titles for rarefaction plot and table
-# wrote out text for background/instructions for all three mini-apps
+# added text objects containing background info and instructions to app & added title panels to
+  #those pages
+# added left and right margins to user guide pages
+# added developer info
 
 

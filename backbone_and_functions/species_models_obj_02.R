@@ -30,7 +30,7 @@ that the power function is often expressed in log space, changing the form to lo
 
 #### Instructions
 ## Drawing Models
-instruct_dm_rf<-"By default, all plots are displayed but feel free de-select 1-2. Choose the range of
+instruct_dm_sa<-"By default, all plots are displayed but feel free de-select 1-2. Choose the range of
 sampling area by selecting the min and max x, which is the power of area expressed in 10^x. Then
 choose c and z using the second and third sliders. The plot(s) will adjust based on these three
 inputs. Reset the values by clicking on 'Reset sliders' button."
