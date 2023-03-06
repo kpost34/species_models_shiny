@@ -23,11 +23,11 @@ plot_power_mod<-function(data,c,z,col){
 }
 
 
-### Power law on log-log scale
+### Power function on log-log scale
 plot_powerlog_mod<-function(data,c,z,col){
   data %>%
   ggplot(aes(x=log_a)) +
-  ggtitle("Power Law: Log-log scale") +
+  ggtitle("Power Function: Log-log scale") +
   geom_function(fun = ~log10(c) + z*.x,color=col,linewidth=1.5) +
   labs(x="log10(Area)",
        y="log10(No. of Species)") +
@@ -65,7 +65,7 @@ plot_power_sars<-function(data,col="black",reg=FALSE,mod,col_reg=NA){
            upr=confint2(mod)[1,2]*a^confint2(mod)[2,2])
     else .} %>%
     ggplot(aes(x=a,y=s)) +
-    ggtitle("Power Law: Linear Scale") +
+    ggtitle("Power Function: Linear Scale") +
     geom_point(color="black") +
     labs(x="Area",
          y="No. of species") +
@@ -91,7 +91,7 @@ plot_power_sars<-function(data,col="black",reg=FALSE,mod,col_reg=NA){
 plot_powerlog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
   data %>%
     ggplot(aes(x=log10(a),y=log10(s))) +
-    ggtitle("Power Law: Log-log scale") +
+    ggtitle("Power Function: Log-log scale") +
     geom_point(color=col,size=1,alpha=0.7) +
     labs(x="log10(Area)",
          y="log10(No. of species)") +

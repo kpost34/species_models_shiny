@@ -27,25 +27,63 @@ out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
               tabPanel(scenarios1_ib[1],
                 plotOutput("plot_sc1_4_schematic_ib"),
                 br(),
-                plotlyOutput("plotly_sc1_4_rate_ib"),
-                plotlyOutput("plotly_sc1_4_sppt_ib")
+                fluidRow(
+                  column(6,
+                    plotlyOutput("plotly_sc1_4_rate_ib")
+                    ),
+                  column(6,
+                    plotlyOutput("plotly_sc1_4_sppt_ib")
+                  )
+                )
               ),
               #custom model yields plots from custom inputs
               tabPanel(scenarios1_ib[2],
-                plotOutput("plot_cust_schematic_ib"),
+                plotOutput("plot_cust_schematic_ib",
+                           height="350px",
+                           width="85%"),
                 br(),
-                plotlyOutput("plotly_cust_rate_ib"),
-                plotlyOutput("plotly_cust_sppt_ib")
+                plotlyOutput("plotly_cust_rate_ib",
+                             width="90%",
+                             height="400px"),
+                plotlyOutput("plotly_cust_sppt_ib",
+                             width="90%",
+                             height="400px"),
               )
             )
 
 
 #### Text Sidebar Obj===============================================================================
 #need to add text later to describe scenarios
-sc1_text_ib<-"Scenario 1 text"
-sc2_text_ib<-"Scenario 2 text"
-sc3_text_ib<-"Scenario 3 text"
-sc4_text_ib<-"Scenario 4 text"
+sc1_text_ib<-"In this scenario, the islands are the same distance from the mainland but differ in
+size. If all other factors are held constant, the colonization rate function is the same for both
+islands. However, the extinction rate function has a steeper, positive slope for the small island. 
+Thus, the small island has a smaller equilibrium species richness than the larger island."
+
+
+sc2_text_ib<-"In this scenario, the islands are the same size but differ in their distance from
+the mainland. If all other factors are held constant, the extinction rate function is the same
+for both islands. However, the slope of the colonization rate function of the near island has a 
+greater magnitude (more negative) than the far island. Thus, the near island has a larger equilibrium 
+species richness than the distant island."
+
+
+sc3_text_ib<-"In this scenario, one island is large and close to the mainland, while the other
+island is small and far from the mainland. If all other factors are held constant, the
+extinction rate function of the large, near island would have a smaller slope, and the slope of
+its colonization rate function would have a greater magnitude (more negative) than the small, 
+distant island. In other words, the large, near island would have less extinction and greater 
+colonization than the small, distant island, which yields a larger equilibrium species richness."
+
+
+sc4_text_ib<-"In this scenario, one island is large and far from the mainland, while the other
+island is small and close to the mainland. If all other factors are held constant, the slope of
+the colonization rate of the large, distant island has a smaller magnitude (less negative) than
+the small, near island because of its distance from the mainland, but the slope of the extinction 
+rate function is smaller because of the island's greater size. These conditions indicate less
+colonization but greater extinction than the small, near island. Thus, in this scenario, the 
+magnitude of the differences in island size and distance from mainland will determine which 
+island has greater equilibrium species richness. Using the numbers in this particular example, the
+large, distance island has more species at equilibrium."
 
 
 
@@ -138,18 +176,6 @@ sc4_spptDF_ib<-bind_rows(
   build_svt_static_df(isle="small, near island", d=1000,a=1000)
 )
 
-
-#### Scenario Intro Text============================================================================
-### Scenario 1
-
-
-### Scenario 2
-
-
-### Scenario 3
-
-
-### Scenario 4
 
 
 #### User Guide=====================================================================================

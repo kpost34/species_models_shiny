@@ -66,6 +66,7 @@ ui<-navbarPage("Species Models App",
                             label="Length of time (t)"),
               hr(style = "border-top: 1px solid #000000;"),
               h5(em("Adjust inputs for each island")),
+              
             tabsetPanel(id="custom_tabset_ib",type="pills",
                         
               #Island 1 ui
@@ -78,7 +79,6 @@ ui<-navbarPage("Species Models App",
                                (\u03d5)"),
                   sliderInput(inputId="sld_c1_ib",value=0.6,min=0.1,max=1,step=0.05,
                                label="Mean colonization rate over all species (c)"),
-                # hr(style = "border-top: 1px solid #000000;"),
                 br(),
                 h4(strong("Extinction")),
                     numericInput(inputId="num_a1_ib",value=1200,min=100,max=10000,
@@ -163,7 +163,7 @@ ui<-navbarPage("Species Models App",
                               value=TRUE),
                 #div compresses vertical spacing among checkboxes to resemble checkboxGroupInput
                 div(checkboxInput(inputId="chk_pllog_ib",
-                                  label="power law: log-log scale",
+                                  label="power function: log-log scale",
                                   value=TRUE),
                     style="margin-top: -10px; margin-bottom: -10px"),
                 checkboxInput(inputId="chk_semilog_sa",
@@ -191,7 +191,7 @@ ui<-navbarPage("Species Models App",
                  h5("S = number of species"),
                  h5("A = habitat area"),
               h4(strong("Models")),
-                h5(strong("Power Law")),
+                h5(strong("Power Function")),
                   h5("linear space: S = cA^z"),
                   h5("log-log space: log(S) = log(c) + zlog(A)"),
                 h5(strong("Semilog Model")),
@@ -364,38 +364,35 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-#appearance
-#re-size plots & rearrange plots where necessary
-#make plot labels (e.g., capitalization, bolding, etc) consistent
-#replace "power law" with "power function"
-
-
-
-#LATER
 #IB
-#add pictures of MacArthur and Wilson (perhaps in user guide)
-#add text to explain scenarios 
-#change plot dimensions
+#1) rearrange text and plots
+#2) re-size plots
+#4) add more detail about the equations (in the user guide)
 
 #SA
-#center reset button
-#if plots of data with model do not have legends, then add them
+#1) add legends if they are missing
+#2) center reset button
 
-#rare
+#Rare
+
+
+#general
+#1) make plot labels (e.g., capitalization, bolding, etc) consistent
+#2) add references
+#3) appearance
+#4) add annotations
 
 
 
 
 # DONE
 
-
  
 
 
 # LAST COMMIT
-# added text objects containing background info and instructions to app & added title panels to
-  #those pages
-# added left and right margins to user guide pages
-# added developer info
+# changed "power law" to "power function" throughout app
+# re-sized custom island biogeography plots
+# added text to describe scenarios
 
 
