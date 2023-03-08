@@ -1,5 +1,5 @@
 #Created by Keith Post on 1/15/23
-#Code for functions used in Species Models App for Species-Area Curves mini-app
+#Code for functions used in Species Models App for Species-Area Relationships mini-app
 
 
 

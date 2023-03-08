@@ -258,7 +258,7 @@ server<-function(input,output,session){
   
   
   
-  ##### Species-Area Curves (=sa)===================================================================
+  ##### Species-Area Relationships (=sa)===================================================================
   #### UI-------------------------------------------------------------------------------------------
   ### Dynamically display mainPanel tab based on sidebarPanel tab
   observeEvent(input$input_tabset_sa,{

@@ -1,7 +1,7 @@
 #Created by Keith Post on 12/7/22
 #Shiny App for species-based models in ecology: 
   #1) Island Biogeography
-  #2) Species-Area Curves
+  #2) Species-Area Relationships
   #3) Rarefaction
 
 #load packages
@@ -18,7 +18,8 @@ purrr::map(list.files(here("backbone_and_functions"),pattern="obj|func",
 #--------------------------------------------------------------------------------------------------#
 ui<-navbarPage("Species Models App",
   useShinyjs(),
-  ##### Create first navbarMenu (Island Biogeography=ib)============================================
+  
+  ##### Island Biogeography=========================================================================
   navbarMenu(title="Theory of Island Biogeography",
     #### App component for custom specifications----------------------------------------------------
     tabPanel(title="Mini-app",id="app_ib1",
@@ -30,99 +31,116 @@ ui<-navbarPage("Species Models App",
       
       sidebarLayout(
         #name sidebarPanel for shinyjs code
-        div(id="sidebar_ib",sidebarPanel(width=3,position="left",
-          tabsetPanel(id="input_tabset_ib",type="hidden",
-            #use a blank panel to open
-            tabPanel(title="tab_blank_ib"),
-            #scenario tab displays text (based on second radio button)
-            tabPanel(title=scenarios1_ib[1],
-              textOutput("text_sc1_4_text_ib")
-            ),
-            #custom panel has various inputs
-            tabPanel(title=scenarios1_ib[2],
-              #output selector
-              h4(strong("Plots")),
-                #checkboxes to select what to output
-                #h5(strong()) is equivalent to a shiny input label
-                h5(strong("Select which output(s) to display")), 
-                checkboxInput(inputId="chk_schematicOut_ib",
-                              label="schematic",
-                              value=TRUE),
-                #div compresses vertical spacing among checkboxes to resemble checkboxGroupInput
-                div(checkboxInput(inputId="chk_rateOut_ib",
-                                  label="rate plot",
-                                  value=TRUE),
-                    style="margin-top: -10px; margin-bottom: -10px"),
-                checkboxInput(inputId="chk_svtOut_ib",
-                              label="spp v time plot",
-                              value=TRUE),
-              hr(style = "border-top: 1px solid #000000;"),
-              h4(strong("Species Pool & Time")),
-                #species pool slider (above tabs)
-                sliderInput(inputId="sld_p_ib",value=100,min=20,max=200,step=10,
-                            label="Number of species on mainland (p)"),
-                #time slider (below tabs)
-                sliderInput(inputId="sld_t_ib",value=50,min=20,max=100,step=10,
-                            label="Length of time (t)"),
-              hr(style = "border-top: 1px solid #000000;"),
-              h5(em("Adjust inputs for each island")),
-              
-            tabsetPanel(id="custom_tabset_ib",type="pills",
-                        
-              #Island 1 ui
-              tabPanel(title="Island 1",
-                h4(strong("Immigration")),
-                  numericInput(inputId="num_d1_ib",value=1000,min=100,max=10000,
-                               label="Distance from mainland (d; 100-10,000)"),
-                  sliderInput(inputId="sld_phi1_ib",value=.0002,min=0,max=.001,step=.0002,
-                               label="Distance decay of colonization rate 
-                               (\u03d5)"),
-                  sliderInput(inputId="sld_c1_ib",value=0.6,min=0.1,max=1,step=0.05,
-                               label="Mean colonization rate over all species (c)"),
-                br(),
-                h4(strong("Extinction")),
-                    numericInput(inputId="num_a1_ib",value=1200,min=100,max=10000,
-                                 label="Area of island 1 (a; 100-10,000)"),
-                    sliderInput(inputId="sld_ep1_ib",value=.0006,min=0,max=.001,step=.0002,
-                                 label="Effect of area on extinction 
-                                 (\u03b5)"),
+        div(id="sidebar_ib",
+          sidebarPanel(width=3,position="left",
+            tabsetPanel(id="input_tabset_ib",type="hidden",
+              #use a blank panel to open
+              tabPanel(title="tab_blank_ib"),
+              #scenario tab displays text (based on second radio button)
+              tabPanel(title=scenarios1_ib[1],
+                textOutput("text_sc1_4_text_ib")
               ),
-              
-              #Island 2 ui
-              tabPanel(title="Island 2",
-                h4(strong("Immigration")),
-                  numericInput(inputId="num_d2_ib",value=1000,min=100,max=10000,
-                               label="d (100-10,000)"),
-                  sliderInput(inputId="sld_phi2_ib",value=.0002,min=0,max=.001,step=.0002,
-                               label="\u03d5"),
-                  sliderInput(inputId="sld_c2_ib",value=0.6,min=0.1,max=1,step=0.05,
-                               label="c"),
+              #custom panel has various inputs
+              tabPanel(title=scenarios1_ib[2],
+                #output selector
+                h4(strong("Plots")),
+                  #checkboxes to select what to output
+                  #h5(strong()) is equivalent to a shiny input label
+                  h5(strong("Select which output(s) to display")), 
+                  checkboxInput(inputId="chk_schematicOut_ib",
+                                label="schematic",
+                                value=TRUE),
+                  #div compresses vertical spacing among checkboxes to resemble checkboxGroupInput
+                  div(checkboxInput(inputId="chk_rateOut_ib",
+                                    label="rate plot",
+                                    value=TRUE),
+                      style="margin-top: -10px; margin-bottom: -10px"),
+                  checkboxInput(inputId="chk_svtOut_ib",
+                                label="spp v time plot",
+                                value=TRUE),
                 hr(style = "border-top: 1px solid #000000;"),
-                h4(strong("Extinction")),
-                  numericInput(inputId="num_a2_ib",value=1200,min=100,max=10000,
-                               label="a (100-10,000)"),
-                  sliderInput(inputId="sld_ep2_ib",value=.0006,min=0,max=.001,step=.0002,
-                               label="\u03b5")
+                h4(strong("Species Pool & Time")),
+                  #species pool slider (above tabs)
+                  sliderInput(inputId="sld_p_ib",value=100,min=20,max=200,step=10,
+                              label="Number of species on mainland (p)"),
+                  #time slider (below tabs)
+                  sliderInput(inputId="sld_t_ib",value=50,min=20,max=100,step=10,
+                              label="Length of time (t)"),
+                hr(style = "border-top: 1px solid #000000;"),
+                h5(em("Adjust inputs for each island")),
+                
+              tabsetPanel(id="custom_tabset_ib",type="pills",
+                          
+                #Island 1 ui
+                tabPanel(title="Island 1",
+                  h4(strong("Immigration")),
+                    numericInput(inputId="num_d1_ib",value=1000,min=100,max=10000,
+                                 label="Distance from mainland (d; 100-10,000)"),
+                    sliderInput(inputId="sld_phi1_ib",value=.0002,min=0,max=.001,step=.0002,
+                                 label="Distance decay of colonization rate 
+                                 (\u03d5)"),
+                    sliderInput(inputId="sld_c1_ib",value=0.6,min=0.1,max=1,step=0.05,
+                                 label="Mean colonization rate over all species (c)"),
+                  br(),
+                  h4(strong("Extinction")),
+                      numericInput(inputId="num_a1_ib",value=1200,min=100,max=10000,
+                                   label="Area of island 1 (a; 100-10,000)"),
+                      sliderInput(inputId="sld_ep1_ib",value=.0006,min=0,max=.001,step=.0002,
+                                   label="Effect of area on extinction 
+                                   (\u03b5)"),
+                ),
+                
+                #Island 2 ui
+                tabPanel(title="Island 2",
+                  h4(strong("Immigration")),
+                    numericInput(inputId="num_d2_ib",value=1000,min=100,max=10000,
+                                 label="d (100-10,000)"),
+                    sliderInput(inputId="sld_phi2_ib",value=.0002,min=0,max=.001,step=.0002,
+                                 label="\u03d5"),
+                    sliderInput(inputId="sld_c2_ib",value=0.6,min=0.1,max=1,step=0.05,
+                                 label="c"),
+                  hr(style = "border-top: 1px solid #000000;"),
+                  h4(strong("Extinction")),
+                    numericInput(inputId="num_a2_ib",value=1200,min=100,max=10000,
+                                 label="a (100-10,000)"),
+                    sliderInput(inputId="sld_ep2_ib",value=.0006,min=0,max=.001,step=.0002,
+                                 label="\u03b5")
+                )
+              ),
+                hr(style = "border-top: 1px solid #000000;"),
+                #display second island (below tabs)
+                radioButtons(inputId="rad_is2_ib",label="Display Island 2 on plots?",
+                               choices=c("no","yes"),selected="no"),
+                br(),
+                #add centered reset button
+                fluidRow(align="center",
+                  actionButton("reset_ib","Reset all values")
+                )
               )
-            ),
-            hr(style = "border-top: 1px solid #000000;"),
-            #display second island (below tabs)
-            radioButtons(inputId="rad_is2_ib",label="Display Island 2 on plots?",
-                           choices=c("no","yes"),selected="no"),
-            br(),
-            #add reset button
-            actionButton("reset_ib","Reset all values")
             )
           )
+        ),
+      
+        mainPanel(width=9,
+          #output tabset object
+          out_tabs_ib
         )
       ),
-      
-      mainPanel(width=9,
-        #output tabset object
-        out_tabs_ib
+      #display scenario plots
+      div(id="scenarios1_plots_ib",
+        linebreaks(3),
+        column(6,
+          plotlyOutput("plotly_sc1_4_rate_ib",
+                       width="90%",
+                       height="400px")
+          ),
+        column(6,
+          plotlyOutput("plotly_sc1_4_sppt_ib",
+                       width="90%",
+                       height="400px")
+        )
       )
-    )
-  ),
+    ),
   
     #### User guide component-----------------------------------------------------------------------
     tabPanel(title="User Guide",id="guide_ib2",
@@ -143,11 +161,11 @@ ui<-navbarPage("Species Models App",
   ),
   
   
-  ##### Create second navbarMenu (Species-Area Curves=sa)===========================================
-  navbarMenu(title="Species-Area Curves",
+  ##### Species-Area Curves=========================================================================
+  navbarMenu(title="Species-Area Relationships",
     #### App component------------------------------------------------------------------------------
     tabPanel(title="Mini-app",id="app_sa1",
-      titlePanel("Species-Area Curves Mini-App"),
+      titlePanel("Species-Area Relationships Mini-App"),
       sidebarLayout(
         #name sidebarPanel for shinyjs code
         sidebarPanel(width=3,position="left",
@@ -183,8 +201,10 @@ ui<-navbarPage("Species Models App",
                     sliderInput(inputId="sld_z_sa",value=.25,min=.1,max=.35,step=.05,
                                 label="z")
                   ),
-                  #add reset button
-                  actionButton("reset_sa","Reset sliders"),
+                  #add centered reset button
+                  fluidRow(align="center",
+                    actionButton("reset_sa","Reset sliders")
+                  ),
                 hr(style = "border-top: 1px solid #000000;"),
               #define variables and describe models
               h4(strong("Variables")),
@@ -237,7 +257,7 @@ ui<-navbarPage("Species Models App",
   
     #### User guide component-----------------------------------------------------------------------
     tabPanel(title="User Guide",id="guide_sa2",
-      div(titlePanel("Species-Area Curves Mini-App"),
+      div(titlePanel("Species-Area Relationships Mini-App"),
         h3(strong("Background")),
           bp_sa,
         linebreaks(3),
@@ -254,7 +274,7 @@ ui<-navbarPage("Species Models App",
   ),
 
   
-  ##### Create third navbarMenu (Rarefaction=rf)====================================================
+  ##### Rarefaction=================================================================================
   navbarMenu(title="Rarefaction",
     #### App component------------------------------------------------------------------------------
     tabPanel(title="Mini-app",id="app_rf1",
@@ -262,7 +282,7 @@ ui<-navbarPage("Species Models App",
       sidebarLayout(
         sidebarPanel(width=3,position="left",
           tabsetPanel(id="input_tabset_rf",
-            tabPanel("Collector's Curves",
+            tabPanel("Species Accumulation",
               radioButtons(inputId="rad_dataset_rf",choices=datasets_rf,select=character(0),
                            label="Select a dataset"),
               div(id="sidebar_cc_rf",
@@ -293,21 +313,27 @@ ui<-navbarPage("Species Models App",
         ),
         mainPanel(
           tabsetPanel(id="out_tabset_rf",type="hidden",
+            #species-accumulation visuals
             tabPanel(title=out_tab_titles_rf[1],
-              plotlyOutput("plotly_specaccum_rf"),
-              br(),
-              fluidRow(
-                column(2),
-                column(align="center",width=8,
-                  DTOutput("dt_estTotS_rf")
-                ),
-                column(2),
+              column(12,align="center",
+                plotlyOutput("plotly_specaccum_rf",
+                             height="475px",
+                             width="90%"),
+                br(),
+                DTOutput("dt_estTotS_rf",
+                         width="60%")
               )
             ),
+            #rarefaction visuals
             tabPanel(title=out_tab_titles_rf[2],
-              plotlyOutput("plotly_rare_curve_rf"),
-              br(),
-              DTOutput("dt_rarefac_rf")
+              column(12,align="center",
+                plotlyOutput("plotly_rare_curve_rf",
+                           height="475px",
+                           width="90%"),
+                br(),
+                DTOutput("dt_rarefac_rf",
+                         width="90%")
+              )
             )
           )
         )
@@ -365,22 +391,19 @@ ui<-navbarPage("Species Models App",
 
 # NEXT
 #IB
-#1) rearrange text and plots
-#2) re-size plots
-#4) add more detail about the equations (in the user guide)
+#2) add more detail about the equations (in the user guide)
+#3) remove options on plotly to reduce overlap with title
 
-#SA
-#1) add legends if they are missing
-#2) center reset button
 
 #Rare
+#1) re-size plots
 
 
 #general
 #1) make plot labels (e.g., capitalization, bolding, etc) consistent
 #2) add references
 #3) appearance
-#4) add annotations
+#4) add annotations to code
 
 
 
@@ -391,8 +414,9 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# changed "power law" to "power function" throughout app
-# re-sized custom island biogeography plots
-# added text to describe scenarios
+# rearranged text and plots of island biogeography mini-app
+# centered action buttons
+# updated terminology from "Species-Area Curves" to "Species-Area Relationships"
+# centered and re-sized rarefaction mini-app visuals
 
 

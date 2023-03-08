@@ -73,7 +73,7 @@ build_rate_plot<-function(data1a,data1b,sec_isle="no",data2a=NA,data2b=NA){
     geom_segment(data=data1b,
                  aes(x=s_eq,xend=s_eq,y=0,yend=rate_eq),
                  linetype="dotted",color="purple") +
-    labs(title="Effect of island species richness on colonization & extinction rates",
+    labs(title="Island species richness and colonization/extinction rates",
          x="Species richness of island",
          y="Rate (spp/time)") +
     theme_bw() +
@@ -156,14 +156,14 @@ build_rate_static_plot<-function(rate_data,eq_data){
     geom_segment(data=eq_data,
                  aes(x=s_eq,xend=s_eq,y=0,yend=rate_eq),
                     color="gray80", linetype="dotted") +
-    labs(title="Relationship betwen island species richness and colonization & extinction rates",
+    labs(title="Island species richness and colonization/extinction rates",
          x="Species richness of island",
          y="Rate (spp/time)") +
     theme_bw() -> rate_static_p
   
   rate_static_p %>%
     ggplotly(tooltip="text") %>%
-    layout(margin=list(b=150),
+    layout(margin=list(b=120),
            font="Helvetica",
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
@@ -261,7 +261,7 @@ build_svt_static_plot<-function(data){
     
   p %>%
     ggplotly(tooltip="text") %>%
-    layout(margin=list(b=110),
+    layout(margin=list(b=120),
            font="Helvetica",
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",

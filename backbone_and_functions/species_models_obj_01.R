@@ -23,31 +23,22 @@ scenarios2_ib<-c("large vs small islands"="lvs",
 out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
               #app opens with blank panel
               tabPanel("tab_blank_ib"),
-              #if scenario selected, plots for specific one (1-4) outputted
+              #if scenario selected, only schematic of scenarios 1-4 outputted here
               tabPanel(scenarios1_ib[1],
                 plotOutput("plot_sc1_4_schematic_ib"),
-                br(),
-                fluidRow(
-                  column(6,
-                    plotlyOutput("plotly_sc1_4_rate_ib")
-                    ),
-                  column(6,
-                    plotlyOutput("plotly_sc1_4_sppt_ib")
-                  )
-                )
               ),
               #custom model yields plots from custom inputs
               tabPanel(scenarios1_ib[2],
                 plotOutput("plot_cust_schematic_ib",
-                           height="350px",
-                           width="85%"),
+                           width="85%",
+                           height="350px"),
                 br(),
                 plotlyOutput("plotly_cust_rate_ib",
-                             width="90%",
-                             height="400px"),
+                             width="85%",
+                             height="450px"),
                 plotlyOutput("plotly_cust_sppt_ib",
-                             width="90%",
-                             height="400px"),
+                             width="85%",
+                             height="450px"),
               )
             )
 

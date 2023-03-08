@@ -1,5 +1,5 @@
 #Created by Keith Post on 1/22/23
-#Code for objects used in Species Model App for Species-Area Curves mini-app
+#Code for objects used in Species Model App for Species-Area Relationships mini-app
 
 #### Datasets=======================================================================================
 ### Create vector of choices

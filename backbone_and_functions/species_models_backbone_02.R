@@ -1,10 +1,10 @@
 #Created by Keith Post on 1/14/23
-#Backbone code for Species Models App: Species-Area Curves
+#Backbone code for Species Models App: Species-Area Relationships
 
 pacman::p_load(here,tidyverse,sars,cowplot,nlstools)
 source(here("backbone_and_functions","species_models_func_02.R"))
 
-####### Species-Area Curves=========================================================================
+####### Species-Area Relationships==================================================================
 ##### Generating curves from inputs-----------------------------------------------------------------
 #### Power law
 ### Equation and parameters
