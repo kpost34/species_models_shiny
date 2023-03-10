@@ -167,7 +167,8 @@ build_rate_static_plot<-function(rate_data,eq_data){
            font="Helvetica",
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
-                  x=0.5,y=-0.5))
+                  x=0.5,y=-0.5)) %>%
+    config(displayModeBar=FALSE)
 }
 
 
@@ -255,7 +256,7 @@ build_svt_static_plot<-function(data){
     scale_shape_manual(name=NULL,values=shp) +
     labs(title="Island species richness over time",
          x="Time",
-         y="Species richness of island") +
+         y="Richness") +
     theme_bw() +
     theme(legend.position="bottom") -> p
     
@@ -265,7 +266,8 @@ build_svt_static_plot<-function(data){
            font="Helvetica",
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
-                  x=0.5,y=-0.35))
+                  x=0.5,y=-0.35)) %>%
+    config(displayModeBar=FALSE)
 }
 
 
@@ -340,8 +342,7 @@ data %>%
                      "\n*island areas are log2-transformed",
                      "\n*distances are square root-transformed")) + 
   theme(plot.title=element_text(size=18),
-        plot.caption=element_text(face="italic",hjust=0,size=13),
-        text=element_text(family="Helvetica")) -> is1_plot
+        plot.caption=element_text(face="italic",hjust=0,size=13)) -> is1_plot
 
 if(sec_isle=="no"){
   is1_plot -> is_plot

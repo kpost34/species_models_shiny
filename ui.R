@@ -191,7 +191,7 @@ ui<-navbarPage("Species Models App",
                 h4(strong("Drawing models")),
                 h5(em("Adjust inputs for species-area plots")),
                   div(id="drawMod_tab_sa",
-                    #three simple, slider inputs: a (start and end), c, and z
+                    #three simple slider inputs: a (start and end), c, and z
                     sliderInput(inputId="sld_a_sa",value=c(-5,5),min=-10,max=10,step=1,
                                 #put label on two lines
                                 label=HTML("A (10^x) 
@@ -228,6 +228,7 @@ ui<-navbarPage("Species Models App",
         mainPanel(
           tabsetPanel(id="out_tabset_sa",type="hidden",
             tabPanel(title=out_tab_titles_sa[1],
+              #to more easily compare models
               splitLayout(
                 plotOutput("plot_draw_plline_sa",height="350px"),
                 plotOutput("plot_draw_pllog_sa",height="350px")
@@ -241,7 +242,7 @@ ui<-navbarPage("Species Models App",
             ),
             tabPanel(title=out_tab_titles_sa[2],
               splitLayout(
-                # plotOutput("plotly_datmod_plline_sa",height="350px"),
+                #again, more easily compare models
                 plotlyOutput("plotly_datamod_pllog_sa",height="350px"),
                 plotlyOutput("plotly_datamod_semilog_sa",height="350px")
               ),
@@ -282,6 +283,7 @@ ui<-navbarPage("Species Models App",
       sidebarLayout(
         sidebarPanel(width=3,position="left",
           tabsetPanel(id="input_tabset_rf",
+            #Species accumulation UI
             tabPanel("Species Accumulation",
               radioButtons(inputId="rad_dataset_rf",choices=datasets_rf,select=character(0),
                            label="Select a dataset"),
@@ -299,6 +301,7 @@ ui<-navbarPage("Species Models App",
                                 label="Expected species richness")
               )
             ),
+            #Rarefaction UI
             tabPanel("Rarefaction",
               radioButtons(inputId="rad_dataset2_rf",choices=datasets2_rf,select=character(0),
                            label="Select a dataset"),
@@ -363,7 +366,7 @@ ui<-navbarPage("Species Models App",
     )
   ),
   
-  #### Create tabPanel (developer info)=============================================================
+  #### Developer Info==========================================================================
   tabPanel(title="Developer Info",
     fluidRow(
       column(5,
@@ -391,20 +394,15 @@ ui<-navbarPage("Species Models App",
 
 # NEXT
 #IB
-#2) add more detail about the equations (in the user guide)
-#3) remove options on plotly to reduce overlap with title
+# add more detail about the equations (in the user guide)
 
-
-#Rare
-#1) re-size plots
+#rare
+# resolve that temp error when switching spec-accum curves
 
 
 #general
-#1) make plot labels (e.g., capitalization, bolding, etc) consistent
-#2) add references
-#3) appearance
-#4) add annotations to code
-
+#1) add references
+#2) appearance
 
 
 
@@ -414,9 +412,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# rearranged text and plots of island biogeography mini-app
-# centered action buttons
-# updated terminology from "Species-Area Curves" to "Species-Area Relationships"
-# centered and re-sized rarefaction mini-app visuals
+# removed plotly mode bar for IB scenario plots
+# added more annotations to code
+# made plot labels more consistent
 
 

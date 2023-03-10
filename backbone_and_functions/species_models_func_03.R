@@ -23,8 +23,9 @@ plotly_specaccum<-function(data,nm){
       ggplot(aes(x=!!sym(nm),y=richness)) +
       ggtitle("Species-Accumulation Curve") +
       geom_point() +
-      theme_bw() +
-      theme(title=element_text(size=12)) -> p
+      labs(x=paste("Number of",nm),
+           y="Richness") +
+      theme_bw() -> p
     
     p %>%
       ggplotly()
@@ -41,8 +42,9 @@ plotly_rarefy<-function(data,n){
     geom_vline(xintercept=n) +
     scale_color_viridis_d(end=0.85) +
     theme_bw() +
-    labs(color="site") +
-    theme(title=element_text(size=12)) -> p
+    labs(x="Number of individuals",
+         y="Richness",
+         color="site") -> p
   
   p %>%
     ggplotly() %>%

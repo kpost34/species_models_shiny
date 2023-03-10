@@ -15,10 +15,10 @@ plot_power_mod<-function(data,c,z,col){
     labs(x="Area",
          y="No. of Species") +
     theme_bw() +
-    theme(plot.title=element_text(size=18,face="bold"),
-          axis.title=element_text(size=15,face="bold"),
+    theme(plot.title=element_text(size=18),
+          axis.title=element_text(size=15),
           axis.text=element_text(size=12),
-          text=element_text(family="Helvetica"),
+          text=element_text(family="Verdana"),
           plot.margin=margin(0,20,0,0)) 
 }
 
@@ -30,12 +30,12 @@ plot_powerlog_mod<-function(data,c,z,col){
   ggtitle("Power Function: Log-log scale") +
   geom_function(fun = ~log10(c) + z*.x,color=col,linewidth=1.5) +
   labs(x="log10(Area)",
-       y="log10(No. of Species)") +
+       y="log10(Richness)") +
   theme_bw() +
-  theme(plot.title=element_text(size=18,face="bold"),
-        axis.title=element_text(size=15,face="bold"),
+  theme(plot.title=element_text(size=18),
+        axis.title=element_text(size=15),
         axis.text=element_text(size=12),
-        text=element_text(family="Helvetica")) 
+        text=element_text(family="Verdana")) 
 }
 
 
@@ -46,12 +46,12 @@ plot_semilog_mod<-function(data,c,z,col){
     ggtitle("Semi-log Model") +
     geom_function(fun=~log10(c) + z*.x,color=col,linewidth=1.5) +
     labs(x="log10(Area)",
-         y="No. of Species") +
+         y="Richness") +
     theme_bw() +
-    theme(plot.title=element_text(size=18,face="bold"),
-          axis.title=element_text(size=15,face="bold"),
+    theme(plot.title=element_text(size=18),
+          axis.title=element_text(size=15),
           axis.text=element_text(size=12),
-          text=element_text(family="Helvetica")) 
+          text=element_text(family="Verdana")) 
 }
 
 
@@ -68,12 +68,8 @@ plot_power_sars<-function(data,col="black",reg=FALSE,mod,col_reg=NA){
     ggtitle("Power Function: Linear Scale") +
     geom_point(color="black") +
     labs(x="Area",
-         y="No. of species") +
-    theme_bw() +
-    theme(plot.title=element_text(size=18,face="bold"),
-          axis.title=element_text(size=15,face="bold"),
-          axis.text=element_text(size=12),
-          text=element_text(family="Helvetica")) -> p
+         y="Richness") +
+    theme_bw() -> p
 
   
   if(reg){
@@ -94,12 +90,8 @@ plot_powerlog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
     ggtitle("Power Function: Log-log scale") +
     geom_point(color=col,size=1,alpha=0.7) +
     labs(x="log10(Area)",
-         y="log10(No. of species)") +
-    theme_bw() +
-    theme(plot.title=element_text(size=17,face="bold"),
-          axis.title=element_text(size=15,face="bold"),
-          axis.text=element_text(size=12),
-          text=element_text(family="Helvetica")) -> p
+         y="log10(Richness)") +
+    theme_bw() -> p
   
   if(reg){
     p +
@@ -116,12 +108,8 @@ plot_semilog_sars<-function(data,col="black",reg=FALSE,col_reg=NA){
     ggtitle("Semi-log Model") +
     geom_point(color=col,size=1,alpha=0.7) +
     labs(x="log10(Area)",
-         y="No. of species") +
-    theme_bw() +
-    theme(plot.title=element_text(size=17,face="bold"),
-          axis.title=element_text(size=15,face="bold"),
-          axis.text=element_text(size=12),
-          text=element_text(family="Helvetica")) -> p
+         y="Richness") +
+    theme_bw() -> p
   
   if(reg){
     p +
