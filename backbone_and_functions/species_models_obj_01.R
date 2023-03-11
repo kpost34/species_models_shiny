@@ -176,8 +176,28 @@ in a book of the same title published in 1967. The theory proposes that immigrat
 organisms from a mainland to islands is a function of distance, while extinction rates of species
 on islands are a function of island area. Combined, these two rates determine the equilibrium
 numbers of species on islands. Although these ideas were developed using islands, their application
-extends deeply into conversation biology as suitable habitat of threatened species can be thought
+extends deep into conversation biology as suitable habitat of threatened species can be thought
 of as a matrix of islands in unsuitable habitat."
+
+eq_ib<-"In this Shiny mini-app, the following equations ('Chapter 14: Island Biogeography', 2016) are 
+used to describe immigration and extinction:
+<br>
+<br><strong>colonization rate = C(s) = c * (p - s) * exp(-phi * d)</strong>
+<br><strong>extinction rate = E(s) = s * exp(-ep * a)</strong>
+<br>
+<br>The parameters and variable are as follows:
+<br>
+<br>c = mean rate of colonization over all species
+<br>p = total number of species in pool
+<br>s = species richness on island
+<br>phi = distance decay of colonization rate
+<br>d = distance between island and mainland
+<br>ep = epsilon = effect of area on extinction
+<br>a = area of island</p></blockquote>
+<br>
+<em>Reference</em>
+<br>Chapter 14: Island Biogeography. (2016). ECOL 4000/6000: Population & Community Ecology. University
+of Georgia."
 
 
 ### Instructions

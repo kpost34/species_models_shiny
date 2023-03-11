@@ -148,6 +148,9 @@ ui<-navbarPage("Species Models App",
         h3(strong("Background")),
           bp_ib,
         linebreaks(3),
+        h3(strong("Equations")),
+          HTML(eq_ib),
+        linebreaks(3),
         h3(strong("Instructions")),
           h4("Scenarios"),
             instruct_sc_ib,
@@ -393,16 +396,12 @@ ui<-navbarPage("Species Models App",
 #### NOTES==========================================================================================
 
 # NEXT
-#IB
-# add more detail about the equations (in the user guide)
-
 #rare
 # resolve that temp error when switching spec-accum curves
 
 
 #general
-#1) add references
-#2) appearance
+#1) appearance
 
 
 
@@ -412,8 +411,6 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# removed plotly mode bar for IB scenario plots
-# added more annotations to code
-# made plot labels more consistent
+# added in equations and reference for island biogeography
 
 

@@ -3,9 +3,9 @@
 
 #### Datasets=======================================================================================
 ### Create vector of choices
-datasets_sa<-c("Invertebrate species on Greek Is"="aegean",
-               "Plant species on Greek Is"="aegean2",
-               "Plant species on Galapagos Is"="galap",
+datasets_sa<-c("Invertebrate species on Greek Island"="aegean",
+               "Plant species on Greek Island"="aegean2",
+               "Plant species on Galapagos Islands"="galap",
                "Plant species on islands in Kapingamarangi"="niering")
 
 ### Load datasets
