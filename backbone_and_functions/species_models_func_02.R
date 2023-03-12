@@ -18,8 +18,8 @@ plot_power_mod<-function(data,c,z,col){
     theme(plot.title=element_text(size=18),
           axis.title=element_text(size=15),
           axis.text=element_text(size=12),
-          text=element_text(family="Verdana"),
-          plot.margin=margin(0,20,0,0)) 
+          # text=element_text(family="Verdana"),
+          plot.margin=margin(0,20,0,0))
 }
 
 
@@ -35,7 +35,8 @@ plot_powerlog_mod<-function(data,c,z,col){
   theme(plot.title=element_text(size=18),
         axis.title=element_text(size=15),
         axis.text=element_text(size=12),
-        text=element_text(family="Verdana")) 
+        # text=element_text(family="Verdana")) 
+        plot.margin=margin(0,20,0,0))
 }
 
 
@@ -50,8 +51,8 @@ plot_semilog_mod<-function(data,c,z,col){
     theme_bw() +
     theme(plot.title=element_text(size=18),
           axis.title=element_text(size=15),
-          axis.text=element_text(size=12),
-          text=element_text(family="Verdana")) 
+          axis.text=element_text(size=12))
+          # text=element_text(family="Verdana")) 
 }
 
 

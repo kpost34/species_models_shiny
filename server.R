@@ -37,7 +37,7 @@ server<-function(input,output,session){
   output$ui_rad_scenarios2_ib<-renderUI({
     req(input$rad_scenario1_ib=="scenario")
     radioButtons(inputId="rad_scenario2_ib",choices=scenarios2_ib,selected=character(0),
-                 inline=TRUE,label="Select a scenario")
+                 inline=TRUE,label=h4("Select a scenario"))
     })
   
   
@@ -369,7 +369,8 @@ server<-function(input,output,session){
                             "lasso2d",
                             "zoom2d",
                             "select2d")
-                    )
+                    ) %>%
+                   layout(font=list(family="Arial"))
     )
   })
     
@@ -392,7 +393,8 @@ server<-function(input,output,session){
                           "lasso2d",
                           "zoom2d",
                           "select2d")
-                  )
+                    ) %>%
+                    layout(font=list(family="Arial"))
     )
   })
   
@@ -553,7 +555,7 @@ server<-function(input,output,session){
   options=list(dom="t"),
   #add caption as a centered title
   caption=htmltools::tags$caption(style="caption-side: top; text-align: left;
-                                  color: black; font-size: 150%;",
+                                  color: black; font-size: 125%;",
                                   "Estimated Richness")
   )
   
@@ -594,7 +596,7 @@ server<-function(input,output,session){
   rownames=FALSE,options=list(dom="t"),
   #add caption as a centered title
   caption=htmltools::tags$caption(style="caption-side: top; text-align: left;
-                                  color: black; font-size: 150%;",
+                                  color: black; font-size: 125%;",
                                   "Rarefaction Table"))
 
 }

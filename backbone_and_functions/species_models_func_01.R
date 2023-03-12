@@ -111,7 +111,7 @@ rate12_p %>%
   #tooltip set to "text" to pull in custom text associated with geoms above
   ggplotly(tooltip="text") %>%
     layout(margin=list(b=110),
-           font="Helvetica",
+           font=list(family="Arial"),
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
                   x=0.5,y=-0.35))
@@ -164,7 +164,7 @@ build_rate_static_plot<-function(rate_data,eq_data){
   rate_static_p %>%
     ggplotly(tooltip="text") %>%
     layout(margin=list(b=120),
-           font="Helvetica",
+           font=list(family="Arial"),
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
                   x=0.5,y=-0.5)) %>%
@@ -226,7 +226,7 @@ build_svt_plot<-function(data1,sec_isle,data2){
   p %>%
     ggplotly(tooltip="text") %>%
     layout(margin=list(b=110),
-           font="Helvetica",
+           font=list(family="Arial"),
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
                   x=0.5,y=-0.35))
@@ -263,7 +263,7 @@ build_svt_static_plot<-function(data){
   p %>%
     ggplotly(tooltip="text") %>%
     layout(margin=list(b=120),
-           font="Helvetica",
+           font=list(family="Arial"),
       #put legend below plot
       legend=list(orientation="h",xanchor="center",yanchor="bottom",
                   x=0.5,y=-0.35)) %>%
@@ -324,7 +324,7 @@ data %>%
             aes(x=mainx+d1+a1,y=yref1,
                 label=paste0(island1,
                              "\n","a = ",round(2^a1,0))),
-            size=4.5) +
+            size=5) +
   #line segment indicating distance between island 1 and mainland
   geom_segment(data=. %>% filter(mainx==xref,mainy==yref1),
                aes(x=mainx,xend=.95*(mainx+d1),y=yref1,yend=yref1),
@@ -333,7 +333,7 @@ data %>%
   geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
             aes(x=mainx+.2*d1,y=yref1+3,
                 label=paste0("d = ",round(d1^2,0))),
-            hjust=0.5,size=4.5) +
+            hjust=0.5,size=5,fontface="bold") +
   xlim(c(0,150)) +
   ylim(c(0,100)) +
   theme_void() +
@@ -341,8 +341,8 @@ data %>%
        caption=paste("Notes:",
                      "\n*island areas are log2-transformed",
                      "\n*distances are square root-transformed")) + 
-  theme(plot.title=element_text(size=18),
-        plot.caption=element_text(face="italic",hjust=0,size=13)) -> is1_plot
+  theme(plot.title=element_text(size=18,face="bold"),
+        plot.caption=element_text(hjust=0,size=14.5)) -> is1_plot
 
 if(sec_isle=="no"){
   is1_plot -> is_plot
@@ -359,7 +359,7 @@ else if(sec_isle=="yes"){
             aes(x=mainx+d2+a2,y=yref2,
                 label=paste0(island2,
                              "\n","a = ",round(2^a2,0))),
-            size=4.5) +
+            size=5) +
   #island 2 distance to mainland
   geom_segment(data=. %>% filter(mainx==xref,mainy==yref2),
                aes(x=mainx,xend=.95*(mainx+d2),y=yref2,yend=yref2),
@@ -368,7 +368,7 @@ else if(sec_isle=="yes"){
   geom_text(data=. %>% filter(mainx==xref,mainy==yref2),
             aes(x=mainx+.2*d2,y=yref2+3,
                 label=paste0("d = ",round(d2^2,0))),
-          hjust=0.5,size=4.5) -> is_plot
+          hjust=0.5,size=5,fontface="bold") -> is_plot
 }
 
 return(is_plot)

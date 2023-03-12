@@ -28,7 +28,8 @@ plotly_specaccum<-function(data,nm){
       theme_bw() -> p
     
     p %>%
-      ggplotly()
+      ggplotly() %>%
+      layout(font=list(family="Arial"))
 }
 
 
@@ -48,7 +49,8 @@ plotly_rarefy<-function(data,n){
   
   p %>%
     ggplotly() %>%
-    layout(legend=list(orientation="h",xanchor="center",x=0.5,y=-0.2))
+    layout(legend=list(orientation="h",xanchor="center",x=0.5,y=-0.2),
+           font=list(family="Arial"))
 }
 
 

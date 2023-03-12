@@ -6,7 +6,7 @@
 
 #load packages
 pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools,broom,DT,withr,
-               vegan,janitor)
+               vegan,janitor,shinythemes)
 
 #source in functions and objects
 purrr::map(list.files(here("backbone_and_functions"),pattern="obj|func",
@@ -17,6 +17,7 @@ purrr::map(list.files(here("backbone_and_functions"),pattern="obj|func",
 ###### Define UI====================================================================================
 #--------------------------------------------------------------------------------------------------#
 ui<-navbarPage("Species Models App",
+  theme=shinytheme("cerulean"),
   useShinyjs(),
   
   ##### Island Biogeography=========================================================================
@@ -26,7 +27,7 @@ ui<-navbarPage("Species Models App",
       titlePanel("Island Biogeography Mini-App"),
       #scenario vs custom & scenarios radio buttons
       radioButtons(inputId="rad_scenario1_ib",choices=scenarios1_ib,selected=character(0),
-                   inline=TRUE,label="Choose an option"),
+                   inline=TRUE,label=h4("Choose an option")),
       uiOutput("ui_rad_scenarios2_ib"),
       
       sidebarLayout(
@@ -129,15 +130,17 @@ ui<-navbarPage("Species Models App",
       #display scenario plots
       div(id="scenarios1_plots_ib",
         linebreaks(3),
-        column(6,
-          plotlyOutput("plotly_sc1_4_rate_ib",
-                       width="90%",
-                       height="400px")
-          ),
-        column(6,
-          plotlyOutput("plotly_sc1_4_sppt_ib",
-                       width="90%",
-                       height="400px")
+        fluidRow(
+          column(6,
+            plotlyOutput("plotly_sc1_4_rate_ib",
+                         width="90%",
+                         height="400px")
+            ),
+          column(6,
+            plotlyOutput("plotly_sc1_4_sppt_ib",
+                         width="90%",
+                         height="400px")
+          )
         )
       )
     ),
@@ -232,9 +235,13 @@ ui<-navbarPage("Species Models App",
           tabsetPanel(id="out_tabset_sa",type="hidden",
             tabPanel(title=out_tab_titles_sa[1],
               #to more easily compare models
-              splitLayout(
-                plotOutput("plot_draw_plline_sa",height="350px"),
-                plotOutput("plot_draw_pllog_sa",height="350px")
+              fluidRow(
+                column(6,
+                  plotOutput("plot_draw_plline_sa",height="350px")
+                ),
+                column(6,
+                  plotOutput("plot_draw_pllog_sa",height="350px")
+                )
               ),
               br(),
               fluidRow(
@@ -402,6 +409,7 @@ ui<-navbarPage("Species Models App",
 
 #general
 #1) appearance
+#2) in rarefaction mini-app, table and plot have different font sizes in each page
 
 
 
@@ -411,6 +419,11 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# added in equations and reference for island biogeography
+# added a theme
+# increased text size of IB radio button labels
+# removed italics from caption of island schematic
+# increased text size of 'd = #' and info on islands & made bold
+# changed ggplotly fonts to "Arial" to match ggplot fonts
+# reduced font size of table titles in rarefaction mini-app
 
 
