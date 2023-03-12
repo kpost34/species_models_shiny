@@ -411,7 +411,7 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# removed island schematic legend (which was showing in server version)
-#removed island biogeography blank tab when which was set to display first after selecting scenario
+# reduced text size on schematic plot
+# changed distances from log2 to log1.95
 
 

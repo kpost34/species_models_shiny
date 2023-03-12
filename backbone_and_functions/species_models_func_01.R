@@ -295,7 +295,7 @@ build_schematic_df<-function(nm,a1,d1,sec_isle="no",a2,d2){
         d2=rep(d2,reps),
       )
     ) else .} %>%
-  mutate(across(starts_with("a"),~log2(.x)),
+  mutate(across(starts_with("a"),~log(.x,base=1.95)),
          across(starts_with("d"),~sqrt(.x)))
 }
 
@@ -324,7 +324,7 @@ data %>%
             aes(x=mainx+d1+a1,y=yref1,
                 label=paste0(island1,
                              "\n","a = ",round(2^a1,0))),
-            size=5) +
+            size=4.5) +
   #line segment indicating distance between island 1 and mainland
   geom_segment(data=. %>% filter(mainx==xref,mainy==yref1),
                aes(x=mainx,xend=.95*(mainx+d1),y=yref1,yend=yref1),
@@ -333,13 +333,13 @@ data %>%
   geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
             aes(x=mainx+.2*d1,y=yref1+3,
                 label=paste0("d = ",round(d1^2,0))),
-            hjust=0.5,size=5,fontface="bold") +
+            hjust=0.5,size=4.5,fontface="bold") +
   xlim(c(0,150)) +
   ylim(c(0,100)) +
   theme_void() +
   labs(title="         Mainland-Island Schematic",
        caption=paste("Notes:",
-                     "\n*island areas are log2-transformed",
+                     "\n*island areas are log1.95-transformed",
                      "\n*distances are square root-transformed")) + 
   theme(plot.title=element_text(size=18,face="bold"),
         plot.caption=element_text(hjust=0,size=14.5),
@@ -360,7 +360,7 @@ else if(sec_isle=="yes"){
             aes(x=mainx+d2+a2,y=yref2,
                 label=paste0(island2,
                              "\n","a = ",round(2^a2,0))),
-            size=5) +
+            size=4.5) +
   #island 2 distance to mainland
   geom_segment(data=. %>% filter(mainx==xref,mainy==yref2),
                aes(x=mainx,xend=.95*(mainx+d2),y=yref2,yend=yref2),
@@ -369,7 +369,7 @@ else if(sec_isle=="yes"){
   geom_text(data=. %>% filter(mainx==xref,mainy==yref2),
             aes(x=mainx+.2*d2,y=yref2+3,
                 label=paste0("d = ",round(d2^2,0))),
-          hjust=0.5,size=5,fontface="bold") -> is_plot
+          hjust=0.5,size=4.5,fontface="bold") -> is_plot
 }
 
 return(is_plot)
