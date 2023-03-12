@@ -10,16 +10,15 @@ plot_power_mod<-function(data,c,z,col){
     ggplot(aes(x=a)) +
     ggtitle("Power Law: Linear Scale") +
     geom_function(fun=~c*.x^z,color=col,linewidth=1.5) +
-    scale_x_continuous(expand=c(0,0),limits=c(0,NA)) +
-    scale_y_continuous(expand=c(0,0),limits=c(0,NA)) +
+    # scale_x_continuous(expand=c(0,0),limits=c(0,NA)) +
+    # scale_y_continuous(expand=c(0,0),limits=c(0,NA)) +
     labs(x="Area",
          y="No. of Species") +
-    theme_bw() +
-    theme(plot.title=element_text(size=18),
-          axis.title=element_text(size=15),
-          axis.text=element_text(size=12),
-          # text=element_text(family="Verdana"),
-          plot.margin=margin(0,20,0,0))
+    theme_bw(base_size=14) 
+    # theme(plot.title=element_text(size=18),
+    #       axis.title=element_text(size=15),
+    #       axis.text=element_text(size=12))
+          # plot.margin=margin(0,20,0,0))
 }
 
 
@@ -31,12 +30,11 @@ plot_powerlog_mod<-function(data,c,z,col){
   geom_function(fun = ~log10(c) + z*.x,color=col,linewidth=1.5) +
   labs(x="log10(Area)",
        y="log10(Richness)") +
-  theme_bw() +
-  theme(plot.title=element_text(size=18),
-        axis.title=element_text(size=15),
-        axis.text=element_text(size=12),
-        # text=element_text(family="Verdana")) 
-        plot.margin=margin(0,20,0,0))
+  theme_bw(base_size=14) 
+  # theme(plot.title=element_text(size=18),
+  #       axis.title=element_text(size=15),
+  #       axis.text=element_text(size=12))
+        # plot.margin=margin(0,20,0,0))
 }
 
 
@@ -48,10 +46,10 @@ plot_semilog_mod<-function(data,c,z,col){
     geom_function(fun=~log10(c) + z*.x,color=col,linewidth=1.5) +
     labs(x="log10(Area)",
          y="Richness") +
-    theme_bw() +
-    theme(plot.title=element_text(size=18),
-          axis.title=element_text(size=15),
-          axis.text=element_text(size=12))
+    theme_bw(base_size=14) 
+    # theme(plot.title=element_text(size=18),
+    #       axis.title=element_text(size=15),
+    #       axis.text=element_text(size=12))
           # text=element_text(family="Verdana")) 
 }
 

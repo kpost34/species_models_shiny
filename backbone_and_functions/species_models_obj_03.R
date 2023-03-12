@@ -30,7 +30,7 @@ sac_rf<-c(
 
 
 ##### tabPanel titles===============================================================================
-out_tab_titles_rf<-c("Species Accumulation","Rarefaction")
+out_tab_titles_rf<-c("Spp Accumulation","Rarefaction")
 
 
 

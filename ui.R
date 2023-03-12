@@ -150,14 +150,14 @@ ui<-navbarPage("Species Models App",
       div(titlePanel("Island Biogeography Mini-App"),
         h3(strong("Background")),
           bp_ib,
-        linebreaks(3),
+        linebreaks(2),
         h3(strong("Equations")),
           HTML(eq_ib),
-        linebreaks(3),
+        linebreaks(2),
         h3(strong("Instructions")),
           h4("Scenarios"),
             instruct_sc_ib,
-          linebreaks(2),
+          linebreaks(1.5),
           h4("Custom specifications"),
             instruct_cu_ib,
         #add left and rights margins
@@ -235,13 +235,9 @@ ui<-navbarPage("Species Models App",
           tabsetPanel(id="out_tabset_sa",type="hidden",
             tabPanel(title=out_tab_titles_sa[1],
               #to more easily compare models
-              fluidRow(
-                column(6,
-                  plotOutput("plot_draw_plline_sa",height="350px")
-                ),
-                column(6,
-                  plotOutput("plot_draw_pllog_sa",height="350px")
-                )
+              splitLayout(
+                plotOutput("plot_draw_plline_sa",height="350px"),
+                plotOutput("plot_draw_pllog_sa",height="350px")
               ),
               br(),
               fluidRow(
@@ -271,12 +267,12 @@ ui<-navbarPage("Species Models App",
       div(titlePanel("Species-Area Relationships Mini-App"),
         h3(strong("Background")),
           bp_sa,
-        linebreaks(3),
+        linebreaks(2),
         h3(strong("Instructions")),
-          h4("Scenarios"),
+          h4("Drawing Models"),
             instruct_dm_sa,
-          linebreaks(2),
-          h4("Custom specifications"),
+          linebreaks(1.5),
+          h4("Model Fitting"),
             instruct_mf_sa,
         #add left and rights margins
         style="margin-left:200px; margin-right: 200px"
@@ -294,7 +290,7 @@ ui<-navbarPage("Species Models App",
         sidebarPanel(width=3,position="left",
           tabsetPanel(id="input_tabset_rf",
             #Species accumulation UI
-            tabPanel("Species Accumulation",
+            tabPanel("Spp Accumulation",
               radioButtons(inputId="rad_dataset_rf",choices=datasets_rf,select=character(0),
                            label="Select a dataset"),
               div(id="sidebar_cc_rf",
@@ -302,7 +298,6 @@ ui<-navbarPage("Species Models App",
                             label="Choose number of sites (r)"),
                 radioButtons(inputId="rad_specaccumtype_rf",choices=sac_rf,
                              label="Select species accumulation curve method"),
-                br(),
                 h4(strong("Outputs")),
                   checkboxInput(inputId="chk_specaccumplot_rf",
                                 label="Species accumulation curve",
@@ -330,7 +325,7 @@ ui<-navbarPage("Species Models App",
             tabPanel(title=out_tab_titles_rf[1],
               column(12,align="center",
                 plotlyOutput("plotly_specaccum_rf",
-                             height="475px",
+                             height="400px",
                              width="90%"),
                 br(),
                 DTOutput("dt_estTotS_rf",
@@ -341,7 +336,7 @@ ui<-navbarPage("Species Models App",
             tabPanel(title=out_tab_titles_rf[2],
               column(12,align="center",
                 plotlyOutput("plotly_rare_curve_rf",
-                           height="475px",
+                           height="400px",
                            width="90%"),
                 br(),
                 DTOutput("dt_rarefac_rf",
@@ -360,14 +355,14 @@ ui<-navbarPage("Species Models App",
         h3(strong("Background")),
           h4("Species-Area Curves"),
             bp_sac_rf,
-          linebreaks(2),
+          linebreaks(1.5),
           h4("Rarefaction"),
             bp_rare_rf,
-        linebreaks(3),
+        linebreaks(2),
         h3(strong("Instructions")),
-          h4("Scenarios"),
+          h4("Species-Area Curves"),
             instruct_sac_rf,
-          linebreaks(2),
+          linebreaks(1.5),
           h4("Rarefaction"),
             instruct_rare_rf,
         #add left and rights margins
@@ -392,8 +387,12 @@ ui<-navbarPage("Species Models App",
         )
       )
     )
-  )
-               
+  ),
+  #added to remove flashing warning/error regarding 'rarefaction'-based spp accumulation curve
+  tags$style(type="text/css",
+         ".shiny-output-error { visibility: hidden; }",
+         ".shiny-output-error:before { visibility: hidden; }"
+  )             
                
                
 )
@@ -402,14 +401,7 @@ ui<-navbarPage("Species Models App",
 
 #### NOTES==========================================================================================
 
-# NEXT
-#rare
-# resolve that temp error when switching spec-accum curves
 
-
-#general
-#1) appearance
-#2) in rarefaction mini-app, table and plot have different font sizes in each page
 
 
 
@@ -419,11 +411,8 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# added a theme
-# increased text size of IB radio button labels
-# removed italics from caption of island schematic
-# increased text size of 'd = #' and info on islands & made bold
-# changed ggplotly fonts to "Arial" to match ggplot fonts
-# reduced font size of table titles in rarefaction mini-app
+# improved line-spacing in user guides
+# adjusted plot sizes
+# suppressed warning on app itself (as I couldn't resolve it)
 
 

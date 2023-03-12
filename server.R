@@ -430,16 +430,16 @@ server<-function(input,output,session){
   ## Update slider input for # of sites in collector's curve following dataset selection
   observeEvent(input$rad_dataset_rf,{
     if(input$rad_dataset_rf=="BCI"){
-      updateSliderInput(inputId="sld_r_rf",value=20,max=40,step=5)
+      updateSliderInput(inputId="sld_r_rf",min=5,value=20,max=40,step=5)
     }
     if(input$rad_dataset_rf=="dune"){
-      updateSliderInput(inputId="sld_r_rf",value=10,max=15,step=1)
+      updateSliderInput(inputId="sld_r_rf",min=5,value=10,max=15,step=1)
     }
     if(input$rad_dataset_rf=="mite"){
-      updateSliderInput(inputId="sld_r_rf",value=30,max=60,step=5)
+      updateSliderInput(inputId="sld_r_rf",min=5,value=30,max=60,step=5)
     }
     if(input$rad_dataset_rf=="sipoo"){
-      updateSliderInput(inputId="sld_r_rf",value=10,max=15,step=1)
+      updateSliderInput(inputId="sld_r_rf",min=5,value=10,max=15,step=1)
     }
   })
   
@@ -477,7 +477,7 @@ server<-function(input,output,session){
       updateSliderInput(inputId="sld_n_rf",value=20,min=20,max=max_n_rf(),step=20)
     }
     if(input$rad_dataset2_rf=="dune"){
-      updateSliderInput(inputId="sld_n_rf",value=2,min=4,max=max_n_rf(),step=2)
+      updateSliderInput(inputId="sld_n_rf",value=4,min=4,max=max_n_rf(),step=2)
     }
     if(input$rad_dataset2_rf=="mite"){
       updateSliderInput(inputId="sld_n_rf",value=5,min=5,max=max_n_rf(),step=5)
@@ -520,11 +520,13 @@ server<-function(input,output,session){
       "sites"}
   })
   
-  
+
+           
   ## Create reactive specaccum df
   specaccum_curveDF_rf<-reactive({
     req(input$rad_dataset_rf)
     req(input$rad_specaccumtype_rf)
+    req(input$sld_r_rf)
     specaccumDF_rf() %>%
       specaccum(method=input$rad_specaccumtype_rf) %>%
       .[c(specaccum_type_vec_rf(),"richness")] %>%
@@ -537,11 +539,11 @@ server<-function(input,output,session){
   
   ## Create plot
   output$plotly_specaccum_rf<-renderPlotly({
-    req(input$rad_dataset_rf)
-    req(input$rad_specaccumtype_rf)
-    req(input$chk_specaccumplot_rf)
-    plotly_specaccum(specaccum_curveDF_rf(),specaccum_type_vec_rf())
-  })
+      req(input$rad_dataset_rf)
+      req(input$rad_specaccumtype_rf)
+      req(input$chk_specaccumplot_rf)
+      plotly_specaccum(specaccum_curveDF_rf(),specaccum_type_vec_rf())
+    })
   
   
   
