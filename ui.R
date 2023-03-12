@@ -36,7 +36,7 @@ ui<-navbarPage("Species Models App",
           sidebarPanel(width=3,position="left",
             tabsetPanel(id="input_tabset_ib",type="hidden",
               #use a blank panel to open
-              tabPanel(title="tab_blank_ib"),
+              # tabPanel(title="tab_blank_ib"),
               #scenario tab displays text (based on second radio button)
               tabPanel(title=scenarios1_ib[1],
                 textOutput("text_sc1_4_text_ib")
@@ -411,8 +411,7 @@ ui<-navbarPage("Species Models App",
 
 
 # LAST COMMIT
-# improved line-spacing in user guides
-# adjusted plot sizes
-# suppressed warning on app itself (as I couldn't resolve it)
+# removed island schematic legend (which was showing in server version)
+#removed island biogeography blank tab when which was set to display first after selecting scenario
 
 

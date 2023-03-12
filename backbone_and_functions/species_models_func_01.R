@@ -342,7 +342,8 @@ data %>%
                      "\n*island areas are log2-transformed",
                      "\n*distances are square root-transformed")) + 
   theme(plot.title=element_text(size=18,face="bold"),
-        plot.caption=element_text(hjust=0,size=14.5)) -> is1_plot
+        plot.caption=element_text(hjust=0,size=14.5),
+        legend.position="none") -> is1_plot
 
 if(sec_isle=="no"){
   is1_plot -> is_plot
