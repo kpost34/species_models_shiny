@@ -6,7 +6,7 @@
 
 #load packages
 pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools,broom,DT,withr,
-               vegan,janitor,shinythemes)
+               vegan,janitor,shinythemes,shinycssloaders)
 
 #source in functions and objects
 purrr::map(list.files(here("backbone_and_functions"),pattern="obj|func",
@@ -39,7 +39,7 @@ ui<-navbarPage("Species Models App",
               # tabPanel(title="tab_blank_ib"),
               #scenario tab displays text (based on second radio button)
               tabPanel(title=scenarios1_ib[1],
-                textOutput("text_sc1_4_text_ib")
+                withSpinner(textOutput("text_sc1_4_text_ib"))
               ),
               #custom panel has various inputs
               tabPanel(title=scenarios1_ib[2],
@@ -132,14 +132,14 @@ ui<-navbarPage("Species Models App",
         linebreaks(3),
         fluidRow(
           column(6,
-            plotlyOutput("plotly_sc1_4_rate_ib",
+            withSpinner(plotlyOutput("plotly_sc1_4_rate_ib",
                          width="90%",
-                         height="400px")
+                         height="400px"))
             ),
           column(6,
-            plotlyOutput("plotly_sc1_4_sppt_ib",
+            withSpinner(plotlyOutput("plotly_sc1_4_sppt_ib",
                          width="90%",
-                         height="400px")
+                         height="400px"))
           )
         )
       )
@@ -407,11 +407,14 @@ ui<-navbarPage("Species Models App",
 
 # DONE
 
+
  
 
 
 # LAST COMMIT
-# reduced text size on schematic plot
-# changed distances from log2 to log1.95
+# changed areas back to normal (they were log2-transformed)
+# moved text of 'd = =#' to right
+# add spinners to text & plots that took seconds to load
+# got sites in rarefaction table to display in numerical order
 
 

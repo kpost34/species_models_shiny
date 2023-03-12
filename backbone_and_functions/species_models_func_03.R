@@ -68,7 +68,7 @@ find_rarefac_intersect<-function(data, n){
     t() %>%
     as.data.frame() %>%
     rownames_to_column() %>%
-    row_to_names(1)
+    row_to_names(1) 
 }
 
 

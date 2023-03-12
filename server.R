@@ -577,9 +577,10 @@ server<-function(input,output,session){
   rarefac_curveDF_rf<-reactive({
     rarecurve(x=rarefacDF_rf(),tidy=TRUE) %>%
     rename(site="Site",individuals="Sample",species="Species") %>%
-    arrange(site) %>%
+    # arrange(site) %>%
     mutate(site=fct_inseq(site),
-           species=round(species,2))
+           species=round(species,2)) %>% 
+    arrange(site)
   })
 
 

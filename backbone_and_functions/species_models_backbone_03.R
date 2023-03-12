@@ -179,19 +179,6 @@ mite %>%
 
 
 
-#### Plans==========================================================================================
-# 1) choose data set (optional...or maybe just given one with brief description)
-# 2) slider with the subsample size
-# 3) choose spec accumulation type (collector, random, exact)
-# 4) predict total richness & choose method
-# 5) #4 would be added to plot
-# 6) separate tab -- rarefaction
-# 7) subsample data to start (e.g., BCI study would start at < 10 sites instead of 50)
-# 8) visual with individuals and species
-# 9) slider for sample size for rarefaction
-# 10) new set of graphs -> grouped bar charts??
-# 11) rarecurve too
-
 
 
 

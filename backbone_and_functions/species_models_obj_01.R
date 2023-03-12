@@ -22,10 +22,10 @@ scenarios2_ib<-c("large vs small islands"="lvs",
 #### Output Tabset Object===========================================================================
 out_tabs_ib<-tabsetPanel(id="out_tabset_ib",type="hidden",
               #app opens with blank panel
-              tabPanel("tab_blank_ib"),
+              # tabPanel("tab_blank_ib"),
               #if scenario selected, only schematic of scenarios 1-4 outputted here
               tabPanel(scenarios1_ib[1],
-                plotOutput("plot_sc1_4_schematic_ib"),
+                withSpinner(plotOutput("plot_sc1_4_schematic_ib")),
               ),
               #custom model yields plots from custom inputs
               tabPanel(scenarios1_ib[2],

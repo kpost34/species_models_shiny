@@ -295,7 +295,7 @@ build_schematic_df<-function(nm,a1,d1,sec_isle="no",a2,d2){
         d2=rep(d2,reps),
       )
     ) else .} %>%
-  mutate(across(starts_with("a"),~log(.x,base=1.95)),
+  mutate(across(starts_with("a"),~log2(.x)),
          across(starts_with("d"),~sqrt(.x)))
 }
 
@@ -331,7 +331,7 @@ data %>%
                arrow=arrow(length=unit(0.2,"cm")),
                color="darkred") +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref1),
-            aes(x=mainx+.2*d1,y=yref1+3,
+            aes(x=mainx+.225*d1,y=yref1+3,
                 label=paste0("d = ",round(d1^2,0))),
             hjust=0.5,size=4.5,fontface="bold") +
   xlim(c(0,150)) +
@@ -339,7 +339,7 @@ data %>%
   theme_void() +
   labs(title="         Mainland-Island Schematic",
        caption=paste("Notes:",
-                     "\n*island areas are log1.95-transformed",
+                     "\n*island areas are log2-transformed",
                      "\n*distances are square root-transformed")) + 
   theme(plot.title=element_text(size=18,face="bold"),
         plot.caption=element_text(hjust=0,size=14.5),
@@ -367,7 +367,7 @@ else if(sec_isle=="yes"){
                arrow=arrow(length=unit(0.2,"cm")),
                color="darkblue") +
   geom_text(data=. %>% filter(mainx==xref,mainy==yref2),
-            aes(x=mainx+.2*d2,y=yref2+3,
+            aes(x=mainx+.225*d2,y=yref2+3,
                 label=paste0("d = ",round(d2^2,0))),
           hjust=0.5,size=4.5,fontface="bold") -> is_plot
 }
