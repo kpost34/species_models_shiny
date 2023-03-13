@@ -72,6 +72,58 @@ server<-function(input,output,session){
   },ignoreInit=TRUE)
 
   
+  ### User feedback
+  ## Stores feedback warning as reactive if value outside range entered
+  d1_range_ib<-reactive({
+    in_range<-between(input$num_d1_ib,500,10000)
+    shinyFeedback::feedbackWarning("num_d1_ib",!in_range,"Please select a number within range")
+    req(in_range,cancelOutput=TRUE)
+    input$num_d1_ib
+  })
+  
+  a1_range_ib<-reactive({
+    in_range<-between(input$num_a1_ib,500,10000)
+    shinyFeedback::feedbackWarning("num_a1_ib",!in_range,"Please select a number within range")
+    req(in_range)
+    input$num_a1_ib
+  })
+    
+  d2_range_ib<-reactive({
+    in_range<-between(input$num_d2_ib,500,10000)
+    shinyFeedback::feedbackWarning("num_d2_ib",!in_range,"Please select a number within range")
+    req(in_range)
+    input$num_d2_ib
+  })
+      
+  a2_range_ib<-reactive({
+    in_range<-between(input$num_a2_ib,500,10000)
+    shinyFeedback::feedbackWarning("num_a2_ib",!in_range,"Please select a number within range")
+    req(in_range)
+    input$num_a2_ib
+  })
+  
+  
+  ## Outputs feedback warning (if num outside range)
+  output$text_d1_out_range_ib<-renderText({
+    req(is.character(d1_range_ib()))
+    d1_range_ib()
+  })
+  
+  output$text_a1_out_range_ib<-renderText({
+    req(is.character(a1_range_ib()))
+    a1_range_ib()
+  })
+    
+  output$text_d2_out_range_ib<-renderText({
+    req(is.character(d2_range_ib()))
+    d2_range_ib()
+  })
+      
+  output$text_a2_out_range_ib<-renderText({
+    req(is.character(a2_range_ib()))
+    a2_range_ib()
+  })
+  
 
 
   
@@ -178,12 +230,12 @@ server<-function(input,output,session){
   ### Schematic plot
   ## Create reactive object of schematic island DF
   schematicDF_ib<-reactive({
-    build_schematic_df(nm=c("island 1","island 2"),a1=input$num_a1_ib,d1=input$num_d1_ib,
-                       sec_isle=input$rad_is2_ib,a2=input$num_a2_ib,d2=input$num_d2_ib)
+    build_schematic_df(nm=c("island 1","island 2"),a1=a1_range_ib(),d1=d1_range_ib(),
+                       sec_isle=input$rad_is2_ib,a2=a2_range_ib(),d2=d2_range_ib())
   })
   
   
-  ## Render plotly plot
+  ## Render plot
   output$plot_cust_schematic_ib<-renderPlot({
     make_island_schematic(schematicDF_ib(),sec_isle=input$rad_is2_ib)
   })
@@ -194,14 +246,14 @@ server<-function(input,output,session){
   # Create reactive object of rate DF
   rate1DF_ib<-reactive({
     build_rate_df(island="Island 1",s_len=300,c=input$sld_c1_ib, p=input$sld_p_ib, phi=input$sld_phi1_ib,
-                  d=input$num_d1_ib, ep=input$sld_ep1_ib, a=input$num_a1_ib)
+                  d=d1_range_ib(), ep=input$sld_ep1_ib, a=a1_range_ib())
   })
 
 
   # Create reactive object of eq rate DF
   rate_eq1DF_ib<-reactive({
     build_eq_df(island="Island 1",c=input$sld_c1_ib, p=input$sld_p_ib, phi=input$sld_phi1_ib,
-                d=input$num_d1_ib, ep=input$sld_ep1_ib, a=input$num_a1_ib)
+                d=d1_range_ib(), ep=input$sld_ep1_ib, a=a1_range_ib())
   })
 
 
@@ -210,14 +262,14 @@ server<-function(input,output,session){
   # Create separate reactive object of rate DF (for island 2)
   rate2DF_ib<-reactive({
     build_rate_df(island="Island 2",s_len=300,c=input$sld_c2_ib, p=input$sld_p_ib, phi=input$sld_phi2_ib,
-                d=input$num_d2_ib, ep=input$sld_ep2_ib, a=input$num_a2_ib)
+                d=d2_range_ib(), ep=input$sld_ep2_ib, a=a2_range_ib())
   })
 
 
   # Create reactive object of eq rate DF (for island 2)
   rate_eq2DF_ib<-reactive({
     build_eq_df(island="Island 2",c=input$sld_c2_ib, p=input$sld_p_ib, phi=input$sld_phi2_ib,
-                d=input$num_d2_ib, ep=input$sld_ep2_ib, a=input$num_a2_ib)
+                d=d2_range_ib(), ep=input$sld_ep2_ib, a=a2_range_ib())
   })
 
 
@@ -235,7 +287,7 @@ server<-function(input,output,session){
   # Reactive object
   spp1tDF_ib<-reactive({
     build_svt_df(isle=1, t=input$sld_t_ib, c=input$sld_c1_ib, p=input$sld_p_ib,
-                 phi=input$sld_phi1_ib, d=input$num_d1_ib, ep=input$sld_ep1_ib, a=input$num_a1_ib)
+                 phi=input$sld_phi1_ib, d=d1_range_ib(), ep=input$sld_ep1_ib, a=a1_range_ib())
   })
 
 
@@ -244,7 +296,7 @@ server<-function(input,output,session){
   # Reactive object
   spp2tDF_ib<-reactive({
     build_svt_df(isle=2,t=input$sld_t_ib, c=input$sld_c2_ib, p=input$sld_p_ib,
-                 phi=input$sld_phi2_ib, d=input$num_d2_ib, ep=input$sld_ep2_ib, a=input$num_a2_ib)
+                 phi=input$sld_phi2_ib, d=d2_range_ib(), ep=input$sld_ep2_ib, a=a2_range_ib())
   })
 
 

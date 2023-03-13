@@ -6,7 +6,7 @@
 
 #load packages
 pacman::p_load(shiny,here,tidyverse,plotly,shinyjs,ggforce,sars,nlstools,broom,DT,withr,
-               vegan,janitor,shinythemes,shinycssloaders)
+               vegan,janitor,shinythemes,shinycssloaders,shinyFeedback)
 
 #source in functions and objects
 purrr::map(list.files(here("backbone_and_functions"),pattern="obj|func",
@@ -24,6 +24,7 @@ ui<-navbarPage("Species Models App",
   navbarMenu(title="Theory of Island Biogeography",
     #### App component for custom specifications----------------------------------------------------
     tabPanel(title="Mini-app",id="app_ib1",
+      shinyFeedback::useShinyFeedback(),
       titlePanel("Island Biogeography Mini-App"),
       #scenario vs custom & scenarios radio buttons
       radioButtons(inputId="rad_scenario1_ib",choices=scenarios1_ib,selected=character(0),
@@ -75,8 +76,9 @@ ui<-navbarPage("Species Models App",
                 #Island 1 ui
                 tabPanel(title="Island 1",
                   h4(strong("Immigration")),
-                    numericInput(inputId="num_d1_ib",value=1000,min=100,max=10000,
-                                 label="Distance from mainland (d; 100-10,000)"),
+                    numericInput(inputId="num_d1_ib",value=1000,min=500,max=10000,
+                                 label="Distance from mainland (d; 500-10,000)"),
+                    textOutput("text_d1_out_range_ib"),
                     sliderInput(inputId="sld_phi1_ib",value=.0002,min=0,max=.001,step=.0002,
                                  label="Distance decay of colonization rate 
                                  (\u03d5)"),
@@ -84,8 +86,9 @@ ui<-navbarPage("Species Models App",
                                  label="Mean colonization rate over all species (c)"),
                   br(),
                   h4(strong("Extinction")),
-                      numericInput(inputId="num_a1_ib",value=1200,min=100,max=10000,
-                                   label="Area of island 1 (a; 100-10,000)"),
+                      numericInput(inputId="num_a1_ib",value=1200,min=500,max=10000,
+                                   label="Area of island 1 (a; 500-10,000)"),
+                      textOutput("text_a1_out_range_ib"),
                       sliderInput(inputId="sld_ep1_ib",value=.0006,min=0,max=.001,step=.0002,
                                    label="Effect of area on extinction 
                                    (\u03b5)"),
@@ -94,16 +97,18 @@ ui<-navbarPage("Species Models App",
                 #Island 2 ui
                 tabPanel(title="Island 2",
                   h4(strong("Immigration")),
-                    numericInput(inputId="num_d2_ib",value=1000,min=100,max=10000,
-                                 label="d (100-10,000)"),
+                    numericInput(inputId="num_d2_ib",value=1000,min=500,max=10000,
+                                 label="d (500-10,000)"),
+                    textOutput("text_d2_out_range_ib"),
                     sliderInput(inputId="sld_phi2_ib",value=.0002,min=0,max=.001,step=.0002,
                                  label="\u03d5"),
                     sliderInput(inputId="sld_c2_ib",value=0.6,min=0.1,max=1,step=0.05,
                                  label="c"),
                   hr(style = "border-top: 1px solid #000000;"),
                   h4(strong("Extinction")),
-                    numericInput(inputId="num_a2_ib",value=1200,min=100,max=10000,
-                                 label="a (100-10,000)"),
+                    numericInput(inputId="num_a2_ib",value=1200,min=500,max=10000,
+                                 label="a (500-10,000)"),
+                    textOutput("text_a2_out_range_ib"),
                     sliderInput(inputId="sld_ep2_ib",value=.0006,min=0,max=.001,step=.0002,
                                  label="\u03b5")
                 )
@@ -403,18 +408,13 @@ ui<-navbarPage("Species Models App",
 
 
 
-
-
 # DONE
-
 
  
 
 
 # LAST COMMIT
-# changed areas back to normal (they were log2-transformed)
-# moved text of 'd = =#' to right
-# add spinners to text & plots that took seconds to load
-# got sites in rarefaction table to display in numerical order
+# adjusted d and inputs in IB: increased mins to 500 and had labels reflect that change
+# invalidate results if a1, a2, d1, or d2 outside range and warning message provided
 
 
