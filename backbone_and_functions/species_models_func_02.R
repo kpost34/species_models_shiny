@@ -8,7 +8,7 @@
 plot_power_mod<-function(data,c,z,col){
   data %>%
     ggplot(aes(x=a)) +
-    ggtitle("Power Law: Linear Scale") +
+    ggtitle("Power Function: Linear Scale") +
     geom_function(fun=~c*.x^z,color=col,linewidth=1.5) +
     # scale_x_continuous(expand=c(0,0),limits=c(0,NA)) +
     # scale_y_continuous(expand=c(0,0),limits=c(0,NA)) +
