@@ -32,4 +32,5 @@ This shiny app contains three mini-apps related to ecological concepts: island b
 #### **Project Creator: Keith Post**
 + [Github Profile](https://github.com/kpost34) 
 + [LinkedIN Profile](https://www.linkedin.com/in/keith-post/)
-+ [Email](mailto:keithhpost@gmail.com)
++ [Email](mailto:keithpost.kp@gmail.com)
+
